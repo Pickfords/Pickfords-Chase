@@ -1,0 +1,80 @@
+.pf-qcard {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.pf-qcard-meta {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--pf-blue-400);
+  text-transform: uppercase;
+}
+
+.pf-qcard-question {
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.pf-qcard-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pf-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  color: var(--pf-white);
+  font-size: 17px;
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease, transform 120ms ease;
+}
+.pf-option:hover:not(:disabled) {
+  border-color: var(--pf-blue-400);
+  background: rgba(44, 111, 191, 0.12);
+}
+.pf-option:disabled {
+  cursor: default;
+}
+
+.pf-option.selected {
+  border-color: var(--pf-blue-400);
+  background: rgba(44, 111, 191, 0.22);
+}
+
+.pf-option.reveal-correct {
+  border-color: var(--pf-gold-400);
+  background: rgba(240, 184, 75, 0.16);
+}
+.pf-option.reveal-wrong {
+  border-color: var(--pf-red-600);
+  background: rgba(211, 16, 39, 0.16);
+}
+
+.pf-option-key {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.pf-option-label {
+  flex: 1;
+}

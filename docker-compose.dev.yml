@@ -1,0 +1,16 @@
+# Local Postgres for development only. Run: docker compose -f docker-compose.dev.yml up -d
+# Matches server/.env.example's default DATABASE_URL.
+version: '3.8'
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pickfords_chaser
+    ports:
+      - '5432:5432'
+    volumes:
+      - pf_chaser_pgdata:/var/lib/postgresql/data
+volumes:
+  pf_chaser_pgdata:

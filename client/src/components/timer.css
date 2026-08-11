@@ -1,0 +1,63 @@
+.pf-timer {
+  position: relative;
+  width: 148px;
+  height: 148px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pf-timer-ring {
+  position: absolute;
+  inset: 0;
+}
+
+.pf-timer-track {
+  stroke: rgba(255, 255, 255, 0.1);
+}
+
+.pf-timer-progress {
+  stroke: var(--pf-blue-400);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 90ms linear, stroke 200ms ease;
+}
+.pf-timer-ring.warn .pf-timer-progress {
+  stroke: var(--pf-gold-400);
+}
+.pf-timer-ring.urgent .pf-timer-progress {
+  stroke: var(--pf-red-600);
+}
+
+.pf-timer-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pf-timer-seconds {
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--pf-white);
+}
+
+.pf-timer-locked {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--pf-gold-400);
+  border: 2px solid var(--pf-gold-400);
+  border-radius: 999px;
+  padding: 10px 18px;
+  animation: locked-in-appear 220ms ease-out;
+}
+
+@keyframes locked-in-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

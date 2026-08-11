@@ -1,0 +1,25 @@
+# Render Blueprint - lets you deploy the server via "New + > Blueprint" in
+# the Render dashboard pointing at this repo, instead of configuring the
+# web service by hand. Free tier ("plan: free") works but sleeps after 15
+# minutes of inactivity - see README.md's event-day runbook for why we
+# recommend upgrading to Starter for the event itself.
+services:
+  - type: web
+    name: pickfords-chaser-server
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        sync: false # set manually from your Neon connection string
+      - key: PGSSL
+        value: 'true'
+      - key: ADMIN_PIN
+        sync: false # set manually - do not commit a real PIN
+      - key: FRONTEND_URL
+        sync: false # set manually to your Vercel deployment URL
+      - key: NODE_VERSION
+        value: '20'

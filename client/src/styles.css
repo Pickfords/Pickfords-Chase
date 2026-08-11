@@ -1,0 +1,209 @@
+/* ==========================================================================
+   Pickfords Global Mobility Chaser — design tokens
+   --------------------------------------------------------------------------
+   Palette: Pickfords navy/blue as the home identity, a hard Chaser red
+   reserved for jeopardy (the countdown running out, the Chaser closing the
+   gap), and a warm gold reserved for escape/correct moments. Nothing else
+   is allowed to borrow red or gold — that's what keeps both meaningful at
+   a glance during live play.
+
+   Signature element: the vertical "Escape Ladder" (components/Ladder.jsx),
+   a literal re-reading of the Chase's cash ladder as a career-mobility
+   climb — six rungs, badge at each, contestant + Chaser markers sliding
+   relative to each other as the distance score changes.
+   ========================================================================== */
+
+:root {
+  /* Colour */
+  --pf-navy-950: #081a33;
+  --pf-navy-800: #123059;
+  --pf-navy-700: #1a3d6e;
+  --pf-blue-500: #2c6fbf;
+  --pf-blue-400: #4a8bdb;
+  --pf-red-600: #d31027;
+  --pf-red-700: #a50d1f;
+  --pf-gold-400: #f0b84b;
+  --pf-gold-300: #f6cf7f;
+  --pf-ink: #0b1830;
+  --pf-mist-100: #eef2f8;
+  --pf-mist-200: #dbe4f0;
+  --pf-white: #ffffff;
+  --pf-green-500: #2fa66a;
+
+  /* Type */
+  --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: radial-gradient(120% 140% at 50% -10%, var(--pf-navy-700) 0%, var(--pf-navy-950) 55%);
+  color: var(--pf-white);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--pf-gold-400);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---- shared primitives -------------------------------------------- */
+
+.pf-shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.pf-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pf-wordmark {
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+  font-size: 22px;
+  color: var(--pf-white);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.pf-wordmark span {
+  color: var(--pf-red-600);
+}
+
+.pf-btn {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+
+.pf-btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.pf-btn-primary {
+  background: var(--pf-blue-500);
+  color: var(--pf-white);
+  box-shadow: 0 6px 18px rgba(44, 111, 191, 0.35);
+}
+.pf-btn-primary:hover {
+  background: var(--pf-blue-400);
+}
+
+.pf-btn-danger {
+  background: var(--pf-red-600);
+  color: var(--pf-white);
+  box-shadow: 0 6px 18px rgba(211, 16, 39, 0.35);
+}
+.pf-btn-danger:hover {
+  background: var(--pf-red-700);
+}
+
+.pf-btn-ghost {
+  background: transparent;
+  color: var(--pf-white);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+}
+.pf-btn-ghost:hover {
+  border-color: var(--pf-white);
+}
+
+.pf-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.pf-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.pf-input {
+  font-family: var(--font-body);
+  font-size: 16px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--pf-white);
+  width: 100%;
+}
+.pf-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+.pf-input:focus {
+  outline: none;
+  border-color: var(--pf-blue-400);
+}
+
+.pf-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pf-blue-400);
+}
+
+.pf-mono {
+  font-family: var(--font-mono);
+}
+
+.pf-center-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  gap: 20px;
+  text-align: center;
+}

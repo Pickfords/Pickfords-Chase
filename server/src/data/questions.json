@@ -1,0 +1,962 @@
+[
+  {
+    "id": "TAX01",
+    "category": "Tax & Social Security",
+    "difficulty": 1,
+    "question": "What does an A1 certificate primarily evidence?",
+    "options": {
+      "A": "Income-tax residence",
+      "B": "Applicable social-security legislation",
+      "C": "Immigration permission"
+    },
+    "correctAnswer": "B",
+    "explanation": "An A1 evidences which social-security legislation applies to the holder.",
+    "source": "https://europa.eu/youreurope/citizens/work/social-security-forms/index_en.htm",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "TAX02",
+    "category": "Tax & Social Security",
+    "difficulty": 1,
+    "question": "Under tax equalisation, hypothetical tax broadly represents what?",
+    "options": {
+      "A": "Host tax paid to the authority",
+      "B": "Approximate home tax retained from the employee",
+      "C": "Corporate tax"
+    },
+    "correctAnswer": "B",
+    "explanation": "Hypothetical tax broadly represents the home-country tax the employee would have borne had they remained at home.",
+    "source": "https://www.irs.gov/individuals/international-taxpayers/foreign-persons",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "TAX03",
+    "category": "Tax & Social Security",
+    "difficulty": 2,
+    "question": "Under the UK Statutory Residence Test, spending how many days in the UK in a tax year triggers the first automatic UK test?",
+    "options": {
+      "A": "90",
+      "B": "183",
+      "C": "240"
+    },
+    "correctAnswer": "B",
+    "explanation": "An individual is UK resident under the first automatic UK test if present in the UK for 183 days or more in the tax year.",
+    "source": "https://www.gov.uk/government/publications/rdr3-statutory-residence-test-srt",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "TAX04",
+    "category": "Tax & Social Security",
+    "difficulty": 2,
+    "question": "What is the primary purpose of a Certificate of Coverage under a social-security agreement?",
+    "options": {
+      "A": "Avoid dual social-security coverage where applicable",
+      "B": "Obtain a work permit",
+      "C": "Establish treaty tax residence"
+    },
+    "correctAnswer": "A",
+    "explanation": "A Certificate of Coverage documents coverage under one country's social-security system where an agreement applies.",
+    "source": "https://www.ssa.gov/international/CoC_link.html",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "TAX05",
+    "category": "Tax & Social Security",
+    "difficulty": 3,
+    "question": "Which OECD Model Tax Convention article principally covers employment income?",
+    "options": {
+      "A": "Article 5",
+      "B": "Article 9",
+      "C": "Article 15"
+    },
+    "correctAnswer": "C",
+    "explanation": "Article 15 of the OECD Model Tax Convention addresses income from employment.",
+    "source": "https://www.oecd.org/tax/treaties/model-tax-convention-on-income-and-on-capital-condensed-version-20745419.htm",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "TAX06",
+    "category": "Tax & Social Security",
+    "difficulty": 3,
+    "question": "Does spending fewer than 183 days in a host country automatically guarantee treaty exemption from employment tax there?",
+    "options": {
+      "A": "Yes",
+      "B": "No",
+      "C": "Only for EU nationals"
+    },
+    "correctAnswer": "B",
+    "explanation": "The 183-day condition is only one element of the employment-income treaty exemption; other conditions must also be satisfied.",
+    "source": "https://www.oecd.org/tax/treaties/model-tax-convention-on-income-and-on-capital-condensed-version-20745419.htm",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "TAX07",
+    "category": "Tax & Social Security",
+    "difficulty": 4,
+    "question": "Which of these can defeat the usual Article 15 short-term employment exemption?",
+    "options": {
+      "A": "Remuneration being borne by a host permanent establishment",
+      "B": "Remaining on home payroll",
+      "C": "Holding an A1"
+    },
+    "correctAnswer": "A",
+    "explanation": "Article 15's exemption requires, among other conditions, that remuneration is not borne by a permanent establishment in the host state.",
+    "source": "https://www.oecd.org/tax/treaties/model-tax-convention-on-income-and-on-capital-condensed-version-20745419.htm",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "TAX08",
+    "category": "Tax & Social Security",
+    "difficulty": 4,
+    "question": "From 6 April 2025, the UK's former remittance-basis regime was replaced by a regime primarily based on what?",
+    "options": {
+      "A": "Citizenship",
+      "B": "Residence",
+      "C": "Domicile"
+    },
+    "correctAnswer": "B",
+    "explanation": "The new foreign income and gains regime is residence-based rather than domicile-based.",
+    "source": "https://www.gov.uk/government/publications/reforming-the-taxation-of-non-uk-domiciled-individuals",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "TAX09",
+    "category": "Tax & Social Security",
+    "difficulty": 5,
+    "question": "Under current UK Overseas Workday Relief rules, the annual financial limit is the lower of \u00a3300,000 and what percentage of relevant qualifying employment income?",
+    "options": {
+      "A": "20%",
+      "B": "30%",
+      "C": "50%"
+    },
+    "correctAnswer": "B",
+    "explanation": "Current OWR relief is capped at the lower of \u00a3300,000 or 30% of qualifying employment income, subject to the detailed rules.",
+    "source": "https://www.gov.uk/hmrc-internal-manuals/employment-income-manual/eim43600",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "TAX10",
+    "category": "Tax & Social Security",
+    "difficulty": 5,
+    "question": "Under OECD transfer-pricing principles, related-party cross-border transactions are generally tested against which principle?",
+    "options": {
+      "A": "Territorial principle",
+      "B": "Arm's-length principle",
+      "C": "Residence principle"
+    },
+    "correctAnswer": "B",
+    "explanation": "The arm's-length principle is the internationally accepted standard for pricing transactions between associated enterprises.",
+    "source": "https://www.oecd.org/tax/transfer-pricing/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "IMM01",
+    "category": "Immigration & Cross-Border Working",
+    "difficulty": 1,
+    "question": "Does an A1 certificate itself give someone permission to work in another country?",
+    "options": {
+      "A": "Yes",
+      "B": "No",
+      "C": "Only within the EU"
+    },
+    "correctAnswer": "B",
+    "explanation": "An A1 concerns social-security coverage; it is not immigration or work authorisation.",
+    "source": "https://europa.eu/youreurope/citizens/work/social-security-forms/index_en.htm",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "IMM02",
+    "category": "Immigration & Cross-Border Working",
+    "difficulty": 1,
+    "question": "A UK Certificate of Sponsorship is what?",
+    "options": {
+      "A": "A physical visa",
+      "B": "An electronic sponsorship record",
+      "C": "A tax certificate"
+    },
+    "correctAnswer": "B",
+    "explanation": "A Certificate of Sponsorship is an electronic record assigned by a licensed sponsor, not a paper certificate or visa.",
+    "source": "https://www.gov.uk/uk-visa-sponsorship-employers/certificates-of-sponsorship",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "IMM03",
+    "category": "Immigration & Cross-Border Working",
+    "difficulty": 2,
+    "question": "Under the Schengen short-stay rule, the standard maximum stay is:",
+    "options": {
+      "A": "60 days in 120",
+      "B": "90 days in any 180",
+      "C": "183 days annually"
+    },
+    "correctAnswer": "B",
+    "explanation": "For relevant short stays, the Schengen rule is generally 90 days in any rolling 180-day period.",
+    "source": "https://home-affairs.ec.europa.eu/policies/schengen-borders-and-visa/visa-policy_en",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "IMM04",
+    "category": "Immigration & Cross-Border Working",
+    "difficulty": 2,
+    "question": "What does ETIAS primarily concern?",
+    "options": {
+      "A": "Social security",
+      "B": "Pre-travel authorisation for eligible visa-exempt travellers",
+      "C": "European payroll"
+    },
+    "correctAnswer": "B",
+    "explanation": "ETIAS is a travel-authorisation system for eligible visa-exempt nationals travelling to participating European countries.",
+    "source": "https://travel-europe.europa.eu/etias_en",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "IMM05",
+    "category": "Immigration & Cross-Border Working",
+    "difficulty": 3,
+    "question": "What does the EU Entry/Exit System (EES) principally record?",
+    "options": {
+      "A": "Employee salaries",
+      "B": "Entries and exits of relevant non-EU short-stay travellers",
+      "C": "Social-security contributions"
+    },
+    "correctAnswer": "B",
+    "explanation": "EES electronically records border crossings and related data for covered non-EU short-stay travellers.",
+    "source": "https://travel-europe.europa.eu/ees_en",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "IMM06",
+    "category": "Immigration & Cross-Border Working",
+    "difficulty": 3,
+    "question": "Has EES replaced the Schengen 90/180-day short-stay rule?",
+    "options": {
+      "A": "Yes",
+      "B": "No",
+      "C": "Only for British citizens"
+    },
+    "correctAnswer": "B",
+    "explanation": "EES records travel; it does not replace the underlying Schengen short-stay limit.",
+    "source": "https://travel-europe.europa.eu/ees_en",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "IMM07",
+    "category": "Immigration & Cross-Border Working",
+    "difficulty": 4,
+    "question": "A business traveller stays fewer than 90 days in Schengen. Does that automatically mean they can perform any work activity without work authorisation?",
+    "options": {
+      "A": "Yes",
+      "B": "No",
+      "C": "Only if home-paid"
+    },
+    "correctAnswer": "B",
+    "explanation": "Permitted business-visitor activities and work-authorisation requirements are separate from the Schengen stay calculation and depend on national law.",
+    "source": "https://home-affairs.ec.europa.eu/policies/schengen-borders-and-visa/visa-policy_en",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "IMM08",
+    "category": "Immigration & Cross-Border Working",
+    "difficulty": 4,
+    "question": "In UK sponsorship, a worker normally uses their Certificate of Sponsorship number to:",
+    "options": {
+      "A": "Apply for the relevant visa",
+      "B": "Obtain an A1",
+      "C": "File a tax return"
+    },
+    "correctAnswer": "A",
+    "explanation": "The CoS reference is used as part of the sponsored worker's visa application.",
+    "source": "https://www.gov.uk/uk-visa-sponsorship-employers/certificates-of-sponsorship",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "IMM09",
+    "category": "Immigration & Cross-Border Working",
+    "difficulty": 5,
+    "question": "EES became fully operational across participating external Schengen borders on which date?",
+    "options": {
+      "A": "10 April 2026",
+      "B": "1 January 2026",
+      "C": "31 December 2025"
+    },
+    "correctAnswer": "A",
+    "explanation": "The EU announced full EES operation from 10 April 2026.",
+    "source": "https://home-affairs.ec.europa.eu/news/entryexit-system-will-become-fully-operational-10-april-2026-2026-03-30_en",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "IMM10",
+    "category": "Immigration & Cross-Border Working",
+    "difficulty": 5,
+    "question": "Which statement is correct?",
+    "options": {
+      "A": "Immigration permission automatically determines tax residence",
+      "B": "Tax residence automatically gives work permission",
+      "C": "Immigration and tax are separate compliance analyses"
+    },
+    "correctAnswer": "C",
+    "explanation": "Immigration status and tax residence/liability are governed by separate legal frameworks.",
+    "source": "https://www.gov.uk/browse/visas-immigration",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "CMP01",
+    "category": "Compensation, Benefits & Payroll",
+    "difficulty": 1,
+    "question": "What does COLA commonly stand for in mobility?",
+    "options": {
+      "A": "Cost of Living Allowance",
+      "B": "Country Overseas Labour Adjustment",
+      "C": "Corporate Overseas Living Award"
+    },
+    "correctAnswer": "A",
+    "explanation": "COLA is the common mobility abbreviation for Cost of Living Allowance.",
+    "source": "https://www.irs.gov/publications/p54",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "CMP02",
+    "category": "Compensation, Benefits & Payroll",
+    "difficulty": 1,
+    "question": "Which compensation methodology is traditionally associated with maintaining home-country purchasing power?",
+    "options": {
+      "A": "Balance sheet",
+      "B": "Host local",
+      "C": "Lump sum"
+    },
+    "correctAnswer": "A",
+    "explanation": "The balance-sheet approach seeks to maintain the assignee's home-country purchasing-power relationship.",
+    "source": "https://www.worldatwork.org/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "CMP03",
+    "category": "Compensation, Benefits & Payroll",
+    "difficulty": 2,
+    "question": "A tax gross-up is intended primarily to:",
+    "options": {
+      "A": "Cover tax arising from a company-provided payment or benefit",
+      "B": "Increase pensionable salary",
+      "C": "Convert currencies"
+    },
+    "correctAnswer": "A",
+    "explanation": "A gross-up increases a payment so the employee receives the intended amount after applicable tax.",
+    "source": "https://www.irs.gov/publications/p15b",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "CMP04",
+    "category": "Compensation, Benefits & Payroll",
+    "difficulty": 2,
+    "question": "What is a shadow payroll principally used for?",
+    "options": {
+      "A": "Secret executive remuneration",
+      "B": "Host-country payroll reporting/compliance without necessarily duplicating cash salary",
+      "C": "Paying two salaries"
+    },
+    "correctAnswer": "B",
+    "explanation": "A shadow payroll can report compensation and calculate host payroll obligations while the underlying salary continues to be paid elsewhere.",
+    "source": "https://www.oecd.org/tax/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "CMP05",
+    "category": "Compensation, Benefits & Payroll",
+    "difficulty": 3,
+    "question": "If an employee must receive \u00a310,000 net and the only assumed tax is 40%, what gross payment produces \u00a310,000 net?",
+    "options": {
+      "A": "\u00a314,000",
+      "B": "\u00a316,667",
+      "C": "\u00a320,000"
+    },
+    "correctAnswer": "B",
+    "explanation": "Gross = \u00a310,000 / (1 - 0.40) = approximately \u00a316,667.",
+    "source": null,
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "CMP06",
+    "category": "Compensation, Benefits & Payroll",
+    "difficulty": 3,
+    "question": "In a balance-sheet approach, spendable income most closely represents:",
+    "options": {
+      "A": "Total gross pay",
+      "B": "Income normally available for everyday goods and services",
+      "C": "Assignment bonus"
+    },
+    "correctAnswer": "B",
+    "explanation": "Spendable income is the portion of income associated with typical day-to-day consumption in the home-country spending pattern.",
+    "source": "https://www.worldatwork.org/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "CMP07",
+    "category": "Compensation, Benefits & Payroll",
+    "difficulty": 4,
+    "question": "Under traditional tax equalisation, if actual assignment tax exceeds the employee's hypothetical tax, who generally bears the assignment-related excess?",
+    "options": {
+      "A": "Employee",
+      "B": "Employer",
+      "C": "Relocation provider"
+    },
+    "correctAnswer": "B",
+    "explanation": "Under conventional tax equalisation, the employer generally bears assignment-related tax above the employee's hypothetical home tax.",
+    "source": "https://www.irs.gov/publications/p54",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "CMP08",
+    "category": "Compensation, Benefits & Payroll",
+    "difficulty": 4,
+    "question": "Which payroll arrangement generally involves part of compensation actually being paid through two countries?",
+    "options": {
+      "A": "Split payroll",
+      "B": "Shadow payroll",
+      "C": "Hypothetical payroll"
+    },
+    "correctAnswer": "A",
+    "explanation": "Split payroll divides actual compensation payments between payrolls or jurisdictions; shadow payroll is principally a reporting mechanism.",
+    "source": "https://www.oecd.org/tax/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "CMP09",
+    "category": "Compensation, Benefits & Payroll",
+    "difficulty": 5,
+    "question": "An employer wants an employee to receive \u00a312,000 net where the assumed tax rate is 40%. Ignoring all other deductions, what is the grossed-up amount?",
+    "options": {
+      "A": "\u00a316,800",
+      "B": "\u00a320,000",
+      "C": "\u00a328,800"
+    },
+    "correctAnswer": "B",
+    "explanation": "\u00a312,000 / 0.60 = \u00a320,000.",
+    "source": null,
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "CMP10",
+    "category": "Compensation, Benefits & Payroll",
+    "difficulty": 5,
+    "question": "Why can an employer-paid tax amount itself require further gross-up?",
+    "options": {
+      "A": "Tax paid on behalf of an employee can itself constitute taxable remuneration",
+      "B": "Because exchange rates change",
+      "C": "Because an A1 requires it"
+    },
+    "correctAnswer": "A",
+    "explanation": "Where employer-paid tax is itself taxable remuneration, further gross-up may be required to deliver the intended net benefit.",
+    "source": "https://www.irs.gov/publications/p15b",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "POL01",
+    "category": "Policy, Programme & Strategy",
+    "difficulty": 1,
+    "question": "Which term describes moving an assignee back to their home country at assignment end?",
+    "options": {
+      "A": "Localisation",
+      "B": "Repatriation",
+      "C": "Inpatriation"
+    },
+    "correctAnswer": "B",
+    "explanation": "Repatriation is the return of an assignee to the home location/country following an assignment.",
+    "source": "https://www.worldatwork.org/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "POL02",
+    "category": "Policy, Programme & Strategy",
+    "difficulty": 1,
+    "question": "What does localisation generally describe?",
+    "options": {
+      "A": "Moving an assignee onto host/local employment terms",
+      "B": "Returning home",
+      "C": "Creating shadow payroll"
+    },
+    "correctAnswer": "A",
+    "explanation": "Localisation generally means transitioning an internationally mobile employee to local host-country terms and conditions.",
+    "source": "https://www.worldatwork.org/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "POL03",
+    "category": "Policy, Programme & Strategy",
+    "difficulty": 2,
+    "question": "Which policy model combines mandatory benefits with a selectable range of flexible benefits?",
+    "options": {
+      "A": "Core-flex",
+      "B": "Balance sheet",
+      "C": "Tax protection"
+    },
+    "correctAnswer": "A",
+    "explanation": "Core-flex combines a mandatory core of benefits with flexible options selected according to policy rules or employee needs.",
+    "source": "https://www.worldatwork.org/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "POL04",
+    "category": "Policy, Programme & Strategy",
+    "difficulty": 2,
+    "question": "A lump-sum relocation benefit principally gives the employee:",
+    "options": {
+      "A": "A predetermined amount to manage eligible relocation needs",
+      "B": "Unlimited reimbursement",
+      "C": "Automatic tax exemption"
+    },
+    "correctAnswer": "A",
+    "explanation": "A lump sum provides a defined amount rather than reimbursement of every actual expense.",
+    "source": "https://www.irs.gov/publications/p521",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "POL05",
+    "category": "Policy, Programme & Strategy",
+    "difficulty": 3,
+    "question": "Which is an example of an outcome KPI rather than simply an activity count?",
+    "options": {
+      "A": "Number of emails sent",
+      "B": "Assignee satisfaction score",
+      "C": "Number of supplier invoices"
+    },
+    "correctAnswer": "B",
+    "explanation": "Assignee satisfaction measures an outcome/experience; emails and invoices are activity or volume measures.",
+    "source": null,
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "POL06",
+    "category": "Policy, Programme & Strategy",
+    "difficulty": 3,
+    "question": "Which assignment type normally leaves the employee permanently employed in the destination rather than expecting repatriation under the original assignment?",
+    "options": {
+      "A": "Permanent transfer",
+      "B": "Short-term assignment",
+      "C": "Commuter assignment"
+    },
+    "correctAnswer": "A",
+    "explanation": "A permanent transfer is intended as a lasting move to the destination rather than a time-limited assignment followed by repatriation.",
+    "source": null,
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "POL07",
+    "category": "Policy, Programme & Strategy",
+    "difficulty": 4,
+    "question": "A policy exception is approved outside standard policy. What makes it an exception?",
+    "options": {
+      "A": "The provision differs from established policy entitlement",
+      "B": "It costs money",
+      "C": "A vendor delivers it"
+    },
+    "correctAnswer": "A",
+    "explanation": "A policy exception is a deviation from the standard entitlement or rule set.",
+    "source": null,
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "POL08",
+    "category": "Policy, Programme & Strategy",
+    "difficulty": 4,
+    "question": "Which metric directly compares forecast assignment expenditure with realised expenditure?",
+    "options": {
+      "A": "Cost variance",
+      "B": "NPS",
+      "C": "Time-to-deploy"
+    },
+    "correctAnswer": "A",
+    "explanation": "Cost variance measures the difference between budgeted/forecast and actual cost.",
+    "source": null,
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "POL09",
+    "category": "Policy, Programme & Strategy",
+    "difficulty": 5,
+    "question": "Which concept separates services considered essential for everyone from benefits employees can select according to need?",
+    "options": {
+      "A": "Core-flex",
+      "B": "Tax equalisation",
+      "C": "Host payroll"
+    },
+    "correctAnswer": "A",
+    "explanation": "Core-flex separates mandatory core provisions from a flexible menu of optional benefits.",
+    "source": "https://www.worldatwork.org/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "POL10",
+    "category": "Policy, Programme & Strategy",
+    "difficulty": 5,
+    "question": "An organisation wants to know whether mobility is supporting strategic deployment of scarce skills. Which measure is closest to that objective?",
+    "options": {
+      "A": "Number of invoices processed",
+      "B": "Percentage of moves filling identified critical-skill needs",
+      "C": "Number of relocation suppliers"
+    },
+    "correctAnswer": "B",
+    "explanation": "The percentage of moves filling critical-skill needs directly connects mobility activity to the stated talent objective.",
+    "source": null,
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "RSK01",
+    "category": "Risk, Compliance, Data & Sustainability",
+    "difficulty": 1,
+    "question": "Under GDPR principles, collecting only personal data necessary for a defined purpose is called:",
+    "options": {
+      "A": "Data minimisation",
+      "B": "Data maximisation",
+      "C": "Data portability"
+    },
+    "correctAnswer": "A",
+    "explanation": "Data minimisation requires personal data to be adequate, relevant and limited to what is necessary for the purpose.",
+    "source": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/data-protection-principles/a-guide-to-the-data-protection-principles/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "RSK02",
+    "category": "Risk, Compliance, Data & Sustainability",
+    "difficulty": 1,
+    "question": "Which ISO standard specifically provides guidance on travel risk management?",
+    "options": {
+      "A": "ISO 31030",
+      "B": "ISO 9001",
+      "C": "ISO 14001"
+    },
+    "correctAnswer": "A",
+    "explanation": "ISO 31030:2021 provides guidance to organisations on managing risks to organisations and travellers arising from travel.",
+    "source": "https://www.iso.org/standard/54204.html",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "RSK03",
+    "category": "Risk, Compliance, Data & Sustainability",
+    "difficulty": 2,
+    "question": "In the GHG Protocol, employee business travel falls under which Scope 3 category?",
+    "options": {
+      "A": "Category 4",
+      "B": "Category 6",
+      "C": "Category 12"
+    },
+    "correctAnswer": "B",
+    "explanation": "Business travel is Scope 3 Category 6.",
+    "source": "https://ghgprotocol.org/scope-3-calculation-guidance-2",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "RSK04",
+    "category": "Risk, Compliance, Data & Sustainability",
+    "difficulty": 2,
+    "question": "Which is generally classed as special-category personal data under UK GDPR?",
+    "options": {
+      "A": "Office location",
+      "B": "Health data",
+      "C": "Employee number"
+    },
+    "correctAnswer": "B",
+    "explanation": "Data concerning health is special-category data under UK GDPR.",
+    "source": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/lawful-basis/special-category-data/what-is-special-category-data/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "RSK05",
+    "category": "Risk, Compliance, Data & Sustainability",
+    "difficulty": 3,
+    "question": "If a reportable personal-data breach occurs under UK GDPR, the supervisory authority should generally be notified within:",
+    "options": {
+      "A": "24 hours",
+      "B": "72 hours",
+      "C": "30 days"
+    },
+    "correctAnswer": "B",
+    "explanation": "Where notification is required, the ICO must generally be notified without undue delay and, where feasible, within 72 hours of awareness.",
+    "source": "https://ico.org.uk/for-organisations/report-a-breach/personal-data-breach/",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "RSK06",
+    "category": "Risk, Compliance, Data & Sustainability",
+    "difficulty": 3,
+    "question": "Under the GHG Protocol, employee commuting is which Scope 3 category?",
+    "options": {
+      "A": "5",
+      "B": "7",
+      "C": "10"
+    },
+    "correctAnswer": "B",
+    "explanation": "Employee commuting is Scope 3 Category 7.",
+    "source": "https://ghgprotocol.org/scope-3-calculation-guidance-2",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "RSK07",
+    "category": "Risk, Compliance, Data & Sustainability",
+    "difficulty": 4,
+    "question": "An organisation determines why and how employee mobility personal data will be processed. Under GDPR terminology it is generally the:",
+    "options": {
+      "A": "Data controller",
+      "B": "Data processor",
+      "C": "Data subject"
+    },
+    "correctAnswer": "A",
+    "explanation": "The controller determines the purposes and means of processing personal data.",
+    "source": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/controllers-and-processors/what-are-controllers-and-processors/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "RSK08",
+    "category": "Risk, Compliance, Data & Sustainability",
+    "difficulty": 4,
+    "question": "Under the EU AI Act, certain AI systems used for employment and worker management are classified as:",
+    "options": {
+      "A": "Low-risk by definition",
+      "B": "High-risk",
+      "C": "Exempt from the Act"
+    },
+    "correctAnswer": "B",
+    "explanation": "The AI Act identifies specified employment and worker-management uses as high-risk systems, subject to the Act's detailed scope and exceptions.",
+    "source": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "RSK09",
+    "category": "Risk, Compliance, Data & Sustainability",
+    "difficulty": 5,
+    "question": "Under the EU AI Act, using AI to infer a person's emotions in the workplace is generally:",
+    "options": {
+      "A": "Prohibited, subject to limited exceptions",
+      "B": "Always high-risk but permitted",
+      "C": "Unregulated"
+    },
+    "correctAnswer": "A",
+    "explanation": "The AI Act prohibits AI systems used to infer emotions in workplaces except for specified medical or safety reasons.",
+    "source": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "RSK10",
+    "category": "Risk, Compliance, Data & Sustainability",
+    "difficulty": 5,
+    "question": "Scope 3 Category 4 under the GHG Protocol concerns:",
+    "options": {
+      "A": "Employee commuting",
+      "B": "Upstream transportation and distribution",
+      "C": "Business travel"
+    },
+    "correctAnswer": "B",
+    "explanation": "Scope 3 Category 4 is upstream transportation and distribution.",
+    "source": "https://ghgprotocol.org/scope-3-calculation-guidance-2",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "REL01",
+    "category": "Relocation, HHG & Employee Experience",
+    "difficulty": 1,
+    "question": "What does HHG stand for in relocation?",
+    "options": {
+      "A": "Household Goods",
+      "B": "Host Housing Grant",
+      "C": "Home Handling Guarantee"
+    },
+    "correctAnswer": "A",
+    "explanation": "HHG is the standard relocation abbreviation for household goods.",
+    "source": "https://www.fidi.org/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "REL02",
+    "category": "Relocation, HHG & Employee Experience",
+    "difficulty": 1,
+    "question": "What is the main purpose of a pre-move household-goods survey?",
+    "options": {
+      "A": "Assess the shipment's volume/content and move requirements",
+      "B": "Determine tax residence",
+      "C": "Issue a visa"
+    },
+    "correctAnswer": "A",
+    "explanation": "A pre-move survey identifies the goods to be moved, likely volume and operational requirements for the shipment.",
+    "source": "https://www.fidi.org/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "REL03",
+    "category": "Relocation, HHG & Employee Experience",
+    "difficulty": 2,
+    "question": "In international moving, 'groupage' broadly means:",
+    "options": {
+      "A": "Several customers' consignments sharing transport/container capacity",
+      "B": "An air-only shipment",
+      "C": "Storage at origin"
+    },
+    "correctAnswer": "A",
+    "explanation": "Groupage consolidates multiple consignments so they share transport capacity.",
+    "source": "https://www.fidi.org/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "REL04",
+    "category": "Relocation, HHG & Employee Experience",
+    "difficulty": 2,
+    "question": "What does FIDI's FAIM programme principally relate to?",
+    "options": {
+      "A": "Immigration accreditation",
+      "B": "Quality standards for international moving",
+      "C": "Tax compliance"
+    },
+    "correctAnswer": "B",
+    "explanation": "FAIM is FIDI's quality standard/accreditation programme for international moving companies.",
+    "source": "https://www.fidi.org/faim",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "REL05",
+    "category": "Relocation, HHG & Employee Experience",
+    "difficulty": 3,
+    "question": "For UK Transfer of Residence relief, a person will generally need to have had their normal home outside the UK for at least:",
+    "options": {
+      "A": "3 months",
+      "B": "6 months",
+      "C": "12 consecutive months"
+    },
+    "correctAnswer": "C",
+    "explanation": "One core ToR condition is generally having had the normal home outside the UK for at least 12 consecutive months before moving.",
+    "source": "https://www.gov.uk/guidance/transfer-of-residence-to-great-britain",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "REL06",
+    "category": "Relocation, HHG & Employee Experience",
+    "difficulty": 3,
+    "question": "For standard UK Transfer of Residence relief, most personal goods generally need to have been possessed and used for at least:",
+    "options": {
+      "A": "1 month",
+      "B": "6 months",
+      "C": "18 months"
+    },
+    "correctAnswer": "B",
+    "explanation": "Most qualifying personal goods must generally have been in the person's possession and used for at least six months before import.",
+    "source": "https://www.gov.uk/guidance/transfer-of-residence-to-great-britain",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "REL07",
+    "category": "Relocation, HHG & Employee Experience",
+    "difficulty": 4,
+    "question": "Which item presents a recognised dangerous-goods issue when packed into international baggage or freight?",
+    "options": {
+      "A": "Spare lithium batteries",
+      "B": "Cotton clothing",
+      "C": "Books"
+    },
+    "correctAnswer": "A",
+    "explanation": "Lithium batteries are regulated dangerous goods in transport, with rules depending on battery type, configuration and mode.",
+    "source": "https://www.iata.org/en/programs/cargo/dgr/lithium-batteries/",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "REL08",
+    "category": "Relocation, HHG & Employee Experience",
+    "difficulty": 4,
+    "question": "What does ISPM 15 principally regulate in an international shipment?",
+    "options": {
+      "A": "Wooden packaging material",
+      "B": "Employee visas",
+      "C": "Marine insurance"
+    },
+    "correctAnswer": "A",
+    "explanation": "ISPM 15 sets phytosanitary measures for wood packaging material used in international trade.",
+    "source": "https://www.ippc.int/en/core-activities/standards-setting/ispms/",
+    "status": "Evergreen",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "REL09",
+    "category": "Relocation, HHG & Employee Experience",
+    "difficulty": 5,
+    "question": "A person imports goods under UK Transfer of Residence relief and immediately sells them after arrival. Why can this create a problem?",
+    "options": {
+      "A": "Relief places restrictions on disposal of qualifying goods for a specified period",
+      "B": "All imported goods must be kept forever",
+      "C": "Only furniture can be sold"
+    },
+    "correctAnswer": "A",
+    "explanation": "ToR relief includes restrictions on lending, hiring out, transferring or disposing of relieved goods during the relevant post-import period.",
+    "source": "https://www.gov.uk/guidance/transfer-of-residence-to-great-britain",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "REL10",
+    "category": "Relocation, HHG & Employee Experience",
+    "difficulty": 5,
+    "question": "An assignee qualifies for UK Transfer of Residence relief. Which of these would NOT normally qualify for relief simply as personal property under ToR?",
+    "options": {
+      "A": "Used household furniture",
+      "B": "Personal clothing",
+      "C": "Alcoholic beverages"
+    },
+    "correctAnswer": "C",
+    "explanation": "Alcohol and tobacco are excluded from ToR relief.",
+    "source": "https://www.gov.uk/guidance/transfer-of-residence-to-great-britain",
+    "status": "Dynamic",
+    "lastVerified": "2026-08-09"
+  }
+]

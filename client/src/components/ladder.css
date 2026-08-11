@@ -1,0 +1,107 @@
+.pf-ladder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 260px;
+}
+
+.pf-ladder-gap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 6px 16px;
+}
+.pf-ladder-gap-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--pf-mist-200);
+}
+.pf-ladder-gap-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--pf-gold-400);
+}
+.pf-ladder-gap-value.critical {
+  color: var(--pf-red-600);
+  animation: pulse-critical 1s ease-in-out infinite;
+}
+
+@keyframes pulse-critical {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+.pf-ladder-track {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pf-rung {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 200ms ease;
+}
+.pf-rung:last-child {
+  border-bottom: none;
+}
+.pf-rung.cleared {
+  background: rgba(240, 184, 75, 0.1);
+}
+.pf-rung-start {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.pf-rung-markers {
+  display: flex;
+  gap: 4px;
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.pf-marker {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--pf-white);
+  flex-shrink: 0;
+}
+.pf-marker.contestant {
+  background: var(--pf-blue-500);
+  box-shadow: 0 0 0 2px rgba(44, 111, 191, 0.35);
+}
+.pf-marker.chaser {
+  background: var(--pf-red-600);
+  box-shadow: 0 0 0 2px rgba(211, 16, 39, 0.35);
+}
+
+.pf-rung-label {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  font-size: 15px;
+  color: var(--pf-white);
+}
+.pf-rung-label.muted {
+  color: rgba(255, 255, 255, 0.4);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+}
