@@ -65,7 +65,7 @@ class GameEngine {
     this.games = new Map();
   }
 
-  createGame({ gameId, contestantName, chaserName = 'Phil', excludeIds }) {
+  createGame({ gameId, contestantName, chaserName = 'The Chaser', excludeIds }) {
     const questions = selectGameQuestions(this.allQuestions, this.usageCounts, { excludeIds });
     recordUsage(this.usageCounts, questions);
 

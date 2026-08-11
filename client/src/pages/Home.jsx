@@ -18,10 +18,10 @@ export default function Home() {
             I'm the Contestant
           </Link>
           <Link to="/play/chaser" className="pf-btn pf-btn-danger" style={{ textAlign: 'center', textDecoration: 'none' }}>
-            I'm the Chaser (Phil)
+            I'm the Chaser
           </Link>
           <Link to="/admin" className="pf-btn pf-btn-ghost" style={{ textAlign: 'center', textDecoration: 'none' }}>
-            Admin / data capture (Chris)
+            Admin / data capture
           </Link>
         </div>
       </div>

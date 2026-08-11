@@ -31,7 +31,7 @@ export default function AdminView() {
   }, []);
 
   const [contestantName, setContestantName] = useState('');
-  const [chaserName, setChaserName] = useState('Phil');
+  const [chaserName, setChaserName] = useState('');
   const [activeGame, setActiveGame] = useState(null); // { gameId, state }
   const [createError, setCreateError] = useState('');
   const [liveResults, setLiveResults] = useState([]);

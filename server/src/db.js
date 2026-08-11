@@ -1,12 +1,23 @@
 // db.js - thin Postgres access layer. Uses `pg`'s Pool directly rather than
 // an ORM: the query surface here is small and fixed, so an ORM would add a
 // dependency without saving much code.
+const fs = require('fs');
+const path = require('path');
 const { Pool } = require('pg');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.PGSSL === 'false' ? false : { rejectUnauthorized: false },
 });
+
+// schema.sql is all `CREATE ... IF NOT EXISTS`, so running it on every boot
+// is a safe no-op once the tables exist - this is what previously required
+// a manual psql/Neon-console run after every fresh DB (see Handover.md).
+async function runMigrations() {
+  const schemaPath = path.join(__dirname, '..', 'schema.sql');
+  const sql = fs.readFileSync(schemaPath, 'utf8');
+  await pool.query(sql);
+}
 
 async function saveFinishedGame(summary) {
   const {
@@ -129,6 +140,7 @@ async function loadUsageCounts() {
 
 module.exports = {
   pool,
+  runMigrations,
   saveFinishedGame,
   saveQuestionResults,
   getLeaderboard,

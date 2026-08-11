@@ -7,8 +7,8 @@ import QuestionCard from '../components/QuestionCard';
 import BadgeCard from '../components/BadgeCard';
 
 const ROLE_COPY = {
-  contestant: { title: 'CONTESTANT', accent: 'You', wait: "Waiting for Phil's answer…" },
-  chaser: { title: "THE CHASER — PHIL", accent: 'Chaser', wait: 'Waiting for the contestant…' },
+  contestant: { title: 'CONTESTANT', accent: 'You' },
+  chaser: { title: 'THE CHASER', accent: 'Chaser' },
 };
 
 export default function PlayerView({ role }) {
@@ -20,6 +20,10 @@ export default function PlayerView({ role }) {
   const [joined, setJoined] = useState(false);
   const [joinError, setJoinError] = useState('');
   const [gameState, setGameState] = useState(null);
+
+  const chaserName = gameState?.chaserName || 'the Chaser';
+  const displayTitle = role === 'chaser' && gameState?.chaserName ? `THE CHASER — ${gameState.chaserName.toUpperCase()}` : copy.title;
+  const waitText = role === 'contestant' ? `Waiting for ${chaserName}'s answer…` : 'Waiting for the contestant…';
 
   const [question, setQuestion] = useState(null);
   const [selected, setSelected] = useState(null);
@@ -135,7 +139,7 @@ export default function PlayerView({ role }) {
       <div className="pf-shell">
         <TopBar />
         <div className="pf-center-stage">
-          <div className="pf-eyebrow">{copy.title}</div>
+          <div className="pf-eyebrow">{displayTitle}</div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 30, margin: 0 }}>
             Waiting for the game to start…
           </h1>
@@ -169,7 +173,7 @@ export default function PlayerView({ role }) {
                     Lock in
                   </button>
                   <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)' }}>
-                    {myLocked ? (otherLocked ? 'Revealing…' : copy.wait) : 'Select an answer, then lock in.'}
+                    {myLocked ? (otherLocked ? 'Revealing…' : waitText) : 'Select an answer, then lock in.'}
                   </span>
                 </div>
               </div>

@@ -245,6 +245,13 @@ if (fs.existsSync(clientDist)) {
 // ---------------------------------------------------------------------
 (async () => {
   try {
+    await db.runMigrations();
+    console.log('Database schema up to date.');
+  } catch (err) {
+    console.error('Failed to apply database schema - check DATABASE_URL.', err.message);
+  }
+
+  try {
     usageCounts = await db.loadUsageCounts();
     engine.usageCounts = usageCounts;
     console.log(`Loaded usage counts for ${usageCounts.size} questions from today's games.`);
