@@ -60,7 +60,7 @@ async function saveQuestionResults(gameId, results) {
   if (!results.length) return;
   const values = [];
   const rows = results.map((r, i) => {
-    const base = i * 11;
+    const base = i * 12;
     values.push(
       gameId,
       r.slot,
@@ -77,8 +77,8 @@ async function saveQuestionResults(gameId, results) {
     );
     return `($${base + 1},$${base + 2},$${base + 3},$${base + 4},$${base + 5},$${base + 6},$${base + 7},$${base + 8},$${base + 9},$${base + 10},$${base + 11},$${base + 12})`;
   });
-  // NOTE: 12 columns per row (gameId..chaserResponseMs) - keep base step (11) and
-  // placeholder count (12) in sync if this ever changes.
+  // NOTE: 12 columns per row (gameId..chaserResponseMs) - base step must match
+  // the placeholder count per row, or rows silently share placeholders.
   await pool.query(
     `INSERT INTO question_results
       (game_id, slot, question_id, category, difficulty, contestant_answer,
