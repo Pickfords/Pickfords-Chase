@@ -188,4 +188,4 @@ state machine (scoring, catch mechanic, timeouts).
   server restart (`loadUsageCounts` in `db.js`), so a Render redeploy
   mid-event doesn't reset fairness back to zero.
 #   P i c k f o r d s - C h a s e  
- 
+ # Pickfords-Chase
