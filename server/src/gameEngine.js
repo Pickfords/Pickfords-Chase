@@ -35,6 +35,7 @@ const { selectGameQuestions, recordUsage } = require('./questionEngine');
 
 const HEAD_START = 2;
 const QUESTION_TIMEOUT_MS = 10_000;
+const ADD_TIME_MS = 5_000;
 // Pause between the final reveal and the gameOver/badge screen, so a
 // contestant caught (or escaping) on the last question actually gets to
 // read the explanation instead of it being instantly replaced.
@@ -65,7 +66,7 @@ class GameEngine {
     this.games = new Map();
   }
 
-  createGame({ gameId, contestantName, chaserName = 'The Chaser', excludeIds }) {
+  createGame({ gameId, contestantName = 'Contestant', chaserName = 'The Chaser', excludeIds }) {
     const questions = selectGameQuestions(this.allQuestions, this.usageCounts, { excludeIds });
     recordUsage(this.usageCounts, questions);
 
@@ -81,6 +82,7 @@ class GameEngine {
       results: [], // per-question outcome log
       contestantScore: 0,
       questionStartTs: null,
+      timeLimitMs: QUESTION_TIMEOUT_MS, // grows if the admin adds time mid-question
       timeoutHandle: null,
       createdAt: Date.now(),
       finishedAt: null,
@@ -97,12 +99,31 @@ class GameEngine {
     return game;
   }
 
+  // Contestant/chaser set their own display name from their join screen -
+  // the admin no longer collects names up front. Ignored if blank so a
+  // reconnect without retyping a name doesn't wipe out what was already set.
+  setPlayerName(gameId, role, name) {
+    const game = this.getGame(gameId);
+    if (!['contestant', 'chaser'].includes(role)) return;
+    const trimmed = String(name || '').trim();
+    if (!trimmed) return;
+    if (role === 'contestant') game.contestantName = trimmed;
+    else game.chaserName = trimmed;
+    this.io.to(this._room(gameId)).emit('playersUpdated', {
+      contestantName: game.contestantName,
+      chaserName: game.chaserName,
+    });
+  }
+
   // ---- flow control -------------------------------------------------
 
   startNextQuestion(gameId) {
     const game = this.getGame(gameId);
     if (game.status === 'caught' || game.status === 'escaped') {
       throw new Error('Game already finished');
+    }
+    if (game.status === 'question_active') {
+      throw new Error('A question is already in progress');
     }
     game.currentSlotIndex += 1;
     if (game.currentSlotIndex >= game.questions.length) {
@@ -111,6 +132,7 @@ class GameEngine {
     game.locks = { contestant: null, chaser: null };
     game.status = 'question_active';
     game.questionStartTs = Date.now();
+    game.timeLimitMs = QUESTION_TIMEOUT_MS;
 
     const q = game.questions[game.currentSlotIndex];
     const publicQuestion = {
@@ -121,7 +143,7 @@ class GameEngine {
       question: q.question,
       options: q.options,
       badgeLabel: BADGES[game.currentSlotIndex],
-      timeLimitMs: QUESTION_TIMEOUT_MS,
+      timeLimitMs: game.timeLimitMs,
       serverStartTs: game.questionStartTs,
     };
 
@@ -129,9 +151,22 @@ class GameEngine {
 
     game.timeoutHandle = setTimeout(() => {
       this._forceTimeouts(gameId);
-    }, QUESTION_TIMEOUT_MS + 250); // small grace for network jitter
+    }, game.timeLimitMs + 250); // small grace for network jitter
 
     return publicQuestion;
+  }
+
+  // Admin can extend a live question by ADD_TIME_MS (e.g. for a contestant
+  // who's clearly still reading). Reschedules the timeout against the same
+  // questionStartTs so the countdown stays server-authoritative.
+  addTime(gameId) {
+    const game = this.getGame(gameId);
+    if (game.status !== 'question_active') return;
+    game.timeLimitMs += ADD_TIME_MS;
+    clearTimeout(game.timeoutHandle);
+    const remaining = Math.max(0, game.timeLimitMs - (Date.now() - game.questionStartTs)) + 250;
+    game.timeoutHandle = setTimeout(() => this._forceTimeouts(gameId), remaining);
+    this.io.to(this._room(gameId)).emit('timeExtended', { timeLimitMs: game.timeLimitMs });
   }
 
   lockAnswer(gameId, role, answer) {
@@ -140,7 +175,7 @@ class GameEngine {
     if (game.locks[role]) return; // already locked
     if (!['contestant', 'chaser'].includes(role)) throw new Error('bad role');
 
-    const responseTimeMs = Math.min(Date.now() - game.questionStartTs, QUESTION_TIMEOUT_MS);
+    const responseTimeMs = Math.min(Date.now() - game.questionStartTs, game.timeLimitMs);
     game.locks[role] = { answer, responseTimeMs, lockedAt: Date.now() };
 
     // Tell the room this role locked in, WITHOUT revealing their answer yet.
@@ -157,7 +192,7 @@ class GameEngine {
     if (game.status !== 'question_active') return;
     for (const role of ['contestant', 'chaser']) {
       if (!game.locks[role]) {
-        game.locks[role] = { answer: null, responseTimeMs: QUESTION_TIMEOUT_MS, lockedAt: Date.now() };
+        game.locks[role] = { answer: null, responseTimeMs: game.timeLimitMs, lockedAt: Date.now() };
         this.io.to(this._room(gameId)).emit('lockedIn', { role, timedOut: true });
       }
     }

@@ -163,13 +163,15 @@ io.on('connection', (socket) => {
     ack?.(Date.now());
   });
 
-  socket.on('admin:createGame', ({ contestantName, chaserName, adminPin }, ack) => {
+  socket.on('admin:createGame', ({ adminPin }, ack) => {
     if (ADMIN_PIN && adminPin !== ADMIN_PIN) {
       return ack?.({ error: 'Invalid admin PIN' });
     }
     try {
       const gameId = generateGameCode();
-      const state = engine.createGame({ gameId, contestantName, chaserName });
+      // Contestant and chaser name themselves from their own join screens
+      // (see joinGame below) - the admin just needs the code to hand out.
+      const state = engine.createGame({ gameId });
       ack?.({ ok: true, gameId, state });
     } catch (err) {
       console.error(err);
@@ -177,16 +179,27 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('joinGame', ({ gameId, role }, ack) => {
+  socket.on('joinGame', ({ gameId, role, name }, ack) => {
     if (!['contestant', 'chaser', 'admin'].includes(role)) {
       return ack?.({ error: 'Invalid role' });
     }
     try {
       const game = engine.getGame(gameId);
+      if (name) engine.setPlayerName(gameId, role, name);
       socket.join(`game:${gameId}`);
       socket.data.gameId = gameId;
       socket.data.role = role;
       ack?.({ ok: true, state: engine.publicState(game) });
+    } catch (err) {
+      ack?.({ error: err.message });
+    }
+  });
+
+  socket.on('admin:addTime', ({ gameId, adminPin }, ack) => {
+    if (ADMIN_PIN && adminPin !== ADMIN_PIN) return ack?.({ error: 'Invalid admin PIN' });
+    try {
+      engine.addTime(gameId);
+      ack?.({ ok: true });
     } catch (err) {
       ack?.({ error: err.message });
     }

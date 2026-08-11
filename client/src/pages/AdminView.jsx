@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { socket } from '../lib/socket';
 import { api } from '../lib/api';
+import Timer from '../components/Timer';
+import QuestionCard from '../components/QuestionCard';
 
 export default function AdminView() {
   const [pin, setPin] = useState(localStorage.getItem('pf_admin_pin') || '');
@@ -30,32 +32,47 @@ export default function AdminView() {
     };
   }, []);
 
-  const [contestantName, setContestantName] = useState('');
-  const [chaserName, setChaserName] = useState('');
   const [activeGame, setActiveGame] = useState(null); // { gameId, state }
   const [createError, setCreateError] = useState('');
   const [liveResults, setLiveResults] = useState([]);
   const [liveDistance, setLiveDistance] = useState(2);
   const [liveOutcome, setLiveOutcome] = useState(null);
+  const [currentQuestion, setCurrentQuestion] = useState(null); // set while a question is live, so this button can turn into a timer
 
   const [leaderboard, setLeaderboard] = useState([]);
 
   useEffect(() => {
     refreshLeaderboard();
+    function onQuestion(q) {
+      setCurrentQuestion(q);
+    }
     function onReveal(r) {
+      setCurrentQuestion(null);
       setLiveResults((prev) => [...prev, r]);
       setLiveDistance(r.distanceAfter);
     }
     function onGameOver(summary) {
       setLiveOutcome(summary);
     }
+    function onPlayersUpdated(payload) {
+      setActiveGame((prev) => (prev ? { ...prev, state: { ...prev.state, ...payload } } : prev));
+    }
+    function onTimeExtended({ timeLimitMs }) {
+      setCurrentQuestion((prev) => (prev ? { ...prev, timeLimitMs } : prev));
+    }
     socket.on('leaderboardUpdate', setLeaderboard);
+    socket.on('question', onQuestion);
     socket.on('reveal', onReveal);
     socket.on('gameOver', onGameOver);
+    socket.on('playersUpdated', onPlayersUpdated);
+    socket.on('timeExtended', onTimeExtended);
     return () => {
       socket.off('leaderboardUpdate', setLeaderboard);
+      socket.off('question', onQuestion);
       socket.off('reveal', onReveal);
       socket.off('gameOver', onGameOver);
+      socket.off('playersUpdated', onPlayersUpdated);
+      socket.off('timeExtended', onTimeExtended);
     };
   }, []);
 
@@ -72,12 +89,13 @@ export default function AdminView() {
   function createGame(e) {
     e.preventDefault();
     setCreateError('');
-    socket.emit('admin:createGame', { contestantName, chaserName, adminPin: pin }, (res) => {
+    socket.emit('admin:createGame', { adminPin: pin }, (res) => {
       if (res?.error) return setCreateError(res.error);
       setActiveGame({ gameId: res.gameId, state: res.state });
       setLiveResults([]);
       setLiveDistance(2);
       setLiveOutcome(null);
+      setCurrentQuestion(null);
       socket.emit('joinGame', { gameId: res.gameId, role: 'admin' }, () => {});
     });
   }
@@ -85,6 +103,13 @@ export default function AdminView() {
   function startNext() {
     if (!activeGame) return;
     socket.emit('admin:startNextQuestion', { gameId: activeGame.gameId, adminPin: pin }, (res) => {
+      if (res?.error) alert(res.error);
+    });
+  }
+
+  function addTime() {
+    if (!activeGame) return;
+    socket.emit('admin:addTime', { gameId: activeGame.gameId, adminPin: pin }, (res) => {
       if (res?.error) alert(res.error);
     });
   }
@@ -119,13 +144,11 @@ export default function AdminView() {
         <div style={{ padding: 24, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, maxWidth: 1100, margin: '0 auto', width: '100%' }}>
           <GameControlCard
             activeGame={activeGame}
-            contestantName={contestantName}
-            setContestantName={setContestantName}
-            chaserName={chaserName}
-            setChaserName={setChaserName}
             createGame={createGame}
             createError={createError}
             startNext={startNext}
+            addTime={addTime}
+            currentQuestion={currentQuestion}
             liveResults={liveResults}
             liveDistance={liveDistance}
             liveOutcome={liveOutcome}
@@ -141,13 +164,11 @@ export default function AdminView() {
 
 function GameControlCard({
   activeGame,
-  contestantName,
-  setContestantName,
-  chaserName,
-  setChaserName,
   createGame,
   createError,
   startNext,
+  addTime,
+  currentQuestion,
   liveResults,
   liveDistance,
   liveOutcome,
@@ -159,19 +180,20 @@ function GameControlCard({
         GAME CONTROL
       </div>
 
+      {finished && (
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 18, fontWeight: 700 }}>Game ended — start a new game</div>
+          <div style={{ marginTop: 6, fontWeight: 700, color: liveOutcome.outcome === 'escaped' ? 'var(--pf-gold-400)' : 'var(--pf-red-600)' }}>
+            {liveOutcome.contestantName} {liveOutcome.outcome === 'escaped' ? 'ESCAPED' : 'was CAUGHT'} — {liveOutcome.score} pts
+          </div>
+        </div>
+      )}
+
       {!activeGame || finished ? (
         <form onSubmit={createGame} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <input
-            className="pf-input"
-            placeholder="Contestant name"
-            value={contestantName}
-            onChange={(e) => setContestantName(e.target.value)}
-            required
-          />
-          <input className="pf-input" placeholder="Chaser name" value={chaserName} onChange={(e) => setChaserName(e.target.value)} />
           {createError && <div style={{ color: 'var(--pf-red-600)', fontSize: 13 }}>{createError}</div>}
           <button className="pf-btn pf-btn-primary" type="submit">
-            {finished ? 'Start next chase' : 'Create game'}
+            {finished ? 'Start new game' : 'Start game'}
           </button>
         </form>
       ) : (
@@ -187,12 +209,28 @@ function GameControlCard({
               Contestant: <strong>{activeGame.state.contestantName}</strong>
             </span>
             <span>
+              Chaser: <strong>{activeGame.state.chaserName}</strong>
+            </span>
+            <span>
               Gap: <strong style={{ color: 'var(--pf-gold-400)' }}>{liveDistance}</strong>
             </span>
           </div>
-          <button className="pf-btn pf-btn-primary" onClick={startNext} disabled={liveResults.length >= 6}>
-            {liveResults.length === 0 ? 'Start question 1' : `Start question ${liveResults.length + 1}`}
-          </button>
+
+          {currentQuestion ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <QuestionCard question={currentQuestion} selectedAnswer={null} onSelect={() => {}} locked />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+                <Timer serverStartTs={currentQuestion.serverStartTs} timeLimitMs={currentQuestion.timeLimitMs} locked={false} />
+                <button className="pf-btn pf-btn-ghost" onClick={addTime}>
+                  Add 5 seconds
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button className="pf-btn pf-btn-primary" onClick={startNext} disabled={liveResults.length >= 6}>
+              {liveResults.length === 0 ? 'Start question 1' : `Start question ${liveResults.length + 1}`}
+            </button>
+          )}
 
           {liveResults.length > 0 && (
             <table style={{ width: '100%', marginTop: 18, borderCollapse: 'collapse', fontSize: 13 }}>
@@ -219,12 +257,6 @@ function GameControlCard({
                 ))}
               </tbody>
             </table>
-          )}
-
-          {finished && (
-            <div style={{ marginTop: 16, fontWeight: 700, color: liveOutcome.outcome === 'escaped' ? 'var(--pf-gold-400)' : 'var(--pf-red-600)' }}>
-              {liveOutcome.contestantName} {liveOutcome.outcome === 'escaped' ? 'ESCAPED' : 'was CAUGHT'} — {liveOutcome.score} pts
-            </div>
           )}
         </>
       )}

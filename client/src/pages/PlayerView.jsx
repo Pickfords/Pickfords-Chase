@@ -17,6 +17,7 @@ export default function PlayerView({ role }) {
   const copy = ROLE_COPY[role];
 
   const [code, setCode] = useState(codeFromUrl || '');
+  const [name, setName] = useState(role === 'chaser' ? 'The Chaser' : '');
   const [joined, setJoined] = useState(false);
   const [joinError, setJoinError] = useState('');
   const [gameState, setGameState] = useState(null);
@@ -56,22 +57,32 @@ export default function PlayerView({ role }) {
     function onGameOver(summary) {
       setGameOver(summary);
     }
+    function onPlayersUpdated(payload) {
+      setGameState((prev) => (prev ? { ...prev, ...payload } : prev));
+    }
+    function onTimeExtended({ timeLimitMs }) {
+      setQuestion((prev) => (prev ? { ...prev, timeLimitMs } : prev));
+    }
     socket.on('question', onQuestion);
     socket.on('lockedIn', onLockedIn);
     socket.on('reveal', onReveal);
     socket.on('gameOver', onGameOver);
+    socket.on('playersUpdated', onPlayersUpdated);
+    socket.on('timeExtended', onTimeExtended);
     return () => {
       socket.off('question', onQuestion);
       socket.off('lockedIn', onLockedIn);
       socket.off('reveal', onReveal);
       socket.off('gameOver', onGameOver);
+      socket.off('playersUpdated', onPlayersUpdated);
+      socket.off('timeExtended', onTimeExtended);
     };
   }, [role]);
 
   function join(e) {
     e?.preventDefault();
     setJoinError('');
-    socket.emit('joinGame', { gameId: code.trim(), role }, (res) => {
+    socket.emit('joinGame', { gameId: code.trim(), role, name: name.trim() }, (res) => {
       if (res?.error) {
         setJoinError(res.error);
         return;
@@ -97,6 +108,13 @@ export default function PlayerView({ role }) {
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 32, margin: 0 }}>Enter the game code</h1>
           <form onSubmit={join} className="pf-card" style={{ width: 280, display: 'flex', flexDirection: 'column', gap: 14 }}>
             <input
+              className="pf-input"
+              placeholder={role === 'contestant' ? 'Your name' : 'Chaser name'}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              autoFocus
+            />
+            <input
               className="pf-input pf-mono"
               style={{ fontSize: 28, textAlign: 'center', letterSpacing: '0.2em' }}
               maxLength={4}
@@ -104,10 +122,9 @@ export default function PlayerView({ role }) {
               placeholder="0000"
               value={code}
               onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-              autoFocus
             />
             {joinError && <div style={{ color: 'var(--pf-red-600)', fontSize: 14 }}>{joinError}</div>}
-            <button className="pf-btn pf-btn-primary" type="submit" disabled={code.trim().length !== 4}>
+            <button className="pf-btn pf-btn-primary" type="submit" disabled={code.trim().length !== 4 || !name.trim()}>
               Join game
             </button>
           </form>
