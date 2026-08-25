@@ -26,7 +26,11 @@ export default function PlayerView({ role }) {
   const displayTitle = role === 'chaser' && gameState?.chaserName ? `THE CHASER — ${gameState.chaserName.toUpperCase()}` : copy.title;
   const waitText = role === 'contestant' ? `Waiting for ${chaserName}'s answer…` : 'Waiting for the contestant…';
 
+  // `question` holds stage-1 (text/category/badge only); `answers` holds
+  // stage-2 (options + timer), merged into one object for QuestionCard once
+  // both have arrived - see activeQuestion below.
   const [question, setQuestion] = useState(null);
+  const [answers, setAnswers] = useState(null);
   const [selected, setSelected] = useState(null);
   const [myLocked, setMyLocked] = useState(false);
   const [otherLocked, setOtherLocked] = useState(false);
@@ -37,11 +41,15 @@ export default function PlayerView({ role }) {
   useEffect(() => {
     function onQuestion(q) {
       setQuestion(q);
+      setAnswers(null);
       setSelected(null);
       setMyLocked(false);
       setOtherLocked(false);
       setTimedOut(false);
       setReveal(null);
+    }
+    function onAnswersReleased(a) {
+      setAnswers(a);
     }
     function onLockedIn({ role: whoLocked, timedOut: to }) {
       if (whoLocked === role) {
@@ -61,9 +69,10 @@ export default function PlayerView({ role }) {
       setGameState((prev) => (prev ? { ...prev, ...payload } : prev));
     }
     function onTimeExtended({ timeLimitMs }) {
-      setQuestion((prev) => (prev ? { ...prev, timeLimitMs } : prev));
+      setAnswers((prev) => (prev ? { ...prev, timeLimitMs } : prev));
     }
     socket.on('question', onQuestion);
+    socket.on('answersReleased', onAnswersReleased);
     socket.on('lockedIn', onLockedIn);
     socket.on('reveal', onReveal);
     socket.on('gameOver', onGameOver);
@@ -71,6 +80,7 @@ export default function PlayerView({ role }) {
     socket.on('timeExtended', onTimeExtended);
     return () => {
       socket.off('question', onQuestion);
+      socket.off('answersReleased', onAnswersReleased);
       socket.off('lockedIn', onLockedIn);
       socket.off('reveal', onReveal);
       socket.off('gameOver', onGameOver);
@@ -94,7 +104,7 @@ export default function PlayerView({ role }) {
   }
 
   function lockIn() {
-    if (!selected || myLocked) return;
+    if (!selected || myLocked || !answers) return;
     socket.emit('lockAnswer', { gameId: code.trim(), role, answer: selected });
   }
 
@@ -144,7 +154,7 @@ export default function PlayerView({ role }) {
             finalBadge={gameOver.finalBadge}
             score={gameOver.score}
             correctCount={gameOver.correctCount}
-            totalSlots={gameOver.questionsAnswered >= 6 ? 6 : gameOver.questionsAnswered}
+            totalSlots={Math.min(gameOver.questionsAnswered, gameState?.totalSlots || 10)}
           />
         </div>
       </div>
@@ -166,6 +176,7 @@ export default function PlayerView({ role }) {
     );
   }
 
+  const activeQuestion = question ? { ...question, ...(answers || {}) } : null;
   const currentSlot = reveal ? reveal.slot : question?.slot || 0;
   const distance = reveal ? reveal.distanceAfter : gameState?.distance ?? 2;
 
@@ -174,17 +185,27 @@ export default function PlayerView({ role }) {
       <TopBar />
       <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '260px 1fr', gap: 24, padding: 24 }}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Ladder currentSlot={currentSlot} distance={distance} caught={gameOver?.outcome === 'caught'} />
+          <Ladder currentSlot={currentSlot} distance={distance} badges={gameState?.badges} caught={gameOver?.outcome === 'caught'} />
         </div>
 
         <div className="pf-center-stage" style={{ padding: 0 }}>
           {reveal ? (
-            <RevealPanel role={role} reveal={reveal} />
-          ) : (
             <>
-              <QuestionCard question={question} selectedAnswer={selected} onSelect={setSelected} locked={myLocked} />
+              <QuestionCard
+                question={activeQuestion}
+                selectedAnswer={role === 'contestant' ? reveal.contestantAnswer : reveal.chaserAnswer}
+                onSelect={() => {}}
+                locked
+                revealedCorrectAnswer={reveal.correctAnswer}
+                outlineAnswer={role === 'chaser' ? reveal.chaserAnswer : undefined}
+              />
+              <RevealSummary role={role} reveal={reveal} />
+            </>
+          ) : answers ? (
+            <>
+              <QuestionCard question={activeQuestion} selectedAnswer={selected} onSelect={setSelected} locked={myLocked} />
               <div style={{ display: 'flex', alignItems: 'center', gap: 28, marginTop: 8 }}>
-                <Timer serverStartTs={question.serverStartTs} timeLimitMs={question.timeLimitMs} locked={myLocked} timedOut={timedOut} />
+                <Timer serverStartTs={answers.serverStartTs} timeLimitMs={answers.timeLimitMs} locked={myLocked} timedOut={timedOut} />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start' }}>
                   <button className="pf-btn pf-btn-primary" disabled={!selected || myLocked} onClick={lockIn}>
                     Lock in
@@ -195,6 +216,11 @@ export default function PlayerView({ role }) {
                 </div>
               </div>
             </>
+          ) : (
+            <>
+              <QuestionCard question={activeQuestion} selectedAnswer={null} onSelect={() => {}} locked />
+              <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 14, marginTop: 16 }}>Waiting for the host to reveal the answers…</p>
+            </>
           )}
         </div>
       </div>
@@ -202,14 +228,11 @@ export default function PlayerView({ role }) {
   );
 }
 
-function RevealPanel({ role, reveal }) {
+function RevealSummary({ role, reveal }) {
   const meCorrect = role === 'contestant' ? reveal.contestantCorrect : reveal.chaserCorrect;
   const myTime = role === 'contestant' ? reveal.contestantResponseMs : reveal.chaserResponseMs;
   return (
-    <div className="pf-card" style={{ maxWidth: 560, textAlign: 'left' }}>
-      <div className="pf-eyebrow" style={{ marginBottom: 10 }}>
-        Q{reveal.slot} RESULT
-      </div>
+    <div className="pf-card" style={{ maxWidth: 640, textAlign: 'left', marginTop: 16 }}>
       <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 4, color: meCorrect ? 'var(--pf-gold-400)' : 'var(--pf-red-600)' }}>
         {meCorrect ? 'Correct' : 'Incorrect'} · {(myTime / 1000).toFixed(2)}s
       </div>

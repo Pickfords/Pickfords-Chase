@@ -21,14 +21,17 @@
 
 .pf-qcard-options {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
 .pf-option {
   display: flex;
-  align-items: center;
-  gap: 14px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1 1 200px;
   text-align: left;
   background: rgba(255, 255, 255, 0.05);
   border: 1.5px solid rgba(255, 255, 255, 0.12);
@@ -37,7 +40,7 @@
   color: var(--pf-white);
   font-size: 17px;
   cursor: pointer;
-  transition: border-color 120ms ease, background 120ms ease, transform 120ms ease;
+  transition: border-color 120ms ease, background 120ms ease, transform 120ms ease, box-shadow 120ms ease;
 }
 .pf-option:hover:not(:disabled) {
   border-color: var(--pf-blue-400);
@@ -52,6 +55,19 @@
   background: rgba(44, 111, 191, 0.22);
 }
 
+/* Obvious fill change the instant a player locks their answer in, before
+   anything is revealed - much bolder than the plain "selected" tint above. */
+.pf-option.locked-in {
+  border-color: var(--pf-gold-400);
+  background: var(--pf-gold-400);
+  color: var(--pf-ink);
+  box-shadow: 0 0 0 3px rgba(240, 184, 75, 0.3);
+}
+.pf-option.locked-in .pf-option-key {
+  border-color: var(--pf-ink);
+  color: var(--pf-ink);
+}
+
 .pf-option.reveal-correct {
   border-color: var(--pf-gold-400);
   background: rgba(240, 184, 75, 0.16);
@@ -59,6 +75,14 @@
 .pf-option.reveal-wrong {
   border-color: var(--pf-red-600);
   background: rgba(211, 16, 39, 0.16);
+}
+
+/* The Chaser's own pick, outlined in red once revealed - independent of the
+   correct/incorrect fill above, which still applies on top of this. */
+.pf-option.outline-red {
+  border-color: var(--pf-red-600);
+  border-width: 3px;
+  box-shadow: 0 0 0 3px rgba(211, 16, 39, 0.35);
 }
 
 .pf-option-key {

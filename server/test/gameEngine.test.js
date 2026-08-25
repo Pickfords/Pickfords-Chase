@@ -24,21 +24,25 @@ function makeEngine() {
 {
   const engine = makeEngine();
   engine.createGame({ gameId: 'g1', contestantName: 'Jane Doe' });
-  for (let i = 0; i < 6; i++) {
-    engine.startNextQuestion('g1');
+  for (let i = 0; i < 10; i++) {
+    engine.releaseQuestion('g1');
+    engine.releaseAnswers('g1');
     const game = engine.getGame('g1');
     const q = game.questions[game.currentSlotIndex];
     engine.lockAnswer('g1', 'contestant', q.correctAnswer);
     engine.lockAnswer('g1', 'chaser', q.correctAnswer === 'A' ? 'B' : 'A');
+    engine.revealPlacement('g1');
   }
   const g = engine.getGame('g1');
   assert.strictEqual(g.outcome, 'escaped');
   assert.strictEqual(g.finalBadge, '#MobilityLegend');
-  assert.strictEqual(g.contestantScore, 360); // 6 x 60 (instant + correct)
+  assert.strictEqual(g.contestantScore, 600); // 10 x 60 (instant + correct)
   console.log('scenario A (full escape): PASS');
 }
 
 // --- contestant always wrong, chaser always right -> caught after 2 questions (head start = 2) ---
+// Also verifies caught/escaped is NOT determined until revealPlacement is called, even though
+// both players already know their own correct/incorrect result via 'reveal'.
 {
   const engine = makeEngine();
   engine.createGame({ gameId: 'g2', contestantName: 'John Smith' });
@@ -46,12 +50,19 @@ function makeEngine() {
   while (true) {
     const game = engine.getGame('g2');
     if (game.status === 'caught' || game.status === 'escaped') break;
-    engine.startNextQuestion('g2');
+    engine.releaseQuestion('g2');
+    engine.releaseAnswers('g2');
     rounds++;
     const g = engine.getGame('g2');
     const q = g.questions[g.currentSlotIndex];
     engine.lockAnswer('g2', 'contestant', q.correctAnswer === 'A' ? 'B' : 'A');
     engine.lockAnswer('g2', 'chaser', q.correctAnswer);
+
+    const afterReveal = engine.getGame('g2');
+    assert.strictEqual(afterReveal.status, 'revealed', 'placement must stay pending until revealPlacement is called');
+    assert.strictEqual(afterReveal.outcome, null, 'outcome must not be set before revealPlacement');
+
+    engine.revealPlacement('g2');
   }
   const g = engine.getGame('g2');
   assert.strictEqual(g.outcome, 'caught');
@@ -64,7 +75,8 @@ function makeEngine() {
 {
   const engine = makeEngine();
   engine.createGame({ gameId: 'g3', contestantName: 'Timeout Tim' });
-  engine.startNextQuestion('g3');
+  engine.releaseQuestion('g3');
+  engine.releaseAnswers('g3');
   engine._forceTimeouts('g3');
   const g = engine.getGame('g3');
   const r = g.results[0];

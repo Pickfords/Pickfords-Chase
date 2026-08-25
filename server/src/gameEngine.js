@@ -8,7 +8,7 @@
 // ============================================================================
 // DESIGN ASSUMPTION - the "catch" mechanic
 // ============================================================================
-// The brief specifies the 6-question difficulty ladder, the badge names,
+// The brief specifies the 10-question difficulty ladder, the badge names,
 // and "if the Chaser catches you, you're out" - but not the exact
 // distance/catch-up rule used in the real show. We use a simple, documented
 // rule so it's easy to tune in one place (HEAD_START below) without asking Phil
@@ -21,7 +21,7 @@
 //   - If distance drops to 0 or below, the Chaser has caught the
 //     contestant: game ends immediately (status = 'caught'). The
 //     contestant keeps the badge for the last question they survived.
-//   - If the contestant completes all 6 questions with distance still
+//   - If the contestant completes all 10 questions with distance still
 //     positive, they "escape" and win the top badge (#MobilityLegend),
 //     regardless of their raw score (score decides leaderboard rank, not
 //     survival).
@@ -41,13 +41,20 @@ const ADD_TIME_MS = 5_000;
 // read the explanation instead of it being instantly replaced.
 const FINISH_DELAY_MS = 4_000;
 
+// Tiers 7-9 are PLACEHOLDER names pending real copy from the client (only
+// the original 6 plus the #MobilityLegend top tier were ever confirmed) -
+// swap the strings below once they send the finalized 10-tier list.
 const BADGES = [
   '#MobilityMover', // survived Q1
   '#GlobalNavigator', // survived Q2
   '#MobilityPro', // survived Q3
   '#GlobalMobilityExpert', // survived Q4
   '#MobilityMastermind', // survived Q5
-  '#MobilityLegend', // survived Q6 - full escape
+  '#MobilityChampion', // survived Q6 - PLACEHOLDER
+  '#MobilityElite', // survived Q7 - PLACEHOLDER
+  '#MobilityIcon', // survived Q8 - PLACEHOLDER
+  '#MobilityVanguard', // survived Q9 - PLACEHOLDER
+  '#MobilityLegend', // survived Q10 - full escape
 ];
 
 function scoreForAnswer(isCorrect, responseTimeMs) {
@@ -64,6 +71,9 @@ class GameEngine {
     this.usageCounts = usageCounts;
     this.onGameFinished = onGameFinished; // callback(gameSummary) for DB persistence
     this.games = new Map();
+    // The gameId the public/iPad display screens (role: 'display') follow
+    // with no join code - always "whichever game was created most recently".
+    this.activeGameId = null;
   }
 
   createGame({ gameId, contestantName = 'Contestant', chaserName = 'The Chaser', excludeIds }) {
@@ -74,7 +84,7 @@ class GameEngine {
       id: gameId,
       contestantName,
       chaserName,
-      status: 'lobby', // lobby | question_active | revealed | caught | escaped
+      status: 'lobby', // lobby | question_shown | question_active | revealed | caught | escaped
       questions, // full objects incl. correctAnswer - server only, never sent whole
       currentSlotIndex: -1, // 0-based, -1 = not started
       distance: HEAD_START,
@@ -84,12 +94,17 @@ class GameEngine {
       questionStartTs: null,
       timeLimitMs: QUESTION_TIMEOUT_MS, // grows if the admin adds time mid-question
       timeoutHandle: null,
+      // True once the admin has clicked "Reveal placement" for the current
+      // question - gates both the public Chaser-screen funnel animation and
+      // whether a new question can be released.
+      placementRevealed: true,
       createdAt: Date.now(),
       finishedAt: null,
       finalBadge: null,
       outcome: null,
     };
     this.games.set(gameId, game);
+    this.activeGameId = gameId;
     return this.publicState(game);
   }
 
@@ -117,21 +132,29 @@ class GameEngine {
 
   // ---- flow control -------------------------------------------------
 
-  startNextQuestion(gameId) {
+  // Stage 1 of 3: shows the category/badge/question text only, on every
+  // screen (private tablets + public displays) - no options, no timer yet.
+  // Requires the previous question's placement to have been revealed first,
+  // so the admin can't skip past the funnel-diagram suspense.
+  releaseQuestion(gameId) {
     const game = this.getGame(gameId);
     if (game.status === 'caught' || game.status === 'escaped') {
       throw new Error('Game already finished');
     }
-    if (game.status === 'question_active') {
+    if (game.status === 'question_shown' || game.status === 'question_active') {
       throw new Error('A question is already in progress');
+    }
+    if (!game.placementRevealed) {
+      throw new Error('Reveal the previous placement before releasing the next question');
     }
     game.currentSlotIndex += 1;
     if (game.currentSlotIndex >= game.questions.length) {
       throw new Error('No more questions - game should already be finished');
     }
     game.locks = { contestant: null, chaser: null };
-    game.status = 'question_active';
-    game.questionStartTs = Date.now();
+    game.status = 'question_shown';
+    game.placementRevealed = false;
+    game.questionStartTs = null;
     game.timeLimitMs = QUESTION_TIMEOUT_MS;
 
     const q = game.questions[game.currentSlotIndex];
@@ -141,19 +164,40 @@ class GameEngine {
       category: q.category,
       difficulty: q.difficulty,
       question: q.question,
-      options: q.options,
       badgeLabel: BADGES[game.currentSlotIndex],
+    };
+
+    this.io.to(this._room(gameId)).emit('question', publicQuestion);
+    return publicQuestion;
+  }
+
+  // Stage 2 of 3: reveals the multiple-choice options and starts the 10s
+  // timer. Split out from releaseQuestion so the host can read the question
+  // aloud before the clock (and the pressure) starts.
+  releaseAnswers(gameId) {
+    const game = this.getGame(gameId);
+    if (game.status !== 'question_shown') {
+      throw new Error('No released question waiting for its answers');
+    }
+    game.status = 'question_active';
+    game.questionStartTs = Date.now();
+
+    const q = game.questions[game.currentSlotIndex];
+    const publicAnswers = {
+      slot: game.currentSlotIndex + 1,
+      totalSlots: game.questions.length,
+      options: q.options,
       timeLimitMs: game.timeLimitMs,
       serverStartTs: game.questionStartTs,
     };
 
-    this.io.to(this._room(gameId)).emit('question', publicQuestion);
+    this.io.to(this._room(gameId)).emit('answersReleased', publicAnswers);
 
     game.timeoutHandle = setTimeout(() => {
       this._forceTimeouts(gameId);
     }, game.timeLimitMs + 250); // small grace for network jitter
 
-    return publicQuestion;
+    return publicAnswers;
   }
 
   // Admin can extend a live question by ADD_TIME_MS (e.g. for a contestant
@@ -231,12 +275,29 @@ class GameEngine {
     };
     game.results.push(resultEntry);
     game.status = 'revealed';
+    game.placementRevealed = false;
 
+    // Correct/incorrect + explanation reveal privately on the Contestant and
+    // Chaser tablets the instant both lock in - unchanged from before. The
+    // caught/escaped determination and the public funnel-screen animation
+    // are deliberately held back until the admin clicks "Reveal placement"
+    // (see revealPlacement below), so the show-style suspense survives on
+    // the big screen even though the players already know their own result.
     this.io.to(this._room(gameId)).emit('reveal', {
       ...resultEntry,
       contestantScoreSoFar: game.contestantScore,
     });
+  }
 
+  // Stage 3 of 3: admin-triggered. Determines caught/escaped from the
+  // distance already computed in _reveal, and broadcasts the funnel
+  // position update that the public Chaser display animates on.
+  revealPlacement(gameId) {
+    const game = this.getGame(gameId);
+    if (game.status !== 'revealed') {
+      throw new Error('No revealed answer waiting for a placement update');
+    }
+    const slotIndex = game.currentSlotIndex;
     const caught = game.distance <= 0;
     const lastQuestion = slotIndex === game.questions.length - 1;
 
@@ -244,14 +305,25 @@ class GameEngine {
       game.status = 'caught';
       game.finalBadge = slotIndex > 0 ? BADGES[slotIndex - 1] : null; // null = caught on Q1, no badge earned
       game.outcome = 'caught';
-      setTimeout(() => this._finish(gameId), FINISH_DELAY_MS);
     } else if (lastQuestion) {
       game.status = 'escaped';
       game.finalBadge = BADGES[slotIndex]; // #MobilityLegend
       game.outcome = 'escaped';
+    }
+    game.placementRevealed = true;
+
+    this.io.to(this._room(gameId)).emit('placementRevealed', {
+      slot: slotIndex + 1,
+      distance: game.distance,
+      badgeLabel: BADGES[slotIndex],
+      caught,
+      escaped: !caught && lastQuestion,
+    });
+
+    if (caught || lastQuestion) {
       setTimeout(() => this._finish(gameId), FINISH_DELAY_MS);
     }
-    // otherwise: wait for admin (or auto-advance) to call startNextQuestion
+    // otherwise: wait for admin to call releaseQuestion for the next slot
   }
 
   _finish(gameId) {
@@ -298,6 +370,10 @@ class GameEngine {
       results: game.results, // already-revealed rounds only, safe
       finalBadge: game.finalBadge,
       outcome: game.outcome,
+      placementRevealed: game.placementRevealed,
+      // Sourced from here (not re-hardcoded client-side) so the funnel
+      // display and the private per-player ladder can never drift apart.
+      badges: BADGES,
     };
   }
 }

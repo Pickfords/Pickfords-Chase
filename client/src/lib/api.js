@@ -14,6 +14,7 @@ async function request(path, { adminPin, ...opts } = {}) {
 export const api = {
   health: () => request('/api/health'),
   getLeaderboard: (limit = 10) => request(`/api/leaderboard?limit=${limit}`),
+  getActiveGame: () => request('/api/active-game'),
   getDrawPool: (adminPin) => request('/api/draw-pool', { adminPin }),
   recordDrawSelection: (adminPin, body) =>
     request('/api/draw-selection', { method: 'POST', body: JSON.stringify(body), adminPin }),

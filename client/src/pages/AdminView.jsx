@@ -3,6 +3,7 @@ import { socket } from '../lib/socket';
 import { api } from '../lib/api';
 import Timer from '../components/Timer';
 import QuestionCard from '../components/QuestionCard';
+import LeaderboardTable from '../components/LeaderboardTable';
 
 export default function AdminView() {
   const [pin, setPin] = useState(localStorage.getItem('pf_admin_pin') || '');
@@ -37,39 +38,59 @@ export default function AdminView() {
   const [liveResults, setLiveResults] = useState([]);
   const [liveDistance, setLiveDistance] = useState(2);
   const [liveOutcome, setLiveOutcome] = useState(null);
-  const [currentQuestion, setCurrentQuestion] = useState(null); // set while a question is live, so this button can turn into a timer
+  // Three-stage release: `question` (text only) -> `answers` (options + timer) ->
+  // `awaitingPlacement` (both locked in, waiting for the admin's 3rd click before
+  // the public Chaser screen animates the funnel position).
+  const [question, setQuestion] = useState(null);
+  const [answers, setAnswers] = useState(null);
+  const [awaitingPlacement, setAwaitingPlacement] = useState(false);
 
   const [leaderboard, setLeaderboard] = useState([]);
 
   useEffect(() => {
     refreshLeaderboard();
     function onQuestion(q) {
-      setCurrentQuestion(q);
+      setQuestion(q);
+      setAnswers(null);
+      setAwaitingPlacement(false);
+    }
+    function onAnswersReleased(a) {
+      setAnswers(a);
     }
     function onReveal(r) {
-      setCurrentQuestion(null);
+      setQuestion(null);
+      setAnswers(null);
+      setAwaitingPlacement(true);
       setLiveResults((prev) => [...prev, r]);
       setLiveDistance(r.distanceAfter);
     }
+    function onPlacementRevealed() {
+      setAwaitingPlacement(false);
+    }
     function onGameOver(summary) {
       setLiveOutcome(summary);
+      setAwaitingPlacement(false);
     }
     function onPlayersUpdated(payload) {
       setActiveGame((prev) => (prev ? { ...prev, state: { ...prev.state, ...payload } } : prev));
     }
     function onTimeExtended({ timeLimitMs }) {
-      setCurrentQuestion((prev) => (prev ? { ...prev, timeLimitMs } : prev));
+      setAnswers((prev) => (prev ? { ...prev, timeLimitMs } : prev));
     }
     socket.on('leaderboardUpdate', setLeaderboard);
     socket.on('question', onQuestion);
+    socket.on('answersReleased', onAnswersReleased);
     socket.on('reveal', onReveal);
+    socket.on('placementRevealed', onPlacementRevealed);
     socket.on('gameOver', onGameOver);
     socket.on('playersUpdated', onPlayersUpdated);
     socket.on('timeExtended', onTimeExtended);
     return () => {
       socket.off('leaderboardUpdate', setLeaderboard);
       socket.off('question', onQuestion);
+      socket.off('answersReleased', onAnswersReleased);
       socket.off('reveal', onReveal);
+      socket.off('placementRevealed', onPlacementRevealed);
       socket.off('gameOver', onGameOver);
       socket.off('playersUpdated', onPlayersUpdated);
       socket.off('timeExtended', onTimeExtended);
@@ -95,14 +116,30 @@ export default function AdminView() {
       setLiveResults([]);
       setLiveDistance(2);
       setLiveOutcome(null);
-      setCurrentQuestion(null);
+      setQuestion(null);
+      setAnswers(null);
+      setAwaitingPlacement(false);
       socket.emit('joinGame', { gameId: res.gameId, role: 'admin' }, () => {});
     });
   }
 
-  function startNext() {
+  function releaseQuestion() {
     if (!activeGame) return;
-    socket.emit('admin:startNextQuestion', { gameId: activeGame.gameId, adminPin: pin }, (res) => {
+    socket.emit('admin:releaseQuestion', { gameId: activeGame.gameId, adminPin: pin }, (res) => {
+      if (res?.error) alert(res.error);
+    });
+  }
+
+  function releaseAnswers() {
+    if (!activeGame) return;
+    socket.emit('admin:releaseAnswers', { gameId: activeGame.gameId, adminPin: pin }, (res) => {
+      if (res?.error) alert(res.error);
+    });
+  }
+
+  function revealPlacement() {
+    if (!activeGame) return;
+    socket.emit('admin:revealPlacement', { gameId: activeGame.gameId, adminPin: pin }, (res) => {
       if (res?.error) alert(res.error);
     });
   }
@@ -146,9 +183,13 @@ export default function AdminView() {
             activeGame={activeGame}
             createGame={createGame}
             createError={createError}
-            startNext={startNext}
+            releaseQuestion={releaseQuestion}
+            releaseAnswers={releaseAnswers}
+            revealPlacement={revealPlacement}
             addTime={addTime}
-            currentQuestion={currentQuestion}
+            question={question}
+            answers={answers}
+            awaitingPlacement={awaitingPlacement}
             liveResults={liveResults}
             liveDistance={liveDistance}
             liveOutcome={liveOutcome}
@@ -166,9 +207,13 @@ function GameControlCard({
   activeGame,
   createGame,
   createError,
-  startNext,
+  releaseQuestion,
+  releaseAnswers,
+  revealPlacement,
   addTime,
-  currentQuestion,
+  question,
+  answers,
+  awaitingPlacement,
   liveResults,
   liveDistance,
   liveOutcome,
@@ -216,19 +261,30 @@ function GameControlCard({
             </span>
           </div>
 
-          {currentQuestion ? (
+          {answers ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <QuestionCard question={currentQuestion} selectedAnswer={null} onSelect={() => {}} locked />
+              <QuestionCard question={{ ...question, ...answers }} selectedAnswer={null} onSelect={() => {}} locked />
               <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-                <Timer serverStartTs={currentQuestion.serverStartTs} timeLimitMs={currentQuestion.timeLimitMs} locked={false} />
+                <Timer serverStartTs={answers.serverStartTs} timeLimitMs={answers.timeLimitMs} locked={false} />
                 <button className="pf-btn pf-btn-ghost" onClick={addTime}>
                   Add 5 seconds
                 </button>
               </div>
             </div>
+          ) : question ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <QuestionCard question={question} selectedAnswer={null} onSelect={() => {}} locked />
+              <button className="pf-btn pf-btn-primary" onClick={releaseAnswers}>
+                Release answers
+              </button>
+            </div>
+          ) : awaitingPlacement ? (
+            <button className="pf-btn pf-btn-primary" onClick={revealPlacement}>
+              Reveal placement
+            </button>
           ) : (
-            <button className="pf-btn pf-btn-primary" onClick={startNext} disabled={liveResults.length >= 6}>
-              {liveResults.length === 0 ? 'Start question 1' : `Start question ${liveResults.length + 1}`}
+            <button className="pf-btn pf-btn-primary" onClick={releaseQuestion} disabled={liveResults.length >= 10}>
+              {liveResults.length === 0 ? 'Release question 1' : `Release question ${liveResults.length + 1}`}
             </button>
           )}
 
@@ -278,43 +334,7 @@ function LeaderboardCard({ leaderboard, onRefresh, pin }) {
           Refresh
         </button>
       </div>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
-        <thead>
-          <tr style={{ textAlign: 'left', color: 'rgba(255,255,255,0.5)', fontSize: 12 }}>
-            <th>#</th>
-            <th>Name</th>
-            <th>Badge</th>
-            <th>Score</th>
-            <th>Time</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {leaderboard.map((row, i) => (
-            <tr key={row.id} style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-              <td style={{ padding: '8px 0' }}>{i + 1}</td>
-              <td>{row.contestant_name}</td>
-              <td style={{ fontSize: 12, color: 'var(--pf-gold-400)' }}>{row.final_badge || '—'}</td>
-              <td>{Number(row.score).toFixed(0)}</td>
-              <td className="pf-mono" style={{ fontSize: 12 }}>
-                {(row.cumulative_response_ms / 1000).toFixed(1)}s
-              </td>
-              <td>
-                <button className="pf-btn pf-btn-ghost" style={{ padding: '4px 8px', fontSize: 11 }} onClick={() => handleVoid(row.id)}>
-                  Void
-                </button>
-              </td>
-            </tr>
-          ))}
-          {leaderboard.length === 0 && (
-            <tr>
-              <td colSpan={6} style={{ padding: '14px 0', color: 'rgba(255,255,255,0.4)' }}>
-                No completed chases yet.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <LeaderboardTable leaderboard={leaderboard} onVoid={handleVoid} />
     </div>
   );
 }

@@ -105,3 +105,53 @@
   font-size: 11px;
   letter-spacing: 0.14em;
 }
+
+/* ---- funnel variant: public Chaser display screen ------------------- */
+
+.pf-ladder-funnel {
+  max-width: 720px;
+  gap: 22px;
+}
+
+.pf-ladder-funnel .pf-ladder-gap-value {
+  font-size: 34px;
+}
+
+.pf-ladder-funnel .pf-ladder-track {
+  align-items: center;
+  border: none;
+  background: transparent;
+  gap: 4px;
+}
+
+.pf-ladder-funnel .pf-rung {
+  justify-content: center;
+  gap: 18px;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  border-bottom: none;
+  background: rgba(255, 255, 255, 0.04);
+}
+.pf-ladder-funnel .pf-rung.cleared {
+  background: rgba(240, 184, 75, 0.14);
+}
+
+.pf-ladder-funnel .pf-rung-label {
+  font-size: clamp(18px, 2.4vw, 30px);
+}
+
+.pf-ladder-funnel .pf-marker {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+}
+.pf-ladder-funnel .pf-marker.chaser {
+  background: var(--pf-red-600);
+  box-shadow: 0 0 20px 4px rgba(211, 16, 39, 0.55);
+  animation: chaser-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes chaser-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}

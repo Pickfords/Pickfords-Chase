@@ -1,7 +1,7 @@
 // questionEngine.js
 //
-// Selects 6 questions for one "chase" from the 60-question bank, honouring:
-//   1. The difficulty ladder: Q1=1, Q2=2, Q3=2-or-3, Q4=3, Q5=4, Q6=5
+// Selects 10 questions for one "chase" from the 60-question bank, honouring:
+//   1. The difficulty ladder: two questions per difficulty tier, 1 through 5
 //   2. No more than 2 questions from the same category in one chase
 //   3. Fair rotation across the event day - questions used less often today
 //      are preferred, so no contestant gets an easy repeat of what the
@@ -15,13 +15,21 @@
 // exists, since the maths on this question bank works out but a naive
 // greedy picker can still fail on bad luck.
 
+// 10-question ladder (client's confirmed "ultimate rule": max 10 questions,
+// 100s budget at 10s/question) - two slots per difficulty tier 1-5. Verified
+// feasible against the current 60-question bank (6 categories x 5
+// difficulties x 2 questions each) with MAX_PER_CATEGORY=2 below.
 const DIFFICULTY_LADDER = [
   { slot: 1, difficulties: [1] },
-  { slot: 2, difficulties: [2] },
-  { slot: 3, difficulties: [2, 3] }, // "Level 2/3" - either is acceptable
-  { slot: 4, difficulties: [3] },
-  { slot: 5, difficulties: [4] },
-  { slot: 6, difficulties: [5] },
+  { slot: 2, difficulties: [1] },
+  { slot: 3, difficulties: [2] },
+  { slot: 4, difficulties: [2] },
+  { slot: 5, difficulties: [3] },
+  { slot: 6, difficulties: [3] },
+  { slot: 7, difficulties: [4] },
+  { slot: 8, difficulties: [4] },
+  { slot: 9, difficulties: [5] },
+  { slot: 10, difficulties: [5] },
 ];
 
 const MAX_PER_CATEGORY = 2;
@@ -31,7 +39,7 @@ const MAX_PER_CATEGORY = 2;
  * @param {Map<string, number>} usageCounts - questionId -> times used today
  * @param {Object} [opts]
  * @param {Set<string>} [opts.excludeIds] - never pick these (e.g. flagged dynamic questions not yet reverified)
- * @returns {Array} 6 selected question objects, in slot order
+ * @returns {Array} 10 selected question objects, in slot order
  */
 function selectGameQuestions(allQuestions, usageCounts, opts = {}) {
   const excludeIds = opts.excludeIds || new Set();
@@ -79,7 +87,7 @@ function selectGameQuestions(allQuestions, usageCounts, opts = {}) {
   const result = backtrack(0, []);
   if (!result) {
     throw new Error(
-      'Could not assemble a valid 6-question chase from the available pool ' +
+      'Could not assemble a valid 10-question chase from the available pool ' +
         '(check excludeIds is not removing too many questions).'
     );
   }

@@ -24,6 +24,15 @@ export default function Home() {
             Admin / data capture
           </Link>
         </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: 280, marginTop: 22 }}>
+          <div className="pf-eyebrow">PUBLIC DISPLAYS</div>
+          <Link to="/display/chaser" className="pf-btn pf-btn-ghost" style={{ textAlign: 'center', textDecoration: 'none' }}>
+            Chaser screen (big screen)
+          </Link>
+          <Link to="/display/leaderboard" className="pf-btn pf-btn-ghost" style={{ textAlign: 'center', textDecoration: 'none' }}>
+            Leaderboard (big screen)
+          </Link>
+        </div>
       </div>
     </div>
   );

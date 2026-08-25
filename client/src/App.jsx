@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import PlayerView from './pages/PlayerView';
 import AdminView from './pages/AdminView';
+import LeaderboardDisplay from './pages/LeaderboardDisplay';
+import ChaserDisplay from './pages/ChaserDisplay';
 
 export default function App() {
   return (
@@ -13,6 +15,8 @@ export default function App() {
         <Route path="/play/chaser" element={<PlayerView role="chaser" />} />
         <Route path="/play/chaser/:code" element={<PlayerView role="chaser" />} />
         <Route path="/admin" element={<AdminView />} />
+        <Route path="/display/leaderboard" element={<LeaderboardDisplay />} />
+        <Route path="/display/chaser" element={<ChaserDisplay />} />
       </Routes>
     </BrowserRouter>
   );

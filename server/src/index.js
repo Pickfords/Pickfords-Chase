@@ -89,6 +89,20 @@ function requireAdminPin(req, res, next) {
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
+// Lets a public display screen (Leaderboard/Chaser funnel) that boots up
+// mid-event find out what's live right now, without a join code and without
+// waiting on a socket event it may have missed. See activeGameChanged above
+// for how an already-connected display screen follows a *new* game.
+app.get('/api/active-game', (req, res) => {
+  if (!engine.activeGameId) return res.json({ gameId: null });
+  try {
+    const game = engine.getGame(engine.activeGameId);
+    res.json({ gameId: engine.activeGameId, state: engine.publicState(game) });
+  } catch (err) {
+    res.json({ gameId: null });
+  }
+});
+
 app.get('/api/leaderboard', async (req, res) => {
   try {
     const rows = await db.getLeaderboard(Number(req.query.limit) || 10);
@@ -172,6 +186,10 @@ io.on('connection', (socket) => {
       // Contestant and chaser name themselves from their own join screens
       // (see joinGame below) - the admin just needs the code to hand out.
       const state = engine.createGame({ gameId });
+      // Global (not room-scoped) so a public display screen that's already
+      // connected picks up the new game immediately, with no join code and
+      // no polling - see GET /api/active-game for the "just booted up" case.
+      io.emit('activeGameChanged', { gameId, state });
       ack?.({ ok: true, gameId, state });
     } catch (err) {
       console.error(err);
@@ -180,7 +198,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('joinGame', ({ gameId, role, name }, ack) => {
-    if (!['contestant', 'chaser', 'admin'].includes(role)) {
+    if (!['contestant', 'chaser', 'admin', 'display'].includes(role)) {
       return ack?.({ error: 'Invalid role' });
     }
     try {
@@ -205,11 +223,31 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('admin:startNextQuestion', ({ gameId, adminPin }, ack) => {
+  socket.on('admin:releaseQuestion', ({ gameId, adminPin }, ack) => {
     if (ADMIN_PIN && adminPin !== ADMIN_PIN) return ack?.({ error: 'Invalid admin PIN' });
     try {
-      const q = engine.startNextQuestion(gameId);
+      const q = engine.releaseQuestion(gameId);
       ack?.({ ok: true, question: q });
+    } catch (err) {
+      ack?.({ error: err.message });
+    }
+  });
+
+  socket.on('admin:releaseAnswers', ({ gameId, adminPin }, ack) => {
+    if (ADMIN_PIN && adminPin !== ADMIN_PIN) return ack?.({ error: 'Invalid admin PIN' });
+    try {
+      const a = engine.releaseAnswers(gameId);
+      ack?.({ ok: true, answers: a });
+    } catch (err) {
+      ack?.({ error: err.message });
+    }
+  });
+
+  socket.on('admin:revealPlacement', ({ gameId, adminPin }, ack) => {
+    if (ADMIN_PIN && adminPin !== ADMIN_PIN) return ack?.({ error: 'Invalid admin PIN' });
+    try {
+      engine.revealPlacement(gameId);
+      ack?.({ ok: true });
     } catch (err) {
       ack?.({ error: err.message });
     }
