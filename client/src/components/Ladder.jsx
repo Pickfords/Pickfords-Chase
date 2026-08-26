@@ -9,32 +9,55 @@ const HEAD_START = 2; // must match server/src/gameEngine.js HEAD_START
 
 /**
  * currentSlot: how many badge tiers the CONTESTANT has actually cleared (0
- *   .. rungs.length) - this is a correct-answer count, not a question
- *   number, since a wrong answer leaves both players standing still.
- * distance: contestant's live lead over the Chaser (see gameEngine.js) -
- *   this is the number actually shown; the Chaser marker position below
- *   is a visual approximation derived from it, not an independent value.
+ *   .. rungs.length) - a correct-answer count, not a question number, since
+ *   a wrong answer leaves both players standing still.
+ * distance: contestant's live lead over the Chaser (see gameEngine.js).
  * variant: 'compact' (default, private per-player sidebar) or 'funnel'
  *   (bigger, theatrical treatment for the public Chaser display screen -
- *   red arrow marker, and only the tile the contestant currently occupies
- *   shows its badge name - every other tile's hashtag stays hidden).
+ *   only the tile the contestant currently occupies shows its badge name;
+ *   every other badge tile's hashtag stays hidden).
  *
- * Rendered top-to-bottom as START -> #MobilityMover -> ... -> #MobilityLegend,
- * matching the show's diagram: both players move DOWN the track as they
- * answer correctly, with Legend as the final (bottom-most) tile.
+ * The track, top-to-bottom: CHASER START (where the Chaser begins, HEAD_START
+ * tiles above the Contestant's own START) -> ... -> START -> #MobilityMover
+ * -> ... -> #MobilityLegend (bottom). Both players move DOWN one tile per
+ * correct answer of their own.
+ *
+ * Both markers are placed on one shared absolute tile index (0 = Chaser
+ * Start, at the top). The Contestant sits HEAD_START tiles below that at
+ * their own START; the Chaser starts at tile 0 and needs HEAD_START correct
+ * answers just to draw level with the Contestant's START line. This is the
+ * same distance = HEAD_START + contestantCorrect - chaserCorrect used by
+ * gameEngine.js - the "gap" shown above the track and the tile-distance
+ * between the two markers below are always the same number, and hitting
+ * distance <= 0 (caught) is exactly the two markers landing on the same tile.
  */
 export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught = false, badges = FALLBACK_BADGES, variant = 'compact' }) {
   const rungs = badges.length ? badges : FALLBACK_BADGES;
-  const clamp = (n) => Math.max(0, Math.min(rungs.length, n));
-  const contestantRung = clamp(currentSlot);
-  const chaserRung = clamp(currentSlot - distance + HEAD_START);
+  const totalTiles = HEAD_START + 1 + rungs.length; // Chaser-start zone + START + badge tiers
+  const clampAbs = (n) => Math.max(0, Math.min(totalTiles - 1, n));
+  const clampedSlot = Math.max(0, Math.min(rungs.length, currentSlot));
+
+  const contestantAbs = clampAbs(HEAD_START + clampedSlot);
+  const chaserAbs = clampAbs(clampedSlot - distance + HEAD_START);
+
   const funnel = variant === 'funnel';
+
+  const tiles = [
+    ...Array.from({ length: HEAD_START }, (_, i) => ({
+      key: i === 0 ? 'chaser-start' : `pre-${i}`,
+      label: i === 0 ? 'CHASER START' : '',
+      muted: true,
+      isBadge: false,
+    })),
+    { key: 'start', label: 'START', muted: true, isBadge: false },
+    ...rungs.map((label, i) => ({ key: label, label, muted: false, isBadge: true, badgeRung: i + 1 })),
+  ];
 
   return (
     <div
       className={`pf-ladder ${funnel ? 'pf-ladder-funnel' : ''}`}
       role="img"
-      aria-label={`Contestant at level ${contestantRung} of ${rungs.length}, gap to Chaser ${distance}`}
+      aria-label={`Contestant has cleared ${clampedSlot} of ${rungs.length} tiers, gap to Chaser ${distance}`}
     >
       <div className="pf-ladder-gap pf-mono">
         <span className="pf-ladder-gap-label">GAP</span>
@@ -42,27 +65,18 @@ export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught 
       </div>
 
       <div className="pf-ladder-track">
-        <div className="pf-rung pf-rung-start" style={funnel ? { width: '100%' } : undefined}>
-          <div className="pf-rung-markers">
-            {contestantRung === 0 && <span className="pf-marker contestant" title="You">Y</span>}
-            {chaserRung === 0 && (
-              <span className="pf-marker chaser" title="Chaser">
-                {funnel ? '▼' : 'C'}
-              </span>
-            )}
-          </div>
-          <div className="pf-rung-label muted">START</div>
-        </div>
-
-        {rungs.map((label, i) => {
-          const rungIndex = i + 1; // first tile below START = 1, last (bottom) = rungs.length
-          const isContestantHere = rungIndex === contestantRung && contestantRung > 0;
-          const isChaserHere = rungIndex === chaserRung && chaserRung > 0;
-          const isCleared = rungIndex <= contestantRung && !caught;
-          const widthPct = funnel ? 100 - ((i + 1) / rungs.length) * 40 : 100; // narrows toward the bottom (Legend)
-          const showLabel = !funnel || rungIndex === contestantRung;
+        {tiles.map((tile, absoluteIndex) => {
+          const isContestantHere = absoluteIndex === contestantAbs;
+          const isChaserHere = absoluteIndex === chaserAbs;
+          const isCleared = tile.isBadge && tile.badgeRung <= clampedSlot && !caught;
+          const widthPct = funnel ? 100 - (absoluteIndex / (tiles.length - 1)) * 45 : 100; // tapers top to bottom
+          const showLabel = !funnel || !tile.isBadge || isContestantHere;
           return (
-            <div key={label} className={`pf-rung ${isCleared ? 'cleared' : ''}`} style={funnel ? { width: `${widthPct}%` } : undefined}>
+            <div
+              key={tile.key}
+              className={`pf-rung ${isCleared ? 'cleared' : ''} ${tile.muted ? 'pf-rung-muted' : ''}`}
+              style={funnel ? { width: `${widthPct}%` } : undefined}
+            >
               <div className="pf-rung-markers">
                 {isChaserHere && (
                   <span className="pf-marker chaser" title="Chaser">
@@ -71,7 +85,7 @@ export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught 
                 )}
                 {isContestantHere && <span className="pf-marker contestant" title="You">Y</span>}
               </div>
-              <div className="pf-rung-label">{showLabel ? label : ''}</div>
+              <div className={`pf-rung-label ${tile.muted ? 'muted' : ''}`}>{showLabel ? tile.label : ''}</div>
             </div>
           );
         })}

@@ -60,7 +60,7 @@
 .pf-rung.cleared {
   background: rgba(240, 184, 75, 0.1);
 }
-.pf-rung-start {
+.pf-rung-muted {
   background: rgba(255, 255, 255, 0.02);
 }
 
@@ -106,48 +106,64 @@
   letter-spacing: 0.14em;
 }
 
-/* ---- funnel variant: public Chaser display screen ------------------- */
+/* ---- funnel variant: public Chaser display screen --------------------
+   One connected stack, not separate floating cards: tiles sit edge-to-edge
+   with only a thin divider line between them, narrowing top-to-bottom into
+   a funnel/pyramid silhouette, with rounded corners only at the very top
+   and bottom of the whole stack. ------------------------------------- */
 
 .pf-ladder-funnel {
-  max-width: 720px;
-  gap: 22px;
+  max-width: 1040px;
+  gap: 26px;
 }
 
 .pf-ladder-funnel .pf-ladder-gap-value {
-  font-size: 34px;
+  font-size: 38px;
 }
 
 .pf-ladder-funnel .pf-ladder-track {
   align-items: center;
-  border: none;
-  background: transparent;
-  gap: 4px;
+  gap: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .pf-ladder-funnel .pf-rung {
   justify-content: center;
-  gap: 18px;
-  padding: 16px 20px;
-  border-radius: var(--radius-md);
-  border-bottom: none;
+  gap: 20px;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.04);
 }
+.pf-ladder-funnel .pf-rung:last-child {
+  border-bottom: none;
+}
+.pf-ladder-funnel .pf-rung.pf-rung-muted {
+  background: rgba(255, 255, 255, 0.015);
+}
 .pf-ladder-funnel .pf-rung.cleared {
-  background: rgba(240, 184, 75, 0.14);
+  background: rgba(240, 184, 75, 0.16);
 }
 
 .pf-ladder-funnel .pf-rung-label {
-  font-size: clamp(18px, 2.4vw, 30px);
+  font-size: clamp(20px, 2.6vw, 34px);
+  min-height: 1.2em; /* keeps row height stable even when a hashtag is hidden */
+}
+.pf-ladder-funnel .pf-rung-label.muted {
+  font-size: 15px;
+  min-height: 0;
 }
 
 .pf-ladder-funnel .pf-marker {
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
+  width: 46px;
+  height: 46px;
+  font-size: 22px;
 }
 .pf-ladder-funnel .pf-marker.chaser {
   background: var(--pf-red-600);
-  box-shadow: 0 0 20px 4px rgba(211, 16, 39, 0.55);
+  box-shadow: 0 0 24px 5px rgba(211, 16, 39, 0.55);
   animation: chaser-pulse 1.4s ease-in-out infinite;
 }
 
