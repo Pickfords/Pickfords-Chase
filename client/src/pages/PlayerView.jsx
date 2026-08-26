@@ -154,7 +154,7 @@ export default function PlayerView({ role }) {
             finalBadge={gameOver.finalBadge}
             score={gameOver.score}
             correctCount={gameOver.correctCount}
-            totalSlots={Math.min(gameOver.questionsAnswered, gameState?.totalSlots || 10)}
+            totalSlots={gameOver.questionsAnswered}
           />
         </div>
       </div>
@@ -177,7 +177,10 @@ export default function PlayerView({ role }) {
   }
 
   const activeQuestion = question ? { ...question, ...(answers || {}) } : null;
-  const currentSlot = reveal ? reveal.slot : question?.slot || 0;
+  // Ladder position is a correct-answer count, not a question number - see
+  // Ladder.jsx. Before the first reveal, fall back to the count from the
+  // join-time snapshot (0 for a fresh game, or whatever it was on rejoin).
+  const currentSlot = reveal ? reveal.contestantCorrectCount : gameState?.contestantCorrectCount ?? 0;
   const distance = reveal ? reveal.distanceAfter : gameState?.distance ?? 2;
 
   return (

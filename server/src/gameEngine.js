@@ -8,23 +8,29 @@
 // ============================================================================
 // DESIGN ASSUMPTION - the "catch" mechanic
 // ============================================================================
-// The brief specifies the 10-question difficulty ladder, the badge names,
-// and "if the Chaser catches you, you're out" - but not the exact
-// distance/catch-up rule used in the real show. We use a simple, documented
-// rule so it's easy to tune in one place (HEAD_START below) without asking Phil
-// to re-explain the whole show mechanic:
+// This is a physical-track model, matching the client's description of the
+// show's funnel diagram: a 6-tile badge ladder (#MobilityMover down to
+// #MobilityLegend), with the Chaser starting HEAD_START(2) tiles further
+// back than the Contestant. Both only move down a tile when THEY personally
+// answer correctly - wrong answers leave you standing still.
 //
 //   distance = HEAD_START + (contestant correct answers so far)
 //                          - (chaser correct answers so far)
 //
 //   - Distance is recalculated after every question is revealed.
-//   - If distance drops to 0 or below, the Chaser has caught the
-//     contestant: game ends immediately (status = 'caught'). The
-//     contestant keeps the badge for the last question they survived.
-//   - If the contestant completes all 10 questions with distance still
-//     positive, they "escape" and win the top badge (#MobilityLegend),
-//     regardless of their raw score (score decides leaderboard rank, not
+//   - If distance drops to 0 or below, the Chaser has physically caught up
+//     to the Contestant's tile: game ends immediately (status = 'caught').
+//     The contestant keeps whichever badge tier they'd actually cleared.
+//   - If the contestant reaches BADGES.length (6) correct answers before
+//     being caught, they've cleared the whole ladder and "escape" with the
+//     top badge (#MobilityLegend), regardless of how many questions that
+//     took or their raw score (score decides leaderboard rank, not
 //     survival).
+//   - The question bank only holds 10 questions per chase as a RESERVE for
+//     the case where neither side is answering correctly (distance and
+//     contestant progress both stall) - if all 10 are used without a catch
+//     or an escape, the game ends as 'incomplete': points are recorded on
+//     the leaderboard, but the contestant is not counted as having escaped.
 //
 // HEAD_START=2 means the Chaser must out-answer the contestant by 2 net
 // correct answers to catch them - gives contestants a fighting chance
@@ -41,21 +47,9 @@ const ADD_TIME_MS = 5_000;
 // read the explanation instead of it being instantly replaced.
 const FINISH_DELAY_MS = 4_000;
 
-// Tiers 7-9 are PLACEHOLDER names pending real copy from the client (only
-// the original 6 plus the #MobilityLegend top tier were ever confirmed) -
-// swap the strings below once they send the finalized 10-tier list.
-const BADGES = [
-  '#MobilityMover', // survived Q1
-  '#GlobalNavigator', // survived Q2
-  '#MobilityPro', // survived Q3
-  '#GlobalMobilityExpert', // survived Q4
-  '#MobilityMastermind', // survived Q5
-  '#MobilityChampion', // survived Q6 - PLACEHOLDER
-  '#MobilityElite', // survived Q7 - PLACEHOLDER
-  '#MobilityIcon', // survived Q8 - PLACEHOLDER
-  '#MobilityVanguard', // survived Q9 - PLACEHOLDER
-  '#MobilityLegend', // survived Q10 - full escape
-];
+// The 6 confirmed badge tiers - clearing all 6 (BADGES.length correct
+// answers) is what "escaped" means now, independent of question count.
+const BADGES = ['#MobilityMover', '#GlobalNavigator', '#MobilityPro', '#GlobalMobilityExpert', '#MobilityMastermind', '#MobilityLegend'];
 
 function scoreForAnswer(isCorrect, responseTimeMs) {
   if (!isCorrect) return 0;
@@ -84,13 +78,17 @@ class GameEngine {
       id: gameId,
       contestantName,
       chaserName,
-      status: 'lobby', // lobby | question_shown | question_active | revealed | caught | escaped
+      status: 'lobby', // lobby | question_shown | question_active | revealed | caught | escaped | incomplete
       questions, // full objects incl. correctAnswer - server only, never sent whole
       currentSlotIndex: -1, // 0-based, -1 = not started
       distance: HEAD_START,
       locks: { contestant: null, chaser: null }, // {answer, responseTimeMs, lockedAt}
       results: [], // per-question outcome log
       contestantScore: 0,
+      // How many badge tiers the contestant has actually cleared - this,
+      // not the question number, is what "escaped" and the funnel-screen
+      // position are based on.
+      contestantCorrectCount: 0,
       questionStartTs: null,
       timeLimitMs: QUESTION_TIMEOUT_MS, // grows if the admin adds time mid-question
       timeoutHandle: null,
@@ -138,7 +136,7 @@ class GameEngine {
   // so the admin can't skip past the funnel-diagram suspense.
   releaseQuestion(gameId) {
     const game = this.getGame(gameId);
-    if (game.status === 'caught' || game.status === 'escaped') {
+    if (game.status === 'caught' || game.status === 'escaped' || game.status === 'incomplete') {
       throw new Error('Game already finished');
     }
     if (game.status === 'question_shown' || game.status === 'question_active') {
@@ -164,7 +162,10 @@ class GameEngine {
       category: q.category,
       difficulty: q.difficulty,
       question: q.question,
-      badgeLabel: BADGES[game.currentSlotIndex],
+      // The tier the contestant would clear by getting THIS question right -
+      // badge tiers track correct answers, not question number, so this can
+      // repeat across questions if a wrong answer left them standing still.
+      badgeLabel: BADGES[Math.min(game.contestantCorrectCount, BADGES.length - 1)],
     };
 
     this.io.to(this._room(gameId)).emit('question', publicQuestion);
@@ -253,6 +254,7 @@ class GameEngine {
 
     const contestantPoints = scoreForAnswer(contestantCorrect, game.locks.contestant.responseTimeMs);
     game.contestantScore += contestantPoints;
+    if (contestantCorrect) game.contestantCorrectCount += 1;
 
     game.distance += (contestantCorrect ? 1 : 0) - (chaserCorrect ? 1 : 0);
 
@@ -286,12 +288,14 @@ class GameEngine {
     this.io.to(this._room(gameId)).emit('reveal', {
       ...resultEntry,
       contestantScoreSoFar: game.contestantScore,
+      contestantCorrectCount: game.contestantCorrectCount,
     });
   }
 
-  // Stage 3 of 3: admin-triggered. Determines caught/escaped from the
-  // distance already computed in _reveal, and broadcasts the funnel
-  // position update that the public Chaser display animates on.
+  // Stage 3 of 3: admin-triggered. Determines caught/escaped/incomplete from
+  // the distance and contestantCorrectCount already computed in _reveal,
+  // and broadcasts the funnel position update that the public Chaser
+  // display animates on.
   revealPlacement(gameId) {
     const game = this.getGame(gameId);
     if (game.status !== 'revealed') {
@@ -299,28 +303,38 @@ class GameEngine {
     }
     const slotIndex = game.currentSlotIndex;
     const caught = game.distance <= 0;
-    const lastQuestion = slotIndex === game.questions.length - 1;
+    const escaped = !caught && game.contestantCorrectCount >= BADGES.length;
+    // All 10 reserve questions used without a catch or a full escape -
+    // stalemate: recorded on the leaderboard, but not an "escape".
+    const outOfQuestions = !caught && !escaped && slotIndex === game.questions.length - 1;
+    const clearedBadge = game.contestantCorrectCount > 0 ? BADGES[game.contestantCorrectCount - 1] : null;
 
     if (caught) {
       game.status = 'caught';
-      game.finalBadge = slotIndex > 0 ? BADGES[slotIndex - 1] : null; // null = caught on Q1, no badge earned
+      game.finalBadge = clearedBadge; // whichever tier they'd actually cleared, if any
       game.outcome = 'caught';
-    } else if (lastQuestion) {
+    } else if (escaped) {
       game.status = 'escaped';
-      game.finalBadge = BADGES[slotIndex]; // #MobilityLegend
+      game.finalBadge = BADGES[BADGES.length - 1]; // #MobilityLegend
       game.outcome = 'escaped';
+    } else if (outOfQuestions) {
+      game.status = 'incomplete';
+      game.finalBadge = clearedBadge;
+      game.outcome = 'incomplete';
     }
     game.placementRevealed = true;
 
     this.io.to(this._room(gameId)).emit('placementRevealed', {
       slot: slotIndex + 1,
       distance: game.distance,
-      badgeLabel: BADGES[slotIndex],
+      contestantCorrectCount: game.contestantCorrectCount,
+      badgeLabel: clearedBadge,
       caught,
-      escaped: !caught && lastQuestion,
+      escaped,
+      incomplete: outOfQuestions,
     });
 
-    if (caught || lastQuestion) {
+    if (caught || escaped || outOfQuestions) {
       setTimeout(() => this._finish(gameId), FINISH_DELAY_MS);
     }
     // otherwise: wait for admin to call releaseQuestion for the next slot
@@ -335,7 +349,7 @@ class GameEngine {
       gameId,
       contestantName: game.contestantName,
       chaserName: game.chaserName,
-      outcome: game.outcome, // 'caught' | 'escaped'
+      outcome: game.outcome, // 'caught' | 'escaped' | 'incomplete'
       finalBadge: game.finalBadge,
       score: game.contestantScore,
       cumulativeResponseMs,
@@ -367,6 +381,7 @@ class GameEngine {
       totalSlots: game.questions.length,
       distance: game.distance,
       contestantScore: game.contestantScore,
+      contestantCorrectCount: game.contestantCorrectCount,
       results: game.results, // already-revealed rounds only, safe
       finalBadge: game.finalBadge,
       outcome: game.outcome,

@@ -228,8 +228,21 @@ function GameControlCard({
       {finished && (
         <div style={{ marginBottom: 16 }}>
           <div style={{ fontSize: 18, fontWeight: 700 }}>Game ended — start a new game</div>
-          <div style={{ marginTop: 6, fontWeight: 700, color: liveOutcome.outcome === 'escaped' ? 'var(--pf-gold-400)' : 'var(--pf-red-600)' }}>
-            {liveOutcome.contestantName} {liveOutcome.outcome === 'escaped' ? 'ESCAPED' : 'was CAUGHT'} — {liveOutcome.score} pts
+          <div
+            style={{
+              marginTop: 6,
+              fontWeight: 700,
+              color:
+                liveOutcome.outcome === 'escaped'
+                  ? 'var(--pf-gold-400)'
+                  : liveOutcome.outcome === 'incomplete'
+                  ? 'var(--pf-blue-400)'
+                  : 'var(--pf-red-600)',
+            }}
+          >
+            {liveOutcome.contestantName}{' '}
+            {liveOutcome.outcome === 'escaped' ? 'ESCAPED' : liveOutcome.outcome === 'incomplete' ? 'ran out of questions' : 'was CAUGHT'} —{' '}
+            {liveOutcome.score} pts
           </div>
         </div>
       )}

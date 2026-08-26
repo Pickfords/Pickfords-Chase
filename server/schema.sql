@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS games (
   id                    TEXT PRIMARY KEY,
   contestant_name       TEXT NOT NULL,
   chaser_name           TEXT NOT NULL DEFAULT 'Phil',
-  outcome               TEXT NOT NULL CHECK (outcome IN ('caught', 'escaped')),
+  outcome               TEXT NOT NULL CHECK (outcome IN ('caught', 'escaped', 'incomplete')),
   final_badge           TEXT,                 -- NULL if caught before completing Q1
   score                 NUMERIC(6,2) NOT NULL DEFAULT 0,
   cumulative_response_ms INTEGER NOT NULL DEFAULT 0,

@@ -14,6 +14,9 @@
 .pf-badgecard.caught {
   border-color: rgba(211, 16, 39, 0.35);
 }
+.pf-badgecard.incomplete {
+  border-color: rgba(74, 139, 219, 0.35);
+}
 
 .pf-badgecard-eyebrow {
   font-size: 11px;

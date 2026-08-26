@@ -26,7 +26,7 @@ export default function ChaserDisplay() {
       setContestantName(state.contestantName);
       setChaserName(state.chaserName);
       setBadges(state.badges);
-      setCurrentSlot(state.results.length);
+      setCurrentSlot(state.contestantCorrectCount);
       setDistance(state.distance);
       setCaught(state.outcome === 'caught');
       setPhase('idle');
@@ -58,7 +58,7 @@ export default function ChaserDisplay() {
       setPhase('awaiting');
     }
     function onPlacementRevealed(p) {
-      setCurrentSlot(p.slot);
+      setCurrentSlot(p.contestantCorrectCount);
       setDistance(p.distance);
       setCaught(p.caught);
       setPhase('idle');
@@ -108,7 +108,7 @@ export default function ChaserDisplay() {
             finalBadge={gameOver.finalBadge}
             score={gameOver.score}
             correctCount={gameOver.correctCount}
-            totalSlots={Math.min(gameOver.questionsAnswered, 10)}
+            totalSlots={gameOver.questionsAnswered}
           />
         </div>
       ) : (
