@@ -111,7 +111,10 @@ export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught 
           const isCurrentOther = isContestantHere && !isCurrentLegend;
           const isCaughtTile = caught && isContestantHere && isChaserHere;
           const isBlinking = blinkTiles.has(absoluteIndex);
-          const widthPct = funnel ? 100 - (absoluteIndex / (tiles.length - 1)) * 45 : 100; // tapers top to bottom
+          // Gentle taper (not too aggressive) - on a narrow portrait screen
+          // the lower tiles still need enough width for the longest badge
+          // name (#GlobalMobilityExpert) to fit without wrapping badly.
+          const widthPct = funnel ? 100 - (absoluteIndex / (tiles.length - 1)) * 18 : 100; // tapers top to bottom
           return (
             <div
               key={tile.key}

@@ -139,28 +139,30 @@
    and bottom of the whole stack. ------------------------------------- */
 
 .pf-ladder-funnel {
-  /* No px cap - this is meant to fill as much of a big screen as it can,
-     sized against the DisplayFrame's cqh/cqw container (see
+  /* Sized against the DisplayFrame's cqh/cqw container (see
      displayframe.css) rather than the raw viewport, so it scales correctly
      regardless of the screen's rotation state. The track below is flex:1
      so the tiles actually STRETCH to divide up the full available height,
      rather than sitting at their natural (small) content size in the
-     middle of the screen. */
+     middle of the screen. Font sizes are height-relative (cqh) but tiles
+     narrow by WIDTH toward the bottom - the ceilings below are deliberately
+     modest so even the longest badge name (#GlobalMobilityExpert) fits
+     inside the narrowest tile on an actual portrait TV, not just tall ones. */
   width: 96%;
   max-width: none;
   height: 100%;
-  gap: 1.6cqh;
+  gap: 1.2cqh;
 }
 
 .pf-ladder-funnel .pf-ladder-gap {
   flex: 0 0 auto;
-  padding: 1cqh 3cqw;
+  padding: 0.7cqh 2.5cqw;
 }
 .pf-ladder-funnel .pf-ladder-gap-label {
-  font-size: clamp(12px, 1.6cqh, 40px);
+  font-size: clamp(10px, 1.2cqh, 26px);
 }
 .pf-ladder-funnel .pf-ladder-gap-value {
-  font-size: clamp(24px, 5cqh, 90px);
+  font-size: clamp(18px, 3.4cqh, 56px);
 }
 
 .pf-ladder-funnel .pf-ladder-track {
@@ -183,8 +185,8 @@
   flex: 1;
   min-height: 0;
   justify-content: center;
-  gap: 3cqw;
-  padding: 0 3cqw;
+  gap: 1.5cqw;
+  padding: 0.3cqh 1.5cqw;
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.04);
 }
@@ -215,23 +217,30 @@
 
 .pf-ladder-funnel .pf-rung-markers {
   width: auto;
-  min-width: 7cqh;
+  min-width: 4.5cqh;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .pf-ladder-funnel .pf-rung-label {
-  font-size: clamp(18px, 3.4cqh, 64px);
-  min-height: 1.2em; /* keeps row height stable even when a hashtag is hidden */
+  font-size: clamp(11px, 1.9cqh, 30px);
+  line-height: 1.1;
+  text-align: center;
+  /* Wrap rather than overflow the tile - a narrow lower tile plus a long
+     badge name (#GlobalMobilityExpert) can still need 2 lines even at
+     this size on some screens. */
+  white-space: normal;
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 .pf-ladder-funnel .pf-rung-label.muted {
-  font-size: clamp(12px, 1.8cqh, 32px);
-  min-height: 0;
+  font-size: clamp(9px, 1.1cqh, 18px);
 }
 
 .pf-ladder-funnel .pf-marker {
-  width: clamp(34px, 6cqh, 90px);
-  height: clamp(34px, 6cqh, 90px);
-  font-size: clamp(14px, 2.8cqh, 48px);
+  width: clamp(22px, 3.6cqh, 46px);
+  height: clamp(22px, 3.6cqh, 46px);
+  font-size: clamp(11px, 1.6cqh, 22px);
 }
 .pf-ladder-funnel .pf-marker.chaser {
   background: var(--pf-red-600);

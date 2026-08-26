@@ -1,13 +1,15 @@
 /* Sized against the DisplayFrame's cqh/cqw container (see
    components/displayframe.css) so it scales correctly to fill a 55"
    portrait screen regardless of rotation, instead of the fixed pixel
-   values this used to have. clamp() keeps a sensible ceiling so text still
-   scales with a bigger screen without ballooning out of proportion. */
+   values this used to have. clamp() keeps a modest ceiling so a full
+   10-row table comfortably fits without needing to scroll - previous
+   ranges here were too large and ran the page past the bottom of the
+   screen. */
 
 .pf-ld-topbar {
   display: flex;
   align-items: center;
-  padding: 2cqh 3cqw;
+  padding: 1.5cqh 3cqw;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   flex: 0 0 auto;
 }
@@ -15,7 +17,7 @@
 .pf-ld-wordmark {
   font-family: var(--font-display);
   letter-spacing: 0.04em;
-  font-size: clamp(18px, 3.4cqh, 56px);
+  font-size: clamp(14px, 2.2cqh, 32px);
   display: flex;
   align-items: baseline;
   gap: 0.3em;
@@ -32,8 +34,8 @@
   flex: 1;
   min-height: 0;
   overflow: auto;
-  padding: 2cqh 4cqw;
-  width: 94%;
+  padding: 1.5cqh 3cqw;
+  width: 92%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -41,10 +43,10 @@
 
 .pf-ld-celebration {
   flex: 0 0 auto;
-  margin-bottom: 2cqh;
+  margin-bottom: 1.5cqh;
   text-align: center;
   font-family: var(--font-display);
-  font-size: clamp(18px, 2.8cqh, 44px);
+  font-size: clamp(13px, 1.8cqh, 26px);
 }
 .pf-ld-celebration.escaped {
   border-color: rgba(240, 184, 75, 0.4);
@@ -56,8 +58,8 @@
 .pf-ld-title {
   flex: 0 0 auto;
   font-family: var(--font-display);
-  font-size: clamp(28px, 5.5cqh, 80px);
-  margin-bottom: 1.5cqh;
+  font-size: clamp(20px, 3.2cqh, 44px);
+  margin-bottom: 1cqh;
   text-align: center;
 }
 
@@ -67,8 +69,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* LeaderboardTable's own padding is em-relative to this, so reverting its
-     multiplier to the original (small, admin-card) value and scaling THIS
-     font-size up is enough - no separate row-padding override needed. */
-  font-size: clamp(16px, 3.4cqh, 48px);
+  /* LeaderboardTable's own padding is em-relative to this, so keeping its
+     multiplier at the original (small, admin-card) value and scaling THIS
+     font-size is enough - no separate row-padding override needed. */
+  font-size: clamp(12px, 1.9cqh, 22px);
 }
