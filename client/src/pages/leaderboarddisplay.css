@@ -39,6 +39,10 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  /* The table card below sizes to its own content now (not flex:1), so
+     center it in whatever space is left instead of leaving it pinned to
+     the top with empty space under it. */
+  justify-content: center;
 }
 
 .pf-ld-celebration {
@@ -64,11 +68,11 @@
 }
 
 .pf-ld-table-wrap {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  /* Shrink-wraps to the actual table content - was flex:1, which stretched
+     the card to fill all remaining space regardless of how tall the table
+     itself was, leaving a big empty card around a small table. */
+  flex: 0 0 auto;
+  width: 100%;
   /* LeaderboardTable's own padding is em-relative to this, so keeping its
      multiplier at the original (small, admin-card) value and scaling THIS
      font-size is enough - no separate row-padding override needed. */
