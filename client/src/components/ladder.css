@@ -61,10 +61,11 @@
   background: rgba(47, 166, 106, 0.16);
 }
 .pf-rung.chaser-passed {
-  background: rgba(211, 16, 39, 0.16);
-}
-.pf-rung.cleared.chaser-passed {
-  background: linear-gradient(90deg, rgba(211, 16, 39, 0.22) 50%, rgba(47, 166, 106, 0.22) 50%);
+  /* Wins over .cleared (declared above, same specificity, later rule wins)
+     when the Chaser has reached or passed a tile the Contestant already
+     cleared - solid red, no blending, the Chaser's progress is what matters
+     once they've caught up to that point. */
+  background: rgba(211, 16, 39, 0.35);
 }
 .pf-rung.caught-tile {
   animation: pulse-caught-tile 0.8s ease-in-out infinite;
@@ -160,10 +161,7 @@
   background: rgba(47, 166, 106, 0.22);
 }
 .pf-ladder-funnel .pf-rung.chaser-passed {
-  background: rgba(211, 16, 39, 0.22);
-}
-.pf-ladder-funnel .pf-rung.cleared.chaser-passed {
-  background: linear-gradient(90deg, rgba(211, 16, 39, 0.3) 50%, rgba(47, 166, 106, 0.3) 50%);
+  background: rgba(211, 16, 39, 0.4);
 }
 
 .pf-ladder-funnel .pf-rung-label {

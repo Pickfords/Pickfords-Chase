@@ -3,9 +3,7 @@ import { socket } from '../lib/socket';
 import { api } from '../lib/api';
 import Ladder from '../components/Ladder';
 import BadgeCard from '../components/BadgeCard';
-import { RedFlashOverlay, ConfettiOverlay } from '../components/EndEffects';
-
-const END_EFFECT_DURATION_MS = 2800;
+import { RedFlashOverlay, ConfettiOverlay, END_EFFECT_DURATION_MS } from '../components/EndEffects';
 
 // Public, no-controls funnel-diagram screen (the show's chase-diagram
 // visual) for the venue's big screen. Auto-follows whichever game is

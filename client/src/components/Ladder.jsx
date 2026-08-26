@@ -72,9 +72,12 @@ export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught 
           const isChaserHere = absoluteIndex === chaserAbs;
           // Contestant: fully cleared (behind their current tile) turns green.
           const isCleared = tile.isBadge && tile.badgeRung <= clampedSlot;
-          // Chaser: on it now, or already passed it, turns red - can overlap
-          // with "cleared" if both have gotten that far.
-          const isChaserPassed = tile.isBadge && absoluteIndex <= chaserAbs;
+          // Chaser: on it now, or already passed it, turns red - including
+          // the Chaser Start zone itself, not just badge tiles. Takes
+          // priority over the Contestant's green "cleared" colour below if
+          // both apply to the same tile (see ladder.css: chaser-passed is
+          // declared after cleared, so it wins the tiebreak).
+          const isChaserPassed = absoluteIndex <= chaserAbs;
           const isCaughtTile = caught && isContestantHere && isChaserHere;
           const widthPct = funnel ? 100 - (absoluteIndex / (tiles.length - 1)) * 45 : 100; // tapers top to bottom
           const showLabel = !funnel || !tile.isBadge || isContestantHere;

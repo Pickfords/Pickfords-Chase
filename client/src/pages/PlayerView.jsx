@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { socket } from '../lib/socket';
 import Timer from '../components/Timer';
 import Ladder from '../components/Ladder';
 import QuestionCard from '../components/QuestionCard';
 import BadgeCard from '../components/BadgeCard';
+import { RedFlashOverlay, ConfettiOverlay, END_EFFECT_DURATION_MS } from '../components/EndEffects';
 
 const ROLE_COPY = {
   contestant: { title: 'CONTESTANT', accent: 'You' },
@@ -37,6 +38,8 @@ export default function PlayerView({ role }) {
   const [timedOut, setTimedOut] = useState(false);
   const [reveal, setReveal] = useState(null);
   const [gameOver, setGameOver] = useState(null);
+  const [endEffect, setEndEffect] = useState(null); // 'flash' | 'confetti' | null
+  const endEffectTimeout = useRef(null);
 
   useEffect(() => {
     function onQuestion(q) {
@@ -62,8 +65,17 @@ export default function PlayerView({ role }) {
     function onReveal(payload) {
       setReveal(payload);
     }
+    // Hold the current view on screen a beat longer, with a full-screen
+    // effect over it, before cutting to the BadgeCard result - matches the
+    // public Chaser display so the players themselves get a clear signal
+    // the game just ended, not just a silent screen swap.
     function onGameOver(summary) {
-      setGameOver(summary);
+      setEndEffect(summary.outcome === 'escaped' ? 'confetti' : 'flash');
+      clearTimeout(endEffectTimeout.current);
+      endEffectTimeout.current = setTimeout(() => {
+        setEndEffect(null);
+        setGameOver(summary);
+      }, END_EFFECT_DURATION_MS);
     }
     function onPlayersUpdated(payload) {
       setGameState((prev) => (prev ? { ...prev, ...payload } : prev));
@@ -79,6 +91,7 @@ export default function PlayerView({ role }) {
     socket.on('playersUpdated', onPlayersUpdated);
     socket.on('timeExtended', onTimeExtended);
     return () => {
+      clearTimeout(endEffectTimeout.current);
       socket.off('question', onQuestion);
       socket.off('answersReleased', onAnswersReleased);
       socket.off('lockedIn', onLockedIn);
@@ -164,6 +177,8 @@ export default function PlayerView({ role }) {
   if (!question && !reveal) {
     return (
       <div className="pf-shell">
+        {endEffect === 'flash' && <RedFlashOverlay />}
+        {endEffect === 'confetti' && <ConfettiOverlay />}
         <TopBar />
         <div className="pf-center-stage">
           <div className="pf-eyebrow">{displayTitle}</div>
@@ -185,6 +200,8 @@ export default function PlayerView({ role }) {
 
   return (
     <div className="pf-shell">
+      {endEffect === 'flash' && <RedFlashOverlay />}
+      {endEffect === 'confetti' && <ConfettiOverlay />}
       <TopBar />
       <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '260px 1fr', gap: 24, padding: 24 }}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>

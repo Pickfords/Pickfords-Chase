@@ -1,6 +1,10 @@
 import { useMemo } from 'react';
 import './endeffects.css';
 
+// Shared across every screen that plays this effect before showing its
+// gameOver result (BadgeCard) - ChaserDisplay and PlayerView.
+export const END_EFFECT_DURATION_MS = 2800;
+
 // Full-screen pulsing red overlay for the "caught" outcome - plays briefly
 // before the display switches over to the BadgeCard result screen.
 export function RedFlashOverlay() {
