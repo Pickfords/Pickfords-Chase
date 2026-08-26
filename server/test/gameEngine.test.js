@@ -122,8 +122,9 @@ function makeEngine() {
 }
 
 // --- both sides wrong every question -> distance never moves, contestant
-// never clears a tier, all 10 reserve questions get used -> 'incomplete',
-// not 'caught' and not 'escaped'. Points (here, zero) still recorded. ---
+// never clears a tier, all 10 reserve questions get used -> counted as
+// 'caught' (the contestant didn't get away in time), even though the
+// Chaser never literally landed on their tile. Points still recorded. ---
 {
   const engine = makeEngine();
   engine.createGame({ gameId: 'g4', contestantName: 'Stalemate Sam' });
@@ -138,13 +139,13 @@ function makeEngine() {
     engine.revealPlacement('g4');
   }
   const g = engine.getGame('g4');
-  assert.strictEqual(g.status, 'incomplete');
-  assert.strictEqual(g.outcome, 'incomplete');
+  assert.strictEqual(g.status, 'caught');
+  assert.strictEqual(g.outcome, 'caught');
   assert.strictEqual(g.finalBadge, null);
   assert.strictEqual(g.contestantCorrectCount, 0);
   assert.strictEqual(g.contestantScore, 0);
   assert.throws(() => engine.releaseQuestion('g4'), /already finished/, 'no further questions once the reserve is exhausted');
-  console.log('scenario D (10-question reserve exhausted -> incomplete): PASS');
+  console.log('scenario D (10-question reserve exhausted -> counted as caught): PASS');
 }
 
 console.log('gameEngine.test.js: ALL PASS');

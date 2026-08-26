@@ -1,0 +1,42 @@
+.pf-end-flash {
+  position: fixed;
+  inset: 0;
+  background: var(--pf-red-600);
+  z-index: 60;
+  pointer-events: none;
+  animation: pf-flash 0.5s ease-in-out infinite;
+}
+@keyframes pf-flash {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.75; }
+}
+
+.pf-end-confetti {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.pf-confetti-piece {
+  position: absolute;
+  top: -20px;
+  width: 10px;
+  height: 16px;
+  opacity: 0.9;
+  animation-name: pf-confetti-fall;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pf-confetti-fall {
+  0% {
+    transform: translate(0, -10%) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--drift), 110vh) rotate(360deg);
+    opacity: 0.9;
+  }
+}

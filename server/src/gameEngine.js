@@ -29,8 +29,9 @@
 //   - The question bank only holds 10 questions per chase as a RESERVE for
 //     the case where neither side is answering correctly (distance and
 //     contestant progress both stall) - if all 10 are used without a catch
-//     or an escape, the game ends as 'incomplete': points are recorded on
-//     the leaderboard, but the contestant is not counted as having escaped.
+//     or an escape, the game ends counted as 'caught': the contestant
+//     didn't get away in time, even though the Chaser never physically
+//     landed on their tile. Points are still recorded on the leaderboard.
 //
 // HEAD_START=2 means the Chaser must out-answer the contestant by 2 net
 // correct answers to catch them - gives contestants a fighting chance
@@ -78,7 +79,7 @@ class GameEngine {
       id: gameId,
       contestantName,
       chaserName,
-      status: 'lobby', // lobby | question_shown | question_active | revealed | caught | escaped | incomplete
+      status: 'lobby', // lobby | question_shown | question_active | revealed | caught | escaped
       questions, // full objects incl. correctAnswer - server only, never sent whole
       currentSlotIndex: -1, // 0-based, -1 = not started
       distance: HEAD_START,
@@ -136,7 +137,7 @@ class GameEngine {
   // so the admin can't skip past the funnel-diagram suspense.
   releaseQuestion(gameId) {
     const game = this.getGame(gameId);
-    if (game.status === 'caught' || game.status === 'escaped' || game.status === 'incomplete') {
+    if (game.status === 'caught' || game.status === 'escaped') {
       throw new Error('Game already finished');
     }
     if (game.status === 'question_shown' || game.status === 'question_active') {
@@ -292,21 +293,23 @@ class GameEngine {
     });
   }
 
-  // Stage 3 of 3: admin-triggered. Determines caught/escaped/incomplete from
-  // the distance and contestantCorrectCount already computed in _reveal,
-  // and broadcasts the funnel position update that the public Chaser
-  // display animates on.
+  // Stage 3 of 3: admin-triggered. Determines caught/escaped from the
+  // distance and contestantCorrectCount already computed in _reveal, and
+  // broadcasts the funnel position update that the public Chaser display
+  // animates on.
   revealPlacement(gameId) {
     const game = this.getGame(gameId);
     if (game.status !== 'revealed') {
       throw new Error('No revealed answer waiting for a placement update');
     }
     const slotIndex = game.currentSlotIndex;
-    const caught = game.distance <= 0;
-    const escaped = !caught && game.contestantCorrectCount >= BADGES.length;
-    // All 10 reserve questions used without a catch or a full escape -
-    // stalemate: recorded on the leaderboard, but not an "escape".
-    const outOfQuestions = !caught && !escaped && slotIndex === game.questions.length - 1;
+    const caughtLiterally = game.distance <= 0;
+    const escaped = !caughtLiterally && game.contestantCorrectCount >= BADGES.length;
+    // All 10 reserve questions used without a catch or a full escape - this
+    // counts as "caught" too: the contestant didn't get away in time, even
+    // though the Chaser never physically landed on their tile.
+    const outOfQuestions = !caughtLiterally && !escaped && slotIndex === game.questions.length - 1;
+    const caught = caughtLiterally || outOfQuestions;
     const clearedBadge = game.contestantCorrectCount > 0 ? BADGES[game.contestantCorrectCount - 1] : null;
 
     if (caught) {
@@ -317,10 +320,6 @@ class GameEngine {
       game.status = 'escaped';
       game.finalBadge = BADGES[BADGES.length - 1]; // #MobilityLegend
       game.outcome = 'escaped';
-    } else if (outOfQuestions) {
-      game.status = 'incomplete';
-      game.finalBadge = clearedBadge;
-      game.outcome = 'incomplete';
     }
     game.placementRevealed = true;
 
@@ -331,10 +330,9 @@ class GameEngine {
       badgeLabel: clearedBadge,
       caught,
       escaped,
-      incomplete: outOfQuestions,
     });
 
-    if (caught || escaped || outOfQuestions) {
+    if (caught || escaped) {
       setTimeout(() => this._finish(gameId), FINISH_DELAY_MS);
     }
     // otherwise: wait for admin to call releaseQuestion for the next slot
@@ -349,7 +347,7 @@ class GameEngine {
       gameId,
       contestantName: game.contestantName,
       chaserName: game.chaserName,
-      outcome: game.outcome, // 'caught' | 'escaped' | 'incomplete'
+      outcome: game.outcome, // 'caught' | 'escaped'
       finalBadge: game.finalBadge,
       score: game.contestantScore,
       cumulativeResponseMs,

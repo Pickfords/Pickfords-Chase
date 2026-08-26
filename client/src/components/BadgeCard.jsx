@@ -1,13 +1,11 @@
 import './badgecard.css';
 
+// 'incomplete' (running out of the 10-question reserve without escaping) is
+// counted as 'caught' by the engine - the contestant didn't get away in
+// time - so this only ever sees these two outcomes.
 const COPY = {
   escaped: { stateClass: 'escaped', noBadgeText: 'NO TIER CLEARED', footer: 'Escaped the Chaser 🏆' },
   caught: { stateClass: 'caught', noBadgeText: 'CAUGHT BEFORE CLEARING A TIER', footer: 'Caught by the Chaser — worthy effort' },
-  incomplete: {
-    stateClass: 'incomplete',
-    noBadgeText: 'NO TIER CLEARED',
-    footer: "Ran out of questions — didn't escape in time",
-  },
 };
 
 export default function BadgeCard({ contestantName, outcome, finalBadge, score, correctCount, totalSlots = 6 }) {

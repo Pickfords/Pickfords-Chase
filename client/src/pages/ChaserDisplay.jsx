@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { socket } from '../lib/socket';
 import { api } from '../lib/api';
 import Ladder from '../components/Ladder';
 import BadgeCard from '../components/BadgeCard';
+import { RedFlashOverlay, ConfettiOverlay } from '../components/EndEffects';
+
+const END_EFFECT_DURATION_MS = 2800;
 
 // Public, no-controls funnel-diagram screen (the show's chase-diagram
 // visual) for the venue's big screen. Auto-follows whichever game is
@@ -20,9 +23,12 @@ export default function ChaserDisplay() {
   const [phase, setPhase] = useState('idle'); // idle | question | active | awaiting
   const [liveSlot, setLiveSlot] = useState(null);
   const [gameOver, setGameOver] = useState(null);
+  const [endEffect, setEndEffect] = useState(null); // 'flash' | 'confetti' | null
+  const endEffectTimeout = useRef(null);
 
   useEffect(() => {
     function applyGame(gameId, state) {
+      clearTimeout(endEffectTimeout.current);
       setContestantName(state.contestantName);
       setChaserName(state.chaserName);
       setBadges(state.badges);
@@ -32,6 +38,7 @@ export default function ChaserDisplay() {
       setPhase('idle');
       setLiveSlot(null);
       setGameOver(null);
+      setEndEffect(null);
       socket.emit('joinGame', { gameId, role: 'display' }, () => {});
     }
 
@@ -63,8 +70,17 @@ export default function ChaserDisplay() {
       setCaught(p.caught);
       setPhase('idle');
     }
+    // Hold the funnel view on screen a beat longer, with a full-screen effect
+    // over it, before cutting to the BadgeCard result - a flash of red for a
+    // catch (this includes running out of the 10-question reserve, which the
+    // engine also counts as "caught"), a burst of confetti for an escape.
     function onGameOver(summary) {
-      setGameOver(summary);
+      setEndEffect(summary.outcome === 'escaped' ? 'confetti' : 'flash');
+      clearTimeout(endEffectTimeout.current);
+      endEffectTimeout.current = setTimeout(() => {
+        setEndEffect(null);
+        setGameOver(summary);
+      }, END_EFFECT_DURATION_MS);
     }
 
     socket.on('activeGameChanged', onActiveGameChanged);
@@ -75,6 +91,7 @@ export default function ChaserDisplay() {
     socket.on('placementRevealed', onPlacementRevealed);
     socket.on('gameOver', onGameOver);
     return () => {
+      clearTimeout(endEffectTimeout.current);
       socket.off('activeGameChanged', onActiveGameChanged);
       socket.off('playersUpdated', onPlayersUpdated);
       socket.off('question', onQuestion);
@@ -94,6 +111,8 @@ export default function ChaserDisplay() {
 
   return (
     <div className="pf-shell pf-chaser-display">
+      {endEffect === 'flash' && <RedFlashOverlay />}
+      {endEffect === 'confetti' && <ConfettiOverlay />}
       <div className="pf-topbar">
         <div className="pf-wordmark">
           PICKFORDS <span>CHASER</span>

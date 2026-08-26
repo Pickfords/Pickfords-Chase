@@ -57,19 +57,12 @@ export default function LeaderboardDisplay() {
             style={{
               marginBottom: 24,
               textAlign: 'center',
-              borderColor:
-                celebration.outcome === 'escaped'
-                  ? 'var(--pf-gold-400)'
-                  : celebration.outcome === 'incomplete'
-                  ? 'var(--pf-blue-400)'
-                  : 'var(--pf-red-600)',
+              borderColor: celebration.outcome === 'escaped' ? 'var(--pf-gold-400)' : 'var(--pf-red-600)',
             }}
           >
             <div style={{ fontFamily: 'var(--font-display)', fontSize: 28 }}>
               {celebration.outcome === 'escaped' ? '🏆 ' : ''}
-              {celebration.contestantName}{' '}
-              {celebration.outcome === 'escaped' ? 'ESCAPED THE CHASER' : celebration.outcome === 'incomplete' ? 'ran out of questions' : 'was caught'}{' '}
-              — {celebration.score.toFixed(0)} pts
+              {celebration.contestantName} {celebration.outcome === 'escaped' ? 'ESCAPED THE CHASER' : 'was caught'} — {celebration.score.toFixed(0)} pts
             </div>
           </div>
         )}

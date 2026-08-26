@@ -58,7 +58,20 @@
   border-bottom: none;
 }
 .pf-rung.cleared {
-  background: rgba(240, 184, 75, 0.1);
+  background: rgba(47, 166, 106, 0.16);
+}
+.pf-rung.chaser-passed {
+  background: rgba(211, 16, 39, 0.16);
+}
+.pf-rung.cleared.chaser-passed {
+  background: linear-gradient(90deg, rgba(211, 16, 39, 0.22) 50%, rgba(47, 166, 106, 0.22) 50%);
+}
+.pf-rung.caught-tile {
+  animation: pulse-caught-tile 0.8s ease-in-out infinite;
+}
+@keyframes pulse-caught-tile {
+  0%, 100% { background: rgba(211, 16, 39, 0.3); }
+  50% { background: rgba(211, 16, 39, 0.65); }
 }
 .pf-rung-muted {
   background: rgba(255, 255, 255, 0.02);
@@ -144,7 +157,13 @@
   background: rgba(255, 255, 255, 0.015);
 }
 .pf-ladder-funnel .pf-rung.cleared {
-  background: rgba(240, 184, 75, 0.16);
+  background: rgba(47, 166, 106, 0.22);
+}
+.pf-ladder-funnel .pf-rung.chaser-passed {
+  background: rgba(211, 16, 39, 0.22);
+}
+.pf-ladder-funnel .pf-rung.cleared.chaser-passed {
+  background: linear-gradient(90deg, rgba(211, 16, 39, 0.3) 50%, rgba(47, 166, 106, 0.3) 50%);
 }
 
 .pf-ladder-funnel .pf-rung-label {

@@ -232,17 +232,10 @@ function GameControlCard({
             style={{
               marginTop: 6,
               fontWeight: 700,
-              color:
-                liveOutcome.outcome === 'escaped'
-                  ? 'var(--pf-gold-400)'
-                  : liveOutcome.outcome === 'incomplete'
-                  ? 'var(--pf-blue-400)'
-                  : 'var(--pf-red-600)',
+              color: liveOutcome.outcome === 'escaped' ? 'var(--pf-gold-400)' : 'var(--pf-red-600)',
             }}
           >
-            {liveOutcome.contestantName}{' '}
-            {liveOutcome.outcome === 'escaped' ? 'ESCAPED' : liveOutcome.outcome === 'incomplete' ? 'ran out of questions' : 'was CAUGHT'} —{' '}
-            {liveOutcome.score} pts
+            {liveOutcome.contestantName} {liveOutcome.outcome === 'escaped' ? 'ESCAPED' : 'was CAUGHT'} — {liveOutcome.score} pts
           </div>
         </div>
       )}
