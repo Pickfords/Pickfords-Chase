@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 
 const IDLE_MS = 10_000;
-const VEHICLE_TYPES = ['truck', 'plane', 'car'];
+const VEHICLE_TYPES = ['truck', 'plane', 'ship'];
 // How long each vehicle takes to cross the screen - the truck is "heavy" so
-// it's slow, the plane and car move at a normal clip.
-const DURATION_MS = { truck: 18_000, plane: 9_000, car: 7_000 };
+// it's slow, the plane and ship move at a normal clip (see idlevehicles.css
+// for the matching animation durations - keep these in sync).
+const DURATION_MS = { truck: 18_000, plane: 9_000, ship: 12_000 };
 
 /**
- * Sends a truck, plane, or car drifting across the screen after 10s with no
- * activity (see `resetSignal` below), to keep an otherwise-static big
+ * Sends a truck, plane, or ship drifting across the screen after 10s with
+ * no activity (see `resetSignal` below), to keep an otherwise-static big
  * screen feeling alive between questions/games. Cycles through the three
  * types and alternates the direction of travel each time. Any change to
  * `resetSignal` counts as activity - it cancels a vehicle mid-flight and

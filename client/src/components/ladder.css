@@ -157,16 +157,21 @@
   padding: 1cqh 3cqw;
 }
 .pf-ladder-funnel .pf-ladder-gap-label {
-  font-size: max(12px, 1.6cqh);
+  font-size: clamp(12px, 1.6cqh, 40px);
 }
 .pf-ladder-funnel .pf-ladder-gap-value {
-  font-size: max(24px, 5cqh);
+  font-size: clamp(24px, 5cqh, 90px);
 }
 
 .pf-ladder-funnel .pf-ladder-track {
   flex: 1;
   min-height: 0;
-  align-items: stretch;
+  /* Vertical fill comes from flex:1 on each .pf-rung below (main axis for
+     this column-direction container) - align-items only controls the
+     CROSS (horizontal) axis, and each tile has its own explicit inline
+     width% (the funnel taper), so this must stay "center" or the tiles
+     collapse to the left edge instead of narrowing symmetrically. */
+  align-items: center;
   gap: 0;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-lg);
@@ -215,20 +220,18 @@
 }
 
 .pf-ladder-funnel .pf-rung-label {
-  font-size: max(18px, 3.4cqh);
+  font-size: clamp(18px, 3.4cqh, 64px);
   min-height: 1.2em; /* keeps row height stable even when a hashtag is hidden */
 }
 .pf-ladder-funnel .pf-rung-label.muted {
-  font-size: max(12px, 1.8cqh);
+  font-size: clamp(12px, 1.8cqh, 32px);
   min-height: 0;
 }
 
 .pf-ladder-funnel .pf-marker {
-  width: 6cqh;
-  height: 6cqh;
-  min-width: 34px;
-  min-height: 34px;
-  font-size: max(14px, 2.8cqh);
+  width: clamp(34px, 6cqh, 90px);
+  height: clamp(34px, 6cqh, 90px);
+  font-size: clamp(14px, 2.8cqh, 48px);
 }
 .pf-ladder-funnel .pf-marker.chaser {
   background: var(--pf-red-600);

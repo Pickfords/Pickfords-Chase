@@ -18,7 +18,7 @@
 .pf-cd-wordmark {
   font-family: var(--font-display);
   letter-spacing: 0.04em;
-  font-size: max(18px, 3.4cqh);
+  font-size: clamp(18px, 3.4cqh, 56px);
   display: flex;
   align-items: baseline;
   gap: 0.3em;
@@ -44,7 +44,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 3cqw;
-  font-size: max(16px, 2.6cqh);
+  font-size: clamp(16px, 2.6cqh, 42px);
 }
 .pf-cd-chaser-name strong {
   color: var(--pf-red-600);
@@ -52,7 +52,7 @@
 
 .pf-cd-phase {
   flex: 0 0 auto;
-  font-size: max(13px, 1.8cqh);
+  font-size: clamp(13px, 1.8cqh, 28px);
 }
 
 .pf-cd-ladder-wrap {
@@ -68,5 +68,5 @@
    like everything else on this page instead of sitting small in the middle. */
 .pf-cd-stage .pf-badgecard {
   max-width: 44em;
-  font-size: max(16px, 3.2cqh);
+  font-size: clamp(16px, 3.2cqh, 46px);
 }

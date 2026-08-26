@@ -7,7 +7,7 @@ export default function LeaderboardTable({ leaderboard, onVoid }) {
     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '1em' }}>
       <thead>
         <tr style={{ textAlign: 'left', color: 'rgba(255,255,255,0.5)', fontSize: '0.85em' }}>
-          <th style={{ paddingBottom: '0.5em' }}>#</th>
+          <th>#</th>
           <th>Name</th>
           <th>Badge</th>
           <th>Score</th>
@@ -18,7 +18,7 @@ export default function LeaderboardTable({ leaderboard, onVoid }) {
       <tbody>
         {leaderboard.map((row, i) => (
           <tr key={row.id} style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-            <td style={{ padding: '0.9em 0' }}>{i + 1}</td>
+            <td style={{ padding: '0.6em 0' }}>{i + 1}</td>
             <td>{row.contestant_name}</td>
             <td style={{ fontSize: '0.85em', color: 'var(--pf-gold-400)' }}>{row.final_badge || '—'}</td>
             <td>{Number(row.score).toFixed(0)}</td>

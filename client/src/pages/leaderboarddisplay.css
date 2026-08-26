@@ -1,9 +1,8 @@
 /* Sized against the DisplayFrame's cqh/cqw container (see
    components/displayframe.css) so it scales correctly to fill a 55"
    portrait screen regardless of rotation, instead of the fixed pixel
-   values this used to have. max() (floor only, no ceiling) rather than
-   clamp() so text keeps growing with the screen instead of hitting an
-   artificially small cap. */
+   values this used to have. clamp() keeps a sensible ceiling so text still
+   scales with a bigger screen without ballooning out of proportion. */
 
 .pf-ld-topbar {
   display: flex;
@@ -16,7 +15,7 @@
 .pf-ld-wordmark {
   font-family: var(--font-display);
   letter-spacing: 0.04em;
-  font-size: max(18px, 3.4cqh);
+  font-size: clamp(18px, 3.4cqh, 56px);
   display: flex;
   align-items: baseline;
   gap: 0.3em;
@@ -45,7 +44,7 @@
   margin-bottom: 2cqh;
   text-align: center;
   font-family: var(--font-display);
-  font-size: max(18px, 2.8cqh);
+  font-size: clamp(18px, 2.8cqh, 44px);
 }
 .pf-ld-celebration.escaped {
   border-color: rgba(240, 184, 75, 0.4);
@@ -57,7 +56,7 @@
 .pf-ld-title {
   flex: 0 0 auto;
   font-family: var(--font-display);
-  font-size: max(28px, 5.5cqh);
+  font-size: clamp(28px, 5.5cqh, 80px);
   margin-bottom: 1.5cqh;
   text-align: center;
 }
@@ -68,5 +67,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-size: max(16px, 3.4cqh);
+  /* LeaderboardTable's own padding is em-relative to this, so reverting its
+     multiplier to the original (small, admin-card) value and scaling THIS
+     font-size up is enough - no separate row-padding override needed. */
+  font-size: clamp(16px, 3.4cqh, 48px);
 }
