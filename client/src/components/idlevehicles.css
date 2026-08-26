@@ -1,0 +1,71 @@
+/* Ambient "the screen is still alive" animation for a 10s-idle big screen.
+   Positioned/sized in cqh/cqw (see displayframe.css's container query),
+   not vh/vw, so it stays correct if the screen is rotated via the
+   DisplayFrame rotate button. */
+
+.pf-idle-vehicle {
+  position: fixed;
+  z-index: 70;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.pf-idle-truck {
+  bottom: 4cqh;
+  font-size: max(28px, 6cqh);
+}
+.pf-idle-plane {
+  top: 8cqh;
+  font-size: max(24px, 5.2cqh);
+}
+.pf-idle-car {
+  bottom: 4cqh;
+  font-size: max(26px, 5.6cqh);
+}
+
+/* Truck: slow and heavy, straight across, no bounce. */
+@keyframes pf-idle-truck-ltr {
+  0% { left: -15cqw; }
+  100% { left: 115cqw; }
+}
+@keyframes pf-idle-truck-rtl {
+  0% { left: 115cqw; transform: scaleX(-1); }
+  100% { left: -15cqw; transform: scaleX(-1); }
+}
+.pf-idle-truck.pf-idle-ltr { animation: pf-idle-truck-ltr 18s linear forwards; }
+.pf-idle-truck.pf-idle-rtl { animation: pf-idle-truck-rtl 18s linear forwards; }
+
+/* Plane: turbulence - horizontal progress is linear (only set at 0%/100%),
+   with a vertical wobble layered on top via the intermediate keyframes. */
+@keyframes pf-idle-plane-ltr {
+  0%   { left: -15cqw; transform: translateY(0); }
+  20%  { transform: translateY(-1.6cqh); }
+  40%  { transform: translateY(1.1cqh); }
+  60%  { transform: translateY(-1.3cqh); }
+  80%  { transform: translateY(0.9cqh); }
+  100% { left: 115cqw; transform: translateY(0); }
+}
+@keyframes pf-idle-plane-rtl {
+  0%   { left: 115cqw; transform: scaleX(-1) translateY(0); }
+  20%  { transform: scaleX(-1) translateY(1.5cqh); }
+  40%  { transform: scaleX(-1) translateY(-1.2cqh); }
+  60%  { transform: scaleX(-1) translateY(1.4cqh); }
+  80%  { transform: scaleX(-1) translateY(-0.8cqh); }
+  100% { left: -15cqw; transform: scaleX(-1) translateY(0); }
+}
+.pf-idle-plane.pf-idle-ltr { animation: pf-idle-plane-ltr 9s ease-in-out forwards; }
+.pf-idle-plane.pf-idle-rtl { animation: pf-idle-plane-rtl 9s ease-in-out forwards; }
+
+/* Car: normal pace, then drifts out (rotates and fades) in the last stretch. */
+@keyframes pf-idle-car-ltr {
+  0%   { left: -15cqw; transform: rotate(0deg); opacity: 1; }
+  80%  { left: 100cqw; transform: rotate(0deg); opacity: 1; }
+  100% { left: 128cqw; transform: rotate(-16deg); opacity: 0; }
+}
+@keyframes pf-idle-car-rtl {
+  0%   { left: 115cqw; transform: scaleX(-1) rotate(0deg); opacity: 1; }
+  80%  { left: 0cqw; transform: scaleX(-1) rotate(0deg); opacity: 1; }
+  100% { left: -28cqw; transform: scaleX(-1) rotate(16deg); opacity: 0; }
+}
+.pf-idle-car.pf-idle-ltr { animation: pf-idle-car-ltr 7s ease-in forwards; }
+.pf-idle-car.pf-idle-rtl { animation: pf-idle-car-rtl 7s ease-in forwards; }

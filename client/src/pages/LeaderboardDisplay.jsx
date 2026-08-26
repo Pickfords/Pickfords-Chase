@@ -1,35 +1,43 @@
 import { useEffect, useState } from 'react';
 import { socket } from '../lib/socket';
 import { api } from '../lib/api';
+import DisplayFrame from '../components/DisplayFrame';
 import LeaderboardTable from '../components/LeaderboardTable';
+import IdleVehicles from '../components/IdleVehicles';
+import { useIdleVehicles } from '../hooks/useIdleVehicles';
+import './leaderboarddisplay.css';
 
-// Public, no-controls screen for a lobby/foyer iPad or TV - always shows the
-// live leaderboard with no join code. Auto-follows whichever game is
-// currently active purely to catch its 'gameOver' celebration; the
-// leaderboard table itself updates from the global 'leaderboardUpdate'
-// broadcast regardless of which game is live (see server/src/index.js).
+// Public, no-controls screen for a 55" portrait-mounted lobby/foyer screen -
+// always shows the live leaderboard with no join code. Auto-follows
+// whichever game is currently active purely to catch its 'gameOver'
+// celebration; the leaderboard table itself updates from the global
+// 'leaderboardUpdate' broadcast regardless of which game is live (see
+// server/src/index.js).
 export default function LeaderboardDisplay() {
   const [leaderboard, setLeaderboard] = useState([]);
   const [celebration, setCelebration] = useState(null);
-  const [activeGameId, setActiveGameId] = useState(null);
+  // Bumped on every real update - the idle-vehicle animation watches this
+  // and only plays after 10s with no change to it (see useIdleVehicles).
+  const [activityTick, setActivityTick] = useState(0);
+  const bump = () => setActivityTick((t) => t + 1);
+  const vehicle = useIdleVehicles(activityTick);
 
   useEffect(() => {
     api.getLeaderboard(10).then(setLeaderboard).catch(() => {});
     api.getActiveGame().then(({ gameId }) => {
-      if (gameId) {
-        setActiveGameId(gameId);
-        socket.emit('joinGame', { gameId, role: 'display' }, () => {});
-      }
+      if (gameId) socket.emit('joinGame', { gameId, role: 'display' }, () => {});
     });
 
     function onLeaderboardUpdate(rows) {
+      bump();
       setLeaderboard(rows);
     }
     function onActiveGameChanged({ gameId }) {
-      setActiveGameId(gameId);
+      bump();
       socket.emit('joinGame', { gameId, role: 'display' }, () => {});
     }
     function onGameOver(summary) {
+      bump();
       setCelebration(summary);
       setTimeout(() => setCelebration(null), 12000);
     }
@@ -44,33 +52,27 @@ export default function LeaderboardDisplay() {
   }, []);
 
   return (
-    <div className="pf-shell">
-      <div className="pf-topbar">
-        <div className="pf-wordmark">
-          PICKFORDS <span>CHASER</span> <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>· LEADERBOARD</span>
+    <DisplayFrame storageKey="pf_leaderboard_display_rotation">
+      <div className="pf-shell">
+        <IdleVehicles vehicle={vehicle} />
+        <div className="pf-ld-topbar">
+          <div className="pf-ld-wordmark">
+            PICKFORDS <span>CHASER</span> <span className="pf-ld-wordmark-sub">· LEADERBOARD</span>
+          </div>
         </div>
-      </div>
-      <div style={{ flex: 1, padding: '32px 48px', maxWidth: 900, margin: '0 auto', width: '100%' }}>
-        {celebration && (
-          <div
-            className="pf-card"
-            style={{
-              marginBottom: 24,
-              textAlign: 'center',
-              borderColor: celebration.outcome === 'escaped' ? 'var(--pf-gold-400)' : 'var(--pf-red-600)',
-            }}
-          >
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: 28 }}>
+        <div className="pf-ld-body">
+          {celebration && (
+            <div className={`pf-card pf-ld-celebration ${celebration.outcome === 'escaped' ? 'escaped' : 'caught'}`}>
               {celebration.outcome === 'escaped' ? '🏆 ' : ''}
               {celebration.contestantName} {celebration.outcome === 'escaped' ? 'ESCAPED THE CHASER' : 'was caught'} — {celebration.score.toFixed(0)} pts
             </div>
+          )}
+          <div className="pf-ld-title">LEADERBOARD</div>
+          <div className="pf-card pf-ld-table-wrap">
+            <LeaderboardTable leaderboard={leaderboard} />
           </div>
-        )}
-        <div style={{ fontFamily: 'var(--font-display)', fontSize: 40, marginBottom: 20, textAlign: 'center' }}>LEADERBOARD</div>
-        <div className="pf-card">
-          <LeaderboardTable leaderboard={leaderboard} />
         </div>
       </div>
-    </div>
+    </DisplayFrame>
   );
 }

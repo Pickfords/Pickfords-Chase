@@ -1,8 +1,14 @@
+/* All sizing below is em-relative to .pf-badgecard's own font-size, which
+   is left at the inherited default on the private tablets (PlayerView) and
+   overridden much bigger (via cqh, no cap) on the public Chaser display -
+   see chaserdisplay.css - so the whole card scales as one proportional
+   unit instead of just its text growing inside a fixed-size box. */
+
 .pf-badgecard {
   width: 100%;
-  max-width: 380px;
+  max-width: 24em;
   border-radius: var(--radius-lg);
-  padding: 32px 28px;
+  padding: 2em 1.75em;
   text-align: center;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: linear-gradient(160deg, var(--pf-navy-700), var(--pf-navy-950));
@@ -16,55 +22,59 @@
 }
 
 .pf-badgecard-eyebrow {
-  font-size: 11px;
+  font-size: 0.7em;
   letter-spacing: 0.14em;
   color: var(--pf-blue-400);
-  margin-bottom: 14px;
+  margin-bottom: 0.9em;
 }
 
 .pf-badgecard-name {
-  font-size: 22px;
+  font-size: 1.4em;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 0.6em;
 }
 
 .pf-badgecard-badge {
   font-family: var(--font-display);
-  font-size: 34px;
+  font-size: 2.1em;
   letter-spacing: 0.02em;
   color: var(--pf-gold-400);
-  margin-bottom: 22px;
+  margin-bottom: 1.4em;
 }
 .pf-badgecard-badge.muted {
   font-family: var(--font-mono);
-  font-size: 15px;
+  font-size: 0.95em;
   letter-spacing: 0.1em;
   color: rgba(255, 255, 255, 0.55);
+}
+.pf-badgecard-gmpd {
+  color: #ec4899;
+  font-weight: 700;
 }
 
 .pf-badgecard-stats {
   display: flex;
   justify-content: center;
-  gap: 36px;
-  margin-bottom: 20px;
+  gap: 2.2em;
+  margin-bottom: 1.25em;
 }
 .pf-badgecard-stats > div {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 0.25em;
 }
 .pf-badgecard-stat-value {
-  font-size: 26px;
+  font-size: 1.6em;
   font-weight: 800;
 }
 .pf-badgecard-stat-label {
-  font-size: 10px;
+  font-size: 0.6em;
   letter-spacing: 0.12em;
   color: rgba(255, 255, 255, 0.5);
 }
 
 .pf-badgecard-footer {
-  font-size: 14px;
+  font-size: 0.85em;
   color: rgba(255, 255, 255, 0.75);
 }

@@ -74,6 +74,18 @@
   0%, 100% { background: rgba(211, 16, 39, 0.3); }
   50% { background: rgba(211, 16, 39, 0.65); }
 }
+
+/* Fires on every placement reveal, on whichever tiles were involved - the
+   old position(s), the new one(s), or just the tile that's still current if
+   nothing actually moved. Brightness-based so it works on top of whatever
+   colour (or none) is already on the tile. */
+.pf-rung.blink {
+  animation: pf-rung-blink 0.4s ease-in-out 3;
+}
+@keyframes pf-rung-blink {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(2); }
+}
 .pf-rung-muted {
   background: rgba(255, 255, 255, 0.02);
 }
@@ -127,16 +139,34 @@
    and bottom of the whole stack. ------------------------------------- */
 
 .pf-ladder-funnel {
-  max-width: 1040px;
-  gap: 26px;
+  /* No px cap - this is meant to fill as much of a big screen as it can,
+     sized against the DisplayFrame's cqh/cqw container (see
+     displayframe.css) rather than the raw viewport, so it scales correctly
+     regardless of the screen's rotation state. The track below is flex:1
+     so the tiles actually STRETCH to divide up the full available height,
+     rather than sitting at their natural (small) content size in the
+     middle of the screen. */
+  width: 96%;
+  max-width: none;
+  height: 100%;
+  gap: 1.6cqh;
 }
 
+.pf-ladder-funnel .pf-ladder-gap {
+  flex: 0 0 auto;
+  padding: 1cqh 3cqw;
+}
+.pf-ladder-funnel .pf-ladder-gap-label {
+  font-size: max(12px, 1.6cqh);
+}
 .pf-ladder-funnel .pf-ladder-gap-value {
-  font-size: 38px;
+  font-size: max(24px, 5cqh);
 }
 
 .pf-ladder-funnel .pf-ladder-track {
-  align-items: center;
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
   gap: 0;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-lg);
@@ -145,9 +175,11 @@
 }
 
 .pf-ladder-funnel .pf-rung {
+  flex: 1;
+  min-height: 0;
   justify-content: center;
-  gap: 20px;
-  padding: 20px 24px;
+  gap: 3cqw;
+  padding: 0 3cqw;
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.04);
 }
@@ -158,25 +190,45 @@
   background: rgba(255, 255, 255, 0.015);
 }
 .pf-ladder-funnel .pf-rung.cleared {
-  background: rgba(47, 166, 106, 0.22);
+  background: linear-gradient(135deg, rgba(47, 166, 106, 0.85), rgba(18, 84, 53, 0.92));
 }
 .pf-ladder-funnel .pf-rung.chaser-passed {
-  background: rgba(211, 16, 39, 0.4);
+  background: linear-gradient(135deg, rgba(211, 16, 39, 0.85), rgba(112, 8, 21, 0.92));
+}
+/* The Contestant's current tile - blue, or gold instead if it's the last
+   tile (#MobilityLegend, i.e. they've just cleared the whole ladder). Wins
+   over cleared/chaser-passed above (declared later, same specificity) in
+   the rare case they'd otherwise coincide; the caught-tile pulse animation
+   still visually overrides all of these while it's playing, regardless of
+   source order, since active CSS animations sit above the normal cascade. */
+.pf-ladder-funnel .pf-rung.current-contestant {
+  background: linear-gradient(135deg, rgba(74, 139, 219, 0.85), rgba(23, 62, 112, 0.92));
+}
+.pf-ladder-funnel .pf-rung.current-legend {
+  background: linear-gradient(135deg, rgba(246, 207, 127, 0.92), rgba(184, 132, 32, 0.95));
+}
+
+.pf-ladder-funnel .pf-rung-markers {
+  width: auto;
+  min-width: 7cqh;
+  justify-content: center;
 }
 
 .pf-ladder-funnel .pf-rung-label {
-  font-size: clamp(20px, 2.6vw, 34px);
+  font-size: max(18px, 3.4cqh);
   min-height: 1.2em; /* keeps row height stable even when a hashtag is hidden */
 }
 .pf-ladder-funnel .pf-rung-label.muted {
-  font-size: 15px;
+  font-size: max(12px, 1.8cqh);
   min-height: 0;
 }
 
 .pf-ladder-funnel .pf-marker {
-  width: 46px;
-  height: 46px;
-  font-size: 22px;
+  width: 6cqh;
+  height: 6cqh;
+  min-width: 34px;
+  min-height: 34px;
+  font-size: max(14px, 2.8cqh);
 }
 .pf-ladder-funnel .pf-marker.chaser {
   background: var(--pf-red-600);

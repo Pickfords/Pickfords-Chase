@@ -1,0 +1,51 @@
+.pf-display-viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Establishes a size query container matching this box's real (possibly
+   rotation-swapped) dimensions - descendants use cqw/cqh units, which
+   correctly track THIS box regardless of the rotate transform below, unlike
+   vw/vh which always measure the raw, unrotated browser viewport. */
+.pf-display-frame {
+  container-type: size;
+  overflow: hidden;
+}
+
+/* The page's own .pf-shell fills the frame completely, in whatever shape
+   the frame currently is - overrides the default min-height: 100dvh, which
+   would ignore the frame's real box once it's rotated/swapped. */
+.pf-display-frame > .pf-shell {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.pf-rotate-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--pf-white);
+  font-size: 24px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.pf-rotate-btn:hover {
+  background: rgba(0, 0, 0, 0.55);
+  border-color: var(--pf-white);
+}

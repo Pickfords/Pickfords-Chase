@@ -1,0 +1,72 @@
+/* Sized against the DisplayFrame's cqh/cqw container (see displayframe.css)
+   so it scales correctly to fill a 55" portrait screen regardless of
+   rotation, instead of the fixed pixel values this used to have. */
+
+.pf-chaser-display {
+  display: flex;
+  flex-direction: column;
+}
+
+.pf-cd-topbar {
+  display: flex;
+  align-items: center;
+  padding: 2cqh 3cqw;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex: 0 0 auto;
+}
+
+.pf-cd-wordmark {
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+  font-size: max(18px, 3.4cqh);
+  display: flex;
+  align-items: baseline;
+  gap: 0.3em;
+}
+.pf-cd-wordmark span {
+  color: var(--pf-red-600);
+}
+
+.pf-cd-stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2cqh 4cqw;
+  gap: 1.6cqh;
+  text-align: center;
+}
+
+.pf-cd-names {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3cqw;
+  font-size: max(16px, 2.6cqh);
+}
+.pf-cd-chaser-name strong {
+  color: var(--pf-red-600);
+}
+
+.pf-cd-phase {
+  flex: 0 0 auto;
+  font-size: max(13px, 1.8cqh);
+}
+
+.pf-cd-ladder-wrap {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+/* End-of-game result card - no px cap here either, scales with the screen
+   like everything else on this page instead of sitting small in the middle. */
+.pf-cd-stage .pf-badgecard {
+  max-width: 44em;
+  font-size: max(16px, 3.2cqh);
+}

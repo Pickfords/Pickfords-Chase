@@ -1,4 +1,9 @@
+import { useEffect, useRef, useState } from 'react';
 import './ladder.css';
+
+// How long the blink highlight stays on after a placement reveal - see the
+// useEffect below.
+const BLINK_MS = 1200;
 
 // Fallback only - real games always get the tier list from the server
 // (gameState.badges, see gameEngine.js publicState) so the client never has
@@ -13,26 +18,32 @@ const HEAD_START = 2; // must match server/src/gameEngine.js HEAD_START
  *   a wrong answer leaves both players standing still.
  * distance: contestant's live lead over the Chaser (see gameEngine.js).
  * variant: 'compact' (default, private per-player sidebar) or 'funnel'
- *   (bigger, theatrical treatment for the public Chaser display screen -
- *   only the tile the contestant currently occupies shows its badge name;
- *   every other badge tile's hashtag stays hidden).
+ *   (bigger, theatrical treatment for the public Chaser display screen).
+ *   All badge hashtags are always visible on every tile.
  *
  * The track, top-to-bottom: CHASER START (where the Chaser begins, HEAD_START
  * tiles above the Contestant) -> ... -> #MobilityMover (the Contestant's own
  * starting tile) -> ... -> #MobilityLegend (bottom). Both players move DOWN
- * one tile per correct answer of their own. A tile the Contestant has fully
- * cleared shows green; a tile the Chaser is on or has already passed shows
- * red (both can apply to the same tile at once).
+ * one tile per correct answer of their own.
  *
- * Both markers are placed on one shared absolute tile index (0 = Chaser
+ * Colour language (funnel variant): a tile the Contestant has fully cleared
+ * is green; a tile the Chaser is on or has already passed is red (wins over
+ * green if both apply); the tile the Contestant is CURRENTLY on is blue -
+ * gold instead if that tile is #MobilityLegend (i.e. they've just cleared
+ * the whole ladder). No separate marker icon denotes the Contestant's
+ * position any more - the tile colour itself is the indicator. The Chaser
+ * still gets a marker icon, since the red trail alone doesn't show exactly
+ * where within it they currently are.
+ *
+ * Both positions are placed on one shared absolute tile index (0 = Chaser
  * Start, at the top). The Contestant starts HEAD_START tiles below that,
  * standing on #MobilityMover; the Chaser starts at tile 0 and needs
  * HEAD_START correct answers just to draw level with the Contestant's start.
  * This is the same distance = HEAD_START + contestantCorrect - chaserCorrect
  * used by gameEngine.js - the "gap" shown above the track and the
- * tile-distance between the two markers below are always the same number,
- * and hitting distance <= 0 (caught) is exactly the two markers landing on
- * the same tile.
+ * tile-distance between the two positions below are always the same number,
+ * and hitting distance <= 0 (caught) is exactly the two landing on the same
+ * tile.
  */
 export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught = false, badges = FALLBACK_BADGES, variant = 'compact' }) {
   const rungs = badges.length ? badges : FALLBACK_BADGES;
@@ -44,6 +55,25 @@ export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught 
   const chaserAbs = clampAbs(clampedSlot - distance + HEAD_START);
 
   const funnel = variant === 'funnel';
+
+  // Blink the old and new tiles whenever a placement reveal moves either
+  // marker (or, if neither actually moved, blink wherever they already are
+  // - "the game responded" even without a visible change) - not on the
+  // very first mount, just on updates.
+  const [blinkTiles, setBlinkTiles] = useState(() => new Set());
+  const prevPositions = useRef(null);
+  const blinkTimeout = useRef(null);
+  useEffect(() => {
+    const prev = prevPositions.current;
+    if (prev) {
+      setBlinkTiles(new Set([prev.contestantAbs, prev.chaserAbs, contestantAbs, chaserAbs]));
+      clearTimeout(blinkTimeout.current);
+      blinkTimeout.current = setTimeout(() => setBlinkTiles(new Set()), BLINK_MS);
+    }
+    prevPositions.current = { contestantAbs, chaserAbs };
+    return () => clearTimeout(blinkTimeout.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contestantAbs, chaserAbs]);
 
   const tiles = [
     ...Array.from({ length: HEAD_START }, (_, i) => ({
@@ -73,18 +103,28 @@ export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught 
           // Contestant: fully cleared (behind their current tile) turns green.
           const isCleared = tile.isBadge && tile.badgeRung <= clampedSlot;
           // Chaser: on it now, or already passed it, turns red - including
-          // the Chaser Start zone itself, not just badge tiles. Takes
-          // priority over the Contestant's green "cleared" colour below if
-          // both apply to the same tile (see ladder.css: chaser-passed is
-          // declared after cleared, so it wins the tiebreak).
+          // the Chaser Start zone itself, not just badge tiles.
           const isChaserPassed = absoluteIndex <= chaserAbs;
+          // Contestant's current tile: blue, or gold if it's the last tile
+          // (#MobilityLegend - they've just cleared the whole ladder).
+          const isCurrentLegend = isContestantHere && tile.isBadge && tile.badgeRung === rungs.length;
+          const isCurrentOther = isContestantHere && !isCurrentLegend;
           const isCaughtTile = caught && isContestantHere && isChaserHere;
+          const isBlinking = blinkTiles.has(absoluteIndex);
           const widthPct = funnel ? 100 - (absoluteIndex / (tiles.length - 1)) * 45 : 100; // tapers top to bottom
-          const showLabel = !funnel || !tile.isBadge || isContestantHere;
           return (
             <div
               key={tile.key}
-              className={`pf-rung ${isCleared ? 'cleared' : ''} ${isChaserPassed ? 'chaser-passed' : ''} ${isCaughtTile ? 'caught-tile' : ''} ${tile.muted ? 'pf-rung-muted' : ''}`}
+              className={[
+                'pf-rung',
+                isCleared ? 'cleared' : '',
+                isChaserPassed ? 'chaser-passed' : '',
+                isCurrentOther ? 'current-contestant' : '',
+                isCurrentLegend ? 'current-legend' : '',
+                isCaughtTile ? 'caught-tile' : '',
+                isBlinking ? 'blink' : '',
+                tile.muted ? 'pf-rung-muted' : '',
+              ].join(' ')}
               style={funnel ? { width: `${widthPct}%` } : undefined}
             >
               <div className="pf-rung-markers">
@@ -93,13 +133,13 @@ export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught 
                     {funnel ? '▼' : 'C'}
                   </span>
                 )}
-                {isContestantHere && (
-                  <span className="pf-marker contestant" title={funnel ? 'Contestant' : 'You'}>
-                    {funnel ? 'C' : 'Y'}
+                {isContestantHere && !funnel && (
+                  <span className="pf-marker contestant" title="You">
+                    Y
                   </span>
                 )}
               </div>
-              <div className={`pf-rung-label ${tile.muted ? 'muted' : ''}`}>{showLabel ? tile.label : ''}</div>
+              <div className={`pf-rung-label ${tile.muted ? 'muted' : ''}`}>{tile.label}</div>
             </div>
           );
         })}

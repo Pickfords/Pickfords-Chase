@@ -1,15 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import { socket } from '../lib/socket';
 import { api } from '../lib/api';
+import DisplayFrame from '../components/DisplayFrame';
 import Ladder from '../components/Ladder';
 import BadgeCard from '../components/BadgeCard';
+import IdleVehicles from '../components/IdleVehicles';
 import { RedFlashOverlay, ConfettiOverlay, END_EFFECT_DURATION_MS } from '../components/EndEffects';
+import { useIdleVehicles } from '../hooks/useIdleVehicles';
+import './chaserdisplay.css';
 
 // Public, no-controls funnel-diagram screen (the show's chase-diagram
-// visual) for the venue's big screen. Auto-follows whichever game is
-// currently live - no join code. Only moves the Chaser/Contestant markers
-// on 'placementRevealed' (the admin's 3rd release button), never on
-// 'reveal', so the audience-facing suspense survives even though the
+// visual) for a 55" portrait-mounted venue screen. Auto-follows whichever
+// game is currently live - no join code. Only moves the Chaser/Contestant
+// markers on 'placementRevealed' (the admin's 3rd release button), never
+// on 'reveal', so the audience-facing suspense survives even though the
 // players' own tablets already know the answer.
 export default function ChaserDisplay() {
   const [contestantName, setContestantName] = useState('Contestant');
@@ -23,10 +27,16 @@ export default function ChaserDisplay() {
   const [gameOver, setGameOver] = useState(null);
   const [endEffect, setEndEffect] = useState(null); // 'flash' | 'confetti' | null
   const endEffectTimeout = useRef(null);
+  // Bumped on every real game event - the idle-vehicle animation watches
+  // this and only plays after 10s with no change to it (see useIdleVehicles).
+  const [activityTick, setActivityTick] = useState(0);
+  const bump = () => setActivityTick((t) => t + 1);
+  const vehicle = useIdleVehicles(activityTick);
 
   useEffect(() => {
     function applyGame(gameId, state) {
       clearTimeout(endEffectTimeout.current);
+      bump();
       setContestantName(state.contestantName);
       setChaserName(state.chaserName);
       setBadges(state.badges);
@@ -48,21 +58,26 @@ export default function ChaserDisplay() {
       applyGame(gameId, state);
     }
     function onPlayersUpdated(payload) {
+      bump();
       setContestantName(payload.contestantName);
       setChaserName(payload.chaserName);
     }
     function onQuestion(q) {
+      bump();
       setLiveSlot(q);
       setPhase('question');
       setGameOver(null);
     }
     function onAnswersReleased() {
+      bump();
       setPhase('active');
     }
     function onReveal() {
+      bump();
       setPhase('awaiting');
     }
     function onPlacementRevealed(p) {
+      bump();
       setCurrentSlot(p.contestantCorrectCount);
       setDistance(p.distance);
       setCaught(p.caught);
@@ -73,6 +88,7 @@ export default function ChaserDisplay() {
     // catch (this includes running out of the 10-question reserve, which the
     // engine also counts as "caught"), a burst of confetti for an escape.
     function onGameOver(summary) {
+      bump();
       setEndEffect(summary.outcome === 'escaped' ? 'confetti' : 'flash');
       clearTimeout(endEffectTimeout.current);
       endEffectTimeout.current = setTimeout(() => {
@@ -108,40 +124,45 @@ export default function ChaserDisplay() {
   }[phase];
 
   return (
-    <div className="pf-shell pf-chaser-display">
-      {endEffect === 'flash' && <RedFlashOverlay />}
-      {endEffect === 'confetti' && <ConfettiOverlay />}
-      <div className="pf-topbar">
-        <div className="pf-wordmark">
-          PICKFORDS <span>CHASER</span>
-        </div>
-      </div>
-
-      {gameOver ? (
-        <div className="pf-center-stage">
-          <BadgeCard
-            contestantName={gameOver.contestantName}
-            outcome={gameOver.outcome}
-            finalBadge={gameOver.finalBadge}
-            score={gameOver.score}
-            correctCount={gameOver.correctCount}
-            totalSlots={gameOver.questionsAnswered}
-          />
-        </div>
-      ) : (
-        <div className="pf-center-stage">
-          <div style={{ display: 'flex', gap: 48, fontSize: 20, marginBottom: 8 }}>
-            <span>
-              Contestant: <strong>{contestantName}</strong>
-            </span>
-            <span>
-              Chaser: <strong style={{ color: 'var(--pf-red-600)' }}>{chaserName}</strong>
-            </span>
+    <DisplayFrame storageKey="pf_chaser_display_rotation">
+      <div className="pf-shell pf-chaser-display">
+        {endEffect === 'flash' && <RedFlashOverlay />}
+        {endEffect === 'confetti' && <ConfettiOverlay />}
+        <IdleVehicles vehicle={vehicle} />
+        <div className="pf-cd-topbar">
+          <div className="pf-cd-wordmark">
+            PICKFORDS <span>CHASER</span>
           </div>
-          {phaseLabel && <div className="pf-eyebrow" style={{ fontSize: 15, marginBottom: 8 }}>{phaseLabel}</div>}
-          <Ladder currentSlot={currentSlot} distance={distance} caught={caught} badges={badges || undefined} variant="funnel" />
         </div>
-      )}
-    </div>
+
+        {gameOver ? (
+          <div className="pf-cd-stage">
+            <BadgeCard
+              contestantName={gameOver.contestantName}
+              outcome={gameOver.outcome}
+              finalBadge={gameOver.finalBadge}
+              score={gameOver.score}
+              correctCount={gameOver.correctCount}
+              totalSlots={gameOver.questionsAnswered}
+            />
+          </div>
+        ) : (
+          <div className="pf-cd-stage">
+            <div className="pf-cd-names">
+              <span>
+                Contestant: <strong>{contestantName}</strong>
+              </span>
+              <span className="pf-cd-chaser-name">
+                Chaser: <strong>{chaserName}</strong>
+              </span>
+            </div>
+            {phaseLabel && <div className="pf-cd-phase pf-eyebrow">{phaseLabel}</div>}
+            <div className="pf-cd-ladder-wrap">
+              <Ladder currentSlot={currentSlot} distance={distance} caught={caught} badges={badges || undefined} variant="funnel" />
+            </div>
+          </div>
+        )}
+      </div>
+    </DisplayFrame>
   );
 }

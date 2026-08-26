@@ -1,0 +1,72 @@
+/* Sized against the DisplayFrame's cqh/cqw container (see
+   components/displayframe.css) so it scales correctly to fill a 55"
+   portrait screen regardless of rotation, instead of the fixed pixel
+   values this used to have. max() (floor only, no ceiling) rather than
+   clamp() so text keeps growing with the screen instead of hitting an
+   artificially small cap. */
+
+.pf-ld-topbar {
+  display: flex;
+  align-items: center;
+  padding: 2cqh 3cqw;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex: 0 0 auto;
+}
+
+.pf-ld-wordmark {
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+  font-size: max(18px, 3.4cqh);
+  display: flex;
+  align-items: baseline;
+  gap: 0.3em;
+}
+.pf-ld-wordmark span {
+  color: var(--pf-red-600);
+}
+.pf-ld-wordmark-sub {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 0.4em;
+}
+
+.pf-ld-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 2cqh 4cqw;
+  width: 94%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.pf-ld-celebration {
+  flex: 0 0 auto;
+  margin-bottom: 2cqh;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: max(18px, 2.8cqh);
+}
+.pf-ld-celebration.escaped {
+  border-color: rgba(240, 184, 75, 0.4);
+}
+.pf-ld-celebration.caught {
+  border-color: rgba(211, 16, 39, 0.4);
+}
+
+.pf-ld-title {
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-size: max(28px, 5.5cqh);
+  margin-bottom: 1.5cqh;
+  text-align: center;
+}
+
+.pf-ld-table-wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: max(16px, 3.4cqh);
+}

@@ -5,7 +5,15 @@ import './badgecard.css';
 // time - so this only ever sees these two outcomes.
 const COPY = {
   escaped: { stateClass: 'escaped', noBadgeText: 'NO TIER CLEARED', footer: 'Escaped the Chaser 🏆' },
-  caught: { stateClass: 'caught', noBadgeText: 'CAUGHT BEFORE CLEARING A TIER', footer: 'Caught by the Chaser — worthy effort' },
+  caught: {
+    stateClass: 'caught',
+    noBadgeText: (
+      <>
+        Time to do your <span className="pf-badgecard-gmpd">GMPD</span>!?!
+      </>
+    ),
+    footer: 'Caught by the Chaser — worthy effort',
+  },
 };
 
 export default function BadgeCard({ contestantName, outcome, finalBadge, score, correctCount, totalSlots = 6 }) {
