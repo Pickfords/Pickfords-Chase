@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import mascotImg from '../assets/mascot.png';
 
 export default function Home() {
   return (
@@ -13,16 +14,24 @@ export default function Home() {
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 40, margin: 0, letterSpacing: '0.02em' }}>
           Which device is this?
         </h1>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, width: 280, marginTop: 8 }}>
-          <Link to="/play/contestant" className="pf-btn pf-btn-primary" style={{ textAlign: 'center', textDecoration: 'none' }}>
-            I'm the Contestant
-          </Link>
-          <Link to="/play/chaser" className="pf-btn pf-btn-danger" style={{ textAlign: 'center', textDecoration: 'none' }}>
-            I'm the Chaser
-          </Link>
-          <Link to="/admin" className="pf-btn pf-btn-ghost" style={{ textAlign: 'center', textDecoration: 'none' }}>
-            Admin / data capture
-          </Link>
+        <div style={{ position: 'relative', width: 280, marginTop: 8 }}>
+          <img
+            src={mascotImg}
+            alt=""
+            aria-hidden="true"
+            style={{ position: 'absolute', right: '100%', top: -52, width: 130, marginRight: 4, pointerEvents: 'none' }}
+          />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <Link to="/play/contestant" className="pf-btn pf-btn-primary" style={{ textAlign: 'center', textDecoration: 'none' }}>
+              I'm the Contestant
+            </Link>
+            <Link to="/play/chaser" className="pf-btn pf-btn-danger" style={{ textAlign: 'center', textDecoration: 'none' }}>
+              I'm the Chaser
+            </Link>
+            <Link to="/admin" className="pf-btn pf-btn-ghost" style={{ textAlign: 'center', textDecoration: 'none' }}>
+              Admin / data capture
+            </Link>
+          </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: 280, marginTop: 22 }}>
           <div className="pf-eyebrow">PUBLIC DISPLAYS</div>
