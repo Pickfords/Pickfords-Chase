@@ -26,14 +26,17 @@
   bottom: 4cqh;
 }
 
-/* Truck: slow and heavy, straight across, no bounce. */
+/* Truck: slow and heavy, straight across, no bounce. Real branded photo
+   with "Pickfords" text painted on it - never scaleX-flipped (would mirror
+   the text unreadable), so there's a separate source image per direction
+   instead (see VehicleIcons.jsx) and neither keyframe here touches transform. */
 @keyframes pf-idle-truck-ltr {
-  0% { left: -15cqw; transform: scaleX(1); }
-  100% { left: 115cqw; transform: scaleX(1); }
+  0% { left: -15cqw; }
+  100% { left: 115cqw; }
 }
 @keyframes pf-idle-truck-rtl {
-  0% { left: 115cqw; transform: scaleX(-1); }
-  100% { left: -15cqw; transform: scaleX(-1); }
+  0% { left: 115cqw; }
+  100% { left: -15cqw; }
 }
 .pf-idle-truck.pf-idle-ltr { animation: pf-idle-truck-ltr 18s linear forwards; }
 .pf-idle-truck.pf-idle-rtl { animation: pf-idle-truck-rtl 18s linear forwards; }

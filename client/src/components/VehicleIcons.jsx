@@ -1,8 +1,17 @@
+import truckLtrImg from '../assets/truck-pickfords-ltr.png';
+import truckRtlImg from '../assets/truck-pickfords-rtl.png';
+
 // Flat-icon vehicles for the idle-screen animation (see IdleVehicles.jsx).
-// Each is drawn nose/front-first pointing RIGHT (positive x) by default -
-// IdleVehicles flips them with scaleX(-1) for right-to-left travel, so the
-// front always leads the direction of motion instead of an ambiguous emoji
-// glyph that can end up looking like it's flying/driving sideways.
+// The plane and ship are drawn nose/front-first pointing RIGHT (positive x)
+// by default - IdleVehicles flips them with scaleX(-1) for right-to-left
+// travel, so the front always leads the direction of motion instead of an
+// ambiguous emoji glyph that can end up looking like it's flying sideways.
+//
+// The truck is the real branded Pickfords photo, which has "Pickfords"
+// text painted on it - mirroring it in CSS would flip that text backward
+// and make it unreadable, so instead there are two separate source images,
+// one already drawn facing each way, and TruckIcon picks between them by
+// direction rather than ever applying a scaleX flip.
 
 export function PlaneIcon({ className }) {
   return (
@@ -21,21 +30,8 @@ export function PlaneIcon({ className }) {
   );
 }
 
-export function TruckIcon({ className }) {
-  return (
-    <svg viewBox="0 0 100 60" className={className} xmlns="http://www.w3.org/2000/svg">
-      <rect x="6" y="13" width="56" height="29" rx="4" fill="#233055" />
-      <rect x="12" y="19" width="16" height="10" rx="1.5" fill="#3a6ea5" />
-      <rect x="32" y="19" width="16" height="10" rx="1.5" fill="#4a8bdb" />
-      <path d="M63 21 L83 21 Q89 21 91 27 L93 38 L63 38 Z" fill="#f0b84b" />
-      <path d="M67 24 L80 24 Q84 24 85 28 L86 33 L67 33 Z" fill="#eaf3ff" />
-      <rect x="6" y="40" width="88" height="4" fill="#d9822a" />
-      <circle cx="24" cy="49" r="8" fill="#171e33" />
-      <circle cx="24" cy="49" r="3.4" fill="#f0b84b" />
-      <circle cx="80" cy="49" r="8" fill="#171e33" />
-      <circle cx="80" cy="49" r="3.4" fill="#f0b84b" />
-    </svg>
-  );
+export function TruckIcon({ className, direction }) {
+  return <img src={direction === 'ltr' ? truckLtrImg : truckRtlImg} className={className} alt="" />;
 }
 
 export function ShipIcon({ className }) {

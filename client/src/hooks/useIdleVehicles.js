@@ -11,10 +11,9 @@ const DURATION_MS = { truck: 18_000, plane: 9_000, ship: 12_000 };
  * Sends a truck, plane, or ship drifting across the screen after 10s with
  * no activity (see `resetSignal` below), to keep an otherwise-static big
  * screen feeling alive between questions/games. Cycles through the three
- * types and alternates the direction of travel each time. Any change to
- * `resetSignal` counts as activity - it cancels a vehicle mid-flight and
- * restarts the 10s countdown, so the animation only ever plays while the
- * screen has genuinely gone quiet.
+ * types. Any change to `resetSignal` counts as activity - it cancels a
+ * vehicle mid-flight and restarts the 10s countdown, so the animation only
+ * ever plays while the screen has genuinely gone quiet.
  */
 export function useIdleVehicles(resetSignal) {
   const [vehicle, setVehicle] = useState(null); // { id, type, direction } | null
