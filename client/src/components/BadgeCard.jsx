@@ -1,5 +1,6 @@
 import './badgecard.css';
 import winnerMascotImg from '../assets/mascot-winner.png';
+import caughtMascotImg from '../assets/mascot-caught.jpg';
 
 // 'incomplete' (running out of the 10-question reserve without escaping) is
 // counted as 'caught' by the engine - the contestant didn't get away in
@@ -44,6 +45,7 @@ export default function BadgeCard({ contestantName, outcome, finalBadge, score, 
         <div className="pf-badgecard-footer">{copy.footer}</div>
       </div>
       {outcome === 'escaped' && <img src={winnerMascotImg} alt="" aria-hidden="true" className="pf-badgecard-mascot" />}
+      {outcome === 'caught' && <img src={caughtMascotImg} alt="" aria-hidden="true" className="pf-badgecard-mascot pf-badgecard-mascot-caught" />}
     </div>
   );
 }

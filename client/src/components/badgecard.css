@@ -92,3 +92,11 @@
   max-width: 60vw;
   height: auto;
 }
+
+/* Full photo (not a transparent cutout like the winner mascot) - frame it
+   so it reads as a deliberate card rather than a floating rectangle. */
+.pf-badgecard-mascot-caught {
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(211, 16, 39, 0.35);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
