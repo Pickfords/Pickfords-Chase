@@ -40,6 +40,10 @@ export default function PlayerView({ role }) {
   const [gameOver, setGameOver] = useState(null);
   const [endEffect, setEndEffect] = useState(null); // 'flash' | 'confetti' | null
   const endEffectTimeout = useRef(null);
+  // Bumped on every 'reveal' - Ladder uses this to blink the relevant
+  // tile(s) even when neither marker actually moved (e.g. both sides got
+  // the question wrong).
+  const [revealTick, setRevealTick] = useState(0);
 
   useEffect(() => {
     function onQuestion(q) {
@@ -64,6 +68,7 @@ export default function PlayerView({ role }) {
     }
     function onReveal(payload) {
       setReveal(payload);
+      setRevealTick((t) => t + 1);
     }
     // Hold the current view on screen a beat longer, with a full-screen
     // effect over it, before cutting to the BadgeCard result - matches the
@@ -205,7 +210,13 @@ export default function PlayerView({ role }) {
       <TopBar />
       <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '260px 1fr', gap: 24, padding: 24 }}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Ladder currentSlot={currentSlot} distance={distance} badges={gameState?.badges} caught={gameOver?.outcome === 'caught'} />
+          <Ladder
+            currentSlot={currentSlot}
+            distance={distance}
+            badges={gameState?.badges}
+            caught={gameOver?.outcome === 'caught'}
+            revealTick={revealTick}
+          />
         </div>
 
         <div className="pf-center-stage" style={{ padding: 0 }}>
@@ -266,7 +277,7 @@ function TopBar() {
   return (
     <div className="pf-topbar">
       <div className="pf-wordmark">
-        PICKFORDS <span>CHASER</span>
+        PICKFORDS <span className="pf-word-relo">RELO</span> <span className="pf-word-chaser">CHASER</span>
       </div>
     </div>
   );

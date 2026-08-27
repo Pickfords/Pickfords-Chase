@@ -215,6 +215,36 @@
   background: linear-gradient(135deg, rgba(246, 207, 127, 0.92), rgba(184, 132, 32, 0.95));
 }
 
+/* Arrived on #MobilityLegend but not yet confirmed (legendRevealed=false) -
+   stays blue (current-contestant, above) with a pulsing gold outline teasing
+   the reveal, instead of turning gold immediately. */
+.pf-ladder-funnel .pf-rung.legend-pending {
+  position: relative;
+}
+.pf-ladder-funnel .pf-rung.legend-pending::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 3px solid var(--pf-gold-400);
+  animation: pf-legend-pending-outline 1s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes pf-legend-pending-outline {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Confirmed escape (legendRevealed=true) - solid gold (current-legend,
+   above) and pulsing continuously; it's removed from view automatically
+   once the screen cuts to the winner card, so no fixed duration needed. */
+.pf-ladder-funnel .pf-rung.legend-won {
+  animation: pf-legend-won-pulse 0.8s ease-in-out infinite;
+}
+@keyframes pf-legend-won-pulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.6); }
+}
+
 .pf-ladder-funnel .pf-rung-markers {
   width: auto;
   min-width: 4.5cqh;

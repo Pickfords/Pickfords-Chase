@@ -78,3 +78,17 @@
   font-size: 0.85em;
   color: rgba(255, 255, 255, 0.75);
 }
+
+.pf-badgecard-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+  width: 100%;
+}
+
+.pf-badgecard-mascot {
+  width: 10em;
+  max-width: 60vw;
+  height: auto;
+}

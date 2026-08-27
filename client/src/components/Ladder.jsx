@@ -44,8 +44,26 @@ const HEAD_START = 2; // must match server/src/gameEngine.js HEAD_START
  * tile-distance between the two positions below are always the same number,
  * and hitting distance <= 0 (caught) is exactly the two landing on the same
  * tile.
+ *
+ * revealTick: bump this (any changing value) once per placement reveal, so
+ *   the blink below fires even when NEITHER marker actually moved (e.g. both
+ *   sides got the question wrong) - blink is tied to "a reveal happened",
+ *   not to the derived positions changing, since those can legitimately
+ *   stay identical across a reveal.
+ * legendRevealed: while the Contestant sits on #MobilityLegend, false shows
+ *   a blue tile with a pulsing gold outline (arrived, not yet confirmed);
+ *   true (the default, used everywhere except the public Chaser display's
+ *   staged reveal) shows the tile solid gold and pulsing.
  */
-export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught = false, badges = FALLBACK_BADGES, variant = 'compact' }) {
+export default function Ladder({
+  currentSlot = 0,
+  distance = HEAD_START,
+  caught = false,
+  badges = FALLBACK_BADGES,
+  variant = 'compact',
+  revealTick = 0,
+  legendRevealed = true,
+}) {
   const rungs = badges.length ? badges : FALLBACK_BADGES;
   const totalTiles = HEAD_START + rungs.length; // Chaser-start zone + badge tiers
   const clampAbs = (n) => Math.max(0, Math.min(totalTiles - 1, n));
@@ -56,10 +74,11 @@ export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught 
 
   const funnel = variant === 'funnel';
 
-  // Blink the old and new tiles whenever a placement reveal moves either
-  // marker (or, if neither actually moved, blink wherever they already are
-  // - "the game responded" even without a visible change) - not on the
-  // very first mount, just on updates.
+  // Blink the old and new tiles whenever a placement reveal happens (or, if
+  // neither marker actually moved, blink wherever they already are - "the
+  // game responded" even without a visible change) - not on the very first
+  // mount, just on updates. Keyed on revealTick (not the positions
+  // themselves), since the positions can be IDENTICAL across a reveal.
   const [blinkTiles, setBlinkTiles] = useState(() => new Set());
   const prevPositions = useRef(null);
   const blinkTimeout = useRef(null);
@@ -73,7 +92,7 @@ export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught 
     prevPositions.current = { contestantAbs, chaserAbs };
     return () => clearTimeout(blinkTimeout.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contestantAbs, chaserAbs]);
+  }, [revealTick]);
 
   const tiles = [
     ...Array.from({ length: HEAD_START }, (_, i) => ({
@@ -106,9 +125,13 @@ export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught 
           // the Chaser Start zone itself, not just badge tiles.
           const isChaserPassed = absoluteIndex <= chaserAbs;
           // Contestant's current tile: blue, or gold if it's the last tile
-          // (#MobilityLegend - they've just cleared the whole ladder).
-          const isCurrentLegend = isContestantHere && tile.isBadge && tile.badgeRung === rungs.length;
-          const isCurrentOther = isContestantHere && !isCurrentLegend;
+          // (#MobilityLegend - they've just cleared the whole ladder). While
+          // legendRevealed is false, Legend stays blue with a pulsing gold
+          // outline instead - "arrived, not yet confirmed" (see ChaserDisplay).
+          const isLegendTile = isContestantHere && tile.isBadge && tile.badgeRung === rungs.length;
+          const legendPending = isLegendTile && !legendRevealed;
+          const legendWon = isLegendTile && legendRevealed;
+          const isCurrentOther = isContestantHere && !isLegendTile;
           const isCaughtTile = caught && isContestantHere && isChaserHere;
           const isBlinking = blinkTiles.has(absoluteIndex);
           // Gentle taper (not too aggressive) - on a narrow portrait screen
@@ -122,8 +145,9 @@ export default function Ladder({ currentSlot = 0, distance = HEAD_START, caught 
                 'pf-rung',
                 isCleared ? 'cleared' : '',
                 isChaserPassed ? 'chaser-passed' : '',
-                isCurrentOther ? 'current-contestant' : '',
-                isCurrentLegend ? 'current-legend' : '',
+                isCurrentOther || legendPending ? 'current-contestant' : '',
+                legendPending ? 'legend-pending' : '',
+                legendWon ? 'current-legend legend-won' : '',
                 isCaughtTile ? 'caught-tile' : '',
                 isBlinking ? 'blink' : '',
                 tile.muted ? 'pf-rung-muted' : '',

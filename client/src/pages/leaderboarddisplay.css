@@ -22,9 +22,8 @@
   align-items: baseline;
   gap: 0.3em;
 }
-.pf-ld-wordmark span {
-  color: var(--pf-red-600);
-}
+/* RELO/CHASER colouring comes from the global .pf-word-relo/.pf-word-chaser
+   classes (styles.css), not a bare "span" rule here. */
 .pf-ld-wordmark-sub {
   color: rgba(255, 255, 255, 0.5) !important;
   font-size: 0.4em;

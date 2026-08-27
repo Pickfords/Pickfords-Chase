@@ -32,10 +32,20 @@ export default function ChaserDisplay() {
   const [activityTick, setActivityTick] = useState(0);
   const bump = () => setActivityTick((t) => t + 1);
   const vehicle = useIdleVehicles(activityTick);
+  // Bumped on every placement reveal specifically (not every game event) -
+  // Ladder uses this to blink the relevant tile(s) even when neither marker
+  // actually moved (e.g. both sides got the question wrong).
+  const [revealTick, setRevealTick] = useState(0);
+  // False for a beat right after arriving on #MobilityLegend, before the
+  // gold "confirmed" reveal - see onPlacementRevealed below.
+  const [legendRevealed, setLegendRevealed] = useState(true);
+  const legendTimeout = useRef(null);
+  const LEGEND_TEASE_MS = 1400;
 
   useEffect(() => {
     function applyGame(gameId, state) {
       clearTimeout(endEffectTimeout.current);
+      clearTimeout(legendTimeout.current);
       bump();
       setContestantName(state.contestantName);
       setChaserName(state.chaserName);
@@ -47,6 +57,7 @@ export default function ChaserDisplay() {
       setLiveSlot(null);
       setGameOver(null);
       setEndEffect(null);
+      setLegendRevealed(true);
       socket.emit('joinGame', { gameId, role: 'display' }, () => {});
     }
 
@@ -78,10 +89,22 @@ export default function ChaserDisplay() {
     }
     function onPlacementRevealed(p) {
       bump();
+      setRevealTick((t) => t + 1);
       setCurrentSlot(p.contestantCorrectCount);
       setDistance(p.distance);
       setCaught(p.caught);
       setPhase('idle');
+      clearTimeout(legendTimeout.current);
+      if (p.escaped) {
+        // Arrive on #MobilityLegend blue-with-gold-outline first, THEN flip
+        // to solid gold - this happens well within the ~4s the server waits
+        // before gameOver fires, so it's a distinct beat before the
+        // confetti/cut-to-card, not a race against it.
+        setLegendRevealed(false);
+        legendTimeout.current = setTimeout(() => setLegendRevealed(true), LEGEND_TEASE_MS);
+      } else {
+        setLegendRevealed(true);
+      }
     }
     // Hold the funnel view on screen a beat longer, with a full-screen effect
     // over it, before cutting to the BadgeCard result - a flash of red for a
@@ -106,6 +129,7 @@ export default function ChaserDisplay() {
     socket.on('gameOver', onGameOver);
     return () => {
       clearTimeout(endEffectTimeout.current);
+      clearTimeout(legendTimeout.current);
       socket.off('activeGameChanged', onActiveGameChanged);
       socket.off('playersUpdated', onPlayersUpdated);
       socket.off('question', onQuestion);
@@ -131,7 +155,7 @@ export default function ChaserDisplay() {
         <IdleVehicles vehicle={vehicle} />
         <div className="pf-cd-topbar">
           <div className="pf-cd-wordmark">
-            PICKFORDS <span>CHASER</span>
+            PICKFORDS <span className="pf-word-relo">RELO</span> <span className="pf-word-chaser">CHASER</span>
           </div>
         </div>
 
@@ -158,7 +182,15 @@ export default function ChaserDisplay() {
             </div>
             {phaseLabel && <div className="pf-cd-phase pf-eyebrow">{phaseLabel}</div>}
             <div className="pf-cd-ladder-wrap">
-              <Ladder currentSlot={currentSlot} distance={distance} caught={caught} badges={badges || undefined} variant="funnel" />
+              <Ladder
+                currentSlot={currentSlot}
+                distance={distance}
+                caught={caught}
+                badges={badges || undefined}
+                variant="funnel"
+                revealTick={revealTick}
+                legendRevealed={legendRevealed}
+              />
             </div>
           </div>
         )}

@@ -6,7 +6,7 @@ export default function Home() {
     <div className="pf-shell">
       <div className="pf-topbar">
         <div className="pf-wordmark">
-          PICKFORDS <span>CHASER</span>
+          PICKFORDS <span className="pf-word-relo">RELO</span> <span className="pf-word-chaser">CHASER</span>
         </div>
       </div>
       <div className="pf-center-stage">

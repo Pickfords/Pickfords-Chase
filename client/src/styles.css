@@ -108,7 +108,14 @@ a:focus-visible,
   gap: 8px;
 }
 
-.pf-wordmark span {
+/* Wordmark colour language, used everywhere "PICKFORDS RELO CHASER" is
+   shown: PICKFORDS stays the ambient white/text colour, RELO is blue,
+   CHASER is red - these two classes are global (not scoped to any one
+   .pf-wordmark variant) so every screen's wordmark stays in sync. */
+.pf-word-relo {
+  color: var(--pf-blue-400);
+}
+.pf-word-chaser {
   color: var(--pf-red-600);
 }
 

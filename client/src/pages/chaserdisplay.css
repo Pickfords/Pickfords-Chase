@@ -26,9 +26,8 @@
   align-items: baseline;
   gap: 0.3em;
 }
-.pf-cd-wordmark span {
-  color: var(--pf-red-600);
-}
+/* RELO/CHASER colouring comes from the global .pf-word-relo/.pf-word-chaser
+   classes (styles.css), not a bare "span" rule here. */
 
 .pf-cd-stage {
   flex: 1;
@@ -73,4 +72,9 @@
 .pf-cd-stage .pf-badgecard {
   max-width: 36em;
   font-size: clamp(13px, 2.2cqh, 30px);
+}
+
+.pf-cd-stage .pf-badgecard-mascot {
+  width: clamp(120px, 22cqh, 320px);
+  max-width: 80cqw;
 }
