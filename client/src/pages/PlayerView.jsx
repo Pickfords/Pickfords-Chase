@@ -174,6 +174,9 @@ export default function PlayerView({ role }) {
             correctCount={gameOver.correctCount}
             totalSlots={gameOver.questionsAnswered}
           />
+          <button className="pf-btn pf-btn-primary" onClick={() => navigate('/')}>
+            Back to home
+          </button>
         </div>
       </div>
     );
