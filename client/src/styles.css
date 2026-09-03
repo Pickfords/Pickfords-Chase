@@ -219,5 +219,5 @@ a:focus-visible,
    tablets' Pickfords navy/gold identity - best-effort match to the show's
    palette pending real brand assets from the client. ------------------- */
 .pf-chaser-display {
-  background: radial-gradient(120% 140% at 50% -10%, rgba(211, 16, 39, 0.18) 0%, var(--pf-ink) 60%);
+  background: radial-gradient(120% 140% at 50% -10%, rgba(211, 16, 39, 0.18) 0%, var(--pf-navy-950) 60%);
 }
