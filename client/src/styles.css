@@ -15,15 +15,15 @@
 
 :root {
   /* Colour */
-  --pf-navy-950: #081a33;
-  --pf-navy-800: #123059;
-  --pf-navy-700: #1a3d6e;
-  --pf-blue-500: #2c6fbf;
-  --pf-blue-400: #4a8bdb;
+  --pf-navy-950: #1a3276;
+  --pf-navy-800: #1a3276;
+  --pf-navy-700: #1a3276;
+  --pf-blue-500: #209cd8;
+  --pf-blue-400: #209cd8;
   --pf-red-600: #d31027;
   --pf-red-700: #a50d1f;
-  --pf-gold-400: #f0b84b;
-  --pf-gold-300: #f6cf7f;
+  --pf-gold-400: #d19b17;
+  --pf-gold-300: #d19b17;
   --pf-ink: #0b1830;
   --pf-mist-100: #eef2f8;
   --pf-mist-200: #dbe4f0;
@@ -137,7 +137,7 @@ a:focus-visible,
 .pf-btn-primary {
   background: var(--pf-blue-500);
   color: var(--pf-white);
-  box-shadow: 0 6px 18px rgba(44, 111, 191, 0.35);
+  box-shadow: 0 6px 18px rgba(32, 156, 216, 0.35);
 }
 .pf-btn-primary:hover {
   background: var(--pf-blue-400);

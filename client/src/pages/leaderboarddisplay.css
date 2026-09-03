@@ -52,7 +52,7 @@
   font-size: clamp(13px, 1.8cqh, 26px);
 }
 .pf-ld-celebration.escaped {
-  border-color: rgba(240, 184, 75, 0.4);
+  border-color: rgba(209, 155, 23, 0.4);
 }
 .pf-ld-celebration.caught {
   border-color: rgba(211, 16, 39, 0.4);

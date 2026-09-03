@@ -112,7 +112,7 @@
 }
 .pf-marker.contestant {
   background: var(--pf-blue-500);
-  box-shadow: 0 0 0 2px rgba(44, 111, 191, 0.35);
+  box-shadow: 0 0 0 2px rgba(32, 156, 216, 0.35);
 }
 .pf-marker.chaser {
   background: var(--pf-red-600);
@@ -209,10 +209,10 @@
    still visually overrides all of these while it's playing, regardless of
    source order, since active CSS animations sit above the normal cascade. */
 .pf-ladder-funnel .pf-rung.current-contestant {
-  background: linear-gradient(135deg, rgba(74, 139, 219, 0.85), rgba(23, 62, 112, 0.92));
+  background: linear-gradient(135deg, rgba(32, 156, 216, 0.85), rgba(26, 50, 118, 0.92));
 }
 .pf-ladder-funnel .pf-rung.current-legend {
-  background: linear-gradient(135deg, rgba(246, 207, 127, 0.92), rgba(184, 132, 32, 0.95));
+  background: linear-gradient(135deg, rgba(209, 155, 23, 0.92), rgba(209, 155, 23, 0.95));
 }
 
 /* Arrived on #MobilityLegend but not yet confirmed (legendRevealed=false) -

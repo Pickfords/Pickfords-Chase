@@ -44,7 +44,7 @@
 }
 .pf-option:hover:not(:disabled) {
   border-color: var(--pf-blue-400);
-  background: rgba(44, 111, 191, 0.12);
+  background: rgba(32, 156, 216,0.12);
 }
 .pf-option:disabled {
   cursor: default;
@@ -52,7 +52,7 @@
 
 .pf-option.selected {
   border-color: var(--pf-blue-400);
-  background: rgba(44, 111, 191, 0.22);
+  background: rgba(32, 156, 216,0.22);
 }
 
 /* Obvious fill change the instant a player locks their answer in, before
@@ -61,7 +61,7 @@
   border-color: var(--pf-gold-400);
   background: var(--pf-gold-400);
   color: var(--pf-ink);
-  box-shadow: 0 0 0 3px rgba(240, 184, 75, 0.3);
+  box-shadow: 0 0 0 3px rgba(209, 155, 23,0.3);
 }
 .pf-option.locked-in .pf-option-key {
   border-color: var(--pf-ink);
@@ -70,7 +70,7 @@
 
 .pf-option.reveal-correct {
   border-color: var(--pf-gold-400);
-  background: rgba(240, 184, 75, 0.16);
+  background: rgba(209, 155, 23,0.16);
 }
 .pf-option.reveal-wrong {
   border-color: var(--pf-red-600);
