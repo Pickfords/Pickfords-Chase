@@ -131,14 +131,14 @@
     "id": "TAX09",
     "category": "Tax & Social Security",
     "difficulty": 5,
-    "question": "Under current UK Overseas Workday Relief rules, the annual financial limit is the lower of \u00a3300,000 and what percentage of relevant qualifying employment income?",
+    "question": "Under current UK Overseas Workday Relief rules, the annual financial limit is the lower of £300,000 and what percentage of relevant qualifying employment income?",
     "options": {
       "A": "20%",
       "B": "30%",
       "C": "50%"
     },
     "correctAnswer": "B",
-    "explanation": "Current OWR relief is capped at the lower of \u00a3300,000 or 30% of qualifying employment income, subject to the detailed rules.",
+    "explanation": "Current OWR relief is capped at the lower of £300,000 or 30% of qualifying employment income, subject to the detailed rules.",
     "source": "https://www.gov.uk/hmrc-internal-manuals/employment-income-manual/eim43600",
     "status": "Dynamic",
     "lastVerified": "2026-08-09"
@@ -242,18 +242,18 @@
   {
     "id": "IMM06",
     "category": "Immigration & Cross-Border Working",
-    "difficulty": 3,
-    "question": "Has EES replaced the Schengen 90/180-day short-stay rule?",
+    "difficulty": 4,
+    "question": "Which statement best describes the $103,265 H-1B fee proposed by DHS in August 2026?",
     "options": {
-      "A": "Yes",
-      "B": "No",
-      "C": "Only for British citizens"
+      "A": "It is already payable on all H-1B petitions",
+      "B": "It is a proposed additional fee for cap-subject H-1B petitions",
+      "C": "It replaced the H-1B registration fee"
     },
     "correctAnswer": "B",
-    "explanation": "EES records travel; it does not replace the underlying Schengen short-stay limit.",
-    "source": "https://travel-europe.europa.eu/ees_en",
-    "status": "Dynamic",
-    "lastVerified": "2026-08-09"
+    "explanation": "DHS proposed a separate $103,265 fee for H-1B cap-subject petitions, including those eligible for the advanced-degree exemption. As of 3 September 2026 it remains a proposal and is not an effective filing fee.",
+    "source": "https://www.federalregister.gov/documents/2026/08/25/2026-17324/fee-for-certain-h-1b-petitions\nhttps://www.kff.org/quick-insights/the-trump-administrations-proposed-103265-fee-for-h-1b-visas-could-affect-the-health-care-workforce/\nhttps://www.fwd.us/news/h1b-fee/",
+    "status": "Dynamic - proposed rule / verify before event",
+    "lastVerified": "2026-09-03"
   },
   {
     "id": "IMM07",
@@ -307,17 +307,17 @@
     "id": "IMM10",
     "category": "Immigration & Cross-Border Working",
     "difficulty": 5,
-    "question": "Which statement is correct?",
+    "question": "How did DHS calculate the proposed $103,265 H-1B fee?",
     "options": {
-      "A": "Immigration permission automatically determines tax residence",
-      "B": "Tax residence automatically gives work permission",
-      "C": "Immigration and tax are separate compliance analyses"
+      "A": "By dividing about $8.777 billion of identified immigration-system costs by 85,000 projected fee-paying petitions",
+      "B": "By multiplying the H-1B registration fee by projected FY2027 cap demand",
+      "C": "By combining standard petition and premium-processing fees over a three-year cycle"
     },
-    "correctAnswer": "C",
-    "explanation": "Immigration status and tax residence/liability are governed by separate legal frameworks.",
-    "source": "https://www.gov.uk/browse/visas-immigration",
-    "status": "Evergreen",
-    "lastVerified": "2026-08-09"
+    "correctAnswer": "A",
+    "explanation": "The NPRM states that DHS divided $8,777,488,035 of costs to be recovered by a projected fee-paying volume of 85,000, producing $103,264.57, then rounded to $103,265.",
+    "source": "https://www.federalregister.gov/documents/2026/08/25/2026-17324/fee-for-certain-h-1b-petitions\nhttps://www.kff.org/quick-insights/the-trump-administrations-proposed-103265-fee-for-h-1b-visas-could-affect-the-health-care-workforce/\nhttps://www.fwd.us/news/h1b-fee/",
+    "status": "Dynamic - proposed rule / verify before event",
+    "lastVerified": "2026-09-03"
   },
   {
     "id": "CMP01",
@@ -387,14 +387,14 @@
     "id": "CMP05",
     "category": "Compensation, Benefits & Payroll",
     "difficulty": 3,
-    "question": "If an employee must receive \u00a310,000 net and the only assumed tax is 40%, what gross payment produces \u00a310,000 net?",
+    "question": "If an employee must receive £10,000 net and the only assumed tax is 40%, what gross payment produces £10,000 net?",
     "options": {
-      "A": "\u00a314,000",
-      "B": "\u00a316,667",
-      "C": "\u00a320,000"
+      "A": "£14,000",
+      "B": "£16,667",
+      "C": "£20,000"
     },
     "correctAnswer": "B",
-    "explanation": "Gross = \u00a310,000 / (1 - 0.40) = approximately \u00a316,667.",
+    "explanation": "Gross = £10,000 / (1 - 0.40) = approximately £16,667.",
     "source": null,
     "status": "Evergreen",
     "lastVerified": "2026-08-09"
@@ -451,33 +451,33 @@
     "id": "CMP09",
     "category": "Compensation, Benefits & Payroll",
     "difficulty": 5,
-    "question": "An employer wants an employee to receive \u00a312,000 net where the assumed tax rate is 40%. Ignoring all other deductions, what is the grossed-up amount?",
+    "question": "An assignee moves to a location where everyday goods cost broadly the same as home, but suitable housing is significantly more expensive. Which compensation adjustment most directly addresses the difference?",
     "options": {
-      "A": "\u00a316,800",
-      "B": "\u00a320,000",
-      "C": "\u00a328,800"
+      "A": "Cost-of-living allowance",
+      "B": "Housing differential / housing allowance",
+      "C": "Hardship allowance"
     },
     "correctAnswer": "B",
-    "explanation": "\u00a312,000 / 0.60 = \u00a320,000.",
-    "source": null,
+    "explanation": "A housing differential or housing allowance is designed to address additional host-location housing costs. COLA addresses goods-and-services purchasing power, while hardship relates to difficult living conditions.",
+    "source": "https://mobilityexchange.mercer.com/insights/article/practical-mobility-management-tips-to-manage-expatriate-housing",
     "status": "Evergreen",
-    "lastVerified": "2026-08-09"
+    "lastVerified": "2026-09-03"
   },
   {
     "id": "CMP10",
     "category": "Compensation, Benefits & Payroll",
     "difficulty": 5,
-    "question": "Why can an employer-paid tax amount itself require further gross-up?",
+    "question": "An assignee remains paid in their home currency but incurs most everyday costs in the host currency. The host currency strengthens significantly, while local prices remain broadly unchanged. Which element of the assignment package would most directly address the resulting currency exposure?",
     "options": {
-      "A": "Tax paid on behalf of an employee can itself constitute taxable remuneration",
-      "B": "Because exchange rates change",
-      "C": "Because an A1 requires it"
+      "A": "Exchange-rate protection",
+      "B": "Cost-of-living adjustment",
+      "C": "Hardship allowance"
     },
     "correctAnswer": "A",
-    "explanation": "Where employer-paid tax is itself taxable remuneration, further gross-up may be required to deliver the intended net benefit.",
-    "source": "https://www.irs.gov/publications/p15b",
+    "explanation": "Because local prices are broadly unchanged, the issue is principally currency movement rather than inflation or hardship. Exchange-rate protection is intended to protect relevant compensation from material currency movements.",
+    "source": "https://mobilityexchange.mercer.com/assignments/long-term-assignments/differential-change-analysis",
     "status": "Evergreen",
-    "lastVerified": "2026-08-09"
+    "lastVerified": "2026-09-03"
   },
   {
     "id": "POL01",
@@ -579,17 +579,17 @@
     "id": "POL07",
     "category": "Policy, Programme & Strategy",
     "difficulty": 4,
-    "question": "A policy exception is approved outside standard policy. What makes it an exception?",
+    "question": "Two employees each receive a £5,000 relocation benefit. Employee A receives the full £5,000 regardless of actual spend. Employee B can use eligible services or claim eligible actual costs up to £5,000. Which description is correct?",
     "options": {
-      "A": "The provision differs from established policy entitlement",
-      "B": "It costs money",
-      "C": "A vendor delivers it"
+      "A": "A is a lump sum; B is a capped relocation / managed cap",
+      "B": "A is a capped relocation / managed cap; B is a lump sum",
+      "C": "Both are lump sums because employer cost is limited to £5,000"
     },
     "correctAnswer": "A",
-    "explanation": "A policy exception is a deviation from the standard entitlement or rule set.",
-    "source": null,
+    "explanation": "A lump sum is a one-time cash payment. A capped relocation or managed cap limits the total value of selected services and/or reimbursed eligible expenses to a predetermined maximum.",
+    "source": "https://blog.aires.com/aligning-policy-structure-with-mobility-strategy",
     "status": "Evergreen",
-    "lastVerified": "2026-08-09"
+    "lastVerified": "2026-09-03"
   },
   {
     "id": "POL08",
@@ -611,17 +611,17 @@
     "id": "POL09",
     "category": "Policy, Programme & Strategy",
     "difficulty": 5,
-    "question": "Which concept separates services considered essential for everyone from benefits employees can select according to need?",
+    "question": "An employee takes a temporary international assignment on host-market salary but continues to receive selected additional mobility benefits such as housing, education or home leave. Which policy approach does this most closely describe?",
     "options": {
-      "A": "Core-flex",
-      "B": "Tax equalisation",
-      "C": "Host payroll"
+      "A": "Host-plus",
+      "B": "Balance-sheet",
+      "C": "Core-flex"
     },
     "correctAnswer": "A",
-    "explanation": "Core-flex separates mandatory core provisions from a flexible menu of optional benefits.",
-    "source": "https://www.worldatwork.org/",
+    "explanation": "Host-plus is a temporary host-salary-based assignment with selected additional 'plus' benefits, such as housing, children's education or home leave.",
+    "source": "https://airshare.air-inc.com/host-plus-vs.-one-way-transfers-understanding-the-differences-and-choosing-the-right-approach",
     "status": "Evergreen",
-    "lastVerified": "2026-08-09"
+    "lastVerified": "2026-09-03"
   },
   {
     "id": "POL10",
@@ -958,5 +958,645 @@
     "source": "https://www.gov.uk/guidance/transfer-of-residence-to-great-britain",
     "status": "Dynamic",
     "lastVerified": "2026-08-09"
+  },
+  {
+    "id": "ESG01",
+    "category": "ESG & Sustainable Mobility",
+    "difficulty": 1,
+    "question": "In ESG, what does the 'S' stand for?",
+    "options": {
+      "A": "Social",
+      "B": "Sustainability",
+      "C": "Security"
+    },
+    "correctAnswer": "A",
+    "explanation": "ESG stands for Environmental, Social and Governance.",
+    "source": "https://www.unpri.org/introductory-guides-to-responsible-investment/what-is-responsible-investment/4780.article",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "ESG02",
+    "category": "ESG & Sustainable Mobility",
+    "difficulty": 1,
+    "question": "Which measure most directly shows the climate impact of a mobility programme?",
+    "options": {
+      "A": "Number of assignees",
+      "B": "CO2e emissions",
+      "C": "Average visa processing time"
+    },
+    "correctAnswer": "B",
+    "explanation": "Greenhouse-gas impact is commonly expressed as carbon-dioxide equivalent (CO2e).",
+    "source": "https://ghgprotocol.org/",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "ESG03",
+    "category": "ESG & Sustainable Mobility",
+    "difficulty": 2,
+    "question": "Under the GHG Protocol, employee business travel is reported in which emissions scope?",
+    "options": {
+      "A": "Scope 1",
+      "B": "Scope 2",
+      "C": "Scope 3"
+    },
+    "correctAnswer": "C",
+    "explanation": "Business travel is an indirect value-chain emission and is included within Scope 3.",
+    "source": "https://ghgprotocol.org/scope-3-calculation-guidance-2",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "ESG04",
+    "category": "ESG & Sustainable Mobility",
+    "difficulty": 2,
+    "question": "Which relocation policy option can directly reduce the volume of household goods shipped internationally?",
+    "options": {
+      "A": "Furniture rental at destination",
+      "B": "A higher COLA",
+      "C": "A longer notice period"
+    },
+    "correctAnswer": "A",
+    "explanation": "Using rented or locally sourced furniture can reduce the amount of household goods transported.",
+    "source": "https://events.eca.global/-bia-sep25-webinar-recordings",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "ESG05",
+    "category": "ESG & Sustainable Mobility",
+    "difficulty": 3,
+    "question": "For the same traveller and route, which cabin class generally has the lower emissions allocation per passenger?",
+    "options": {
+      "A": "Business",
+      "B": "Economy",
+      "C": "First"
+    },
+    "correctAnswer": "B",
+    "explanation": "Economy generally allocates less aircraft space per passenger, so per-passenger emissions are lower than premium cabins.",
+    "source": "https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2026",
+    "status": "Dynamic - annual factors",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "ESG06",
+    "category": "ESG & Sustainable Mobility",
+    "difficulty": 3,
+    "question": "Which mobility choice can reduce both waste and international shipping demand?",
+    "options": {
+      "A": "Increasing air-freight allowances",
+      "B": "Replacing sea freight with air freight",
+      "C": "Reuse or rental of furniture"
+    },
+    "correctAnswer": "C",
+    "explanation": "Reuse/rental can reduce disposal and the need to transport replacement household goods internationally.",
+    "source": "https://events.eca.global/-bia-sep25-webinar-recordings",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "ESG07",
+    "category": "ESG & Sustainable Mobility",
+    "difficulty": 4,
+    "question": "A relocation supplier's emissions are most likely to appear in the client's carbon inventory under which broad category?",
+    "options": {
+      "A": "Scope 3 value-chain emissions",
+      "B": "Scope 1 only",
+      "C": "Scope 2 only"
+    },
+    "correctAnswer": "A",
+    "explanation": "Purchased services and transport provided by third parties generally sit within Scope 3 rather than the client's direct emissions.",
+    "source": "https://ghgprotocol.org/scope-3-calculation-guidance-2",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "ESG08",
+    "category": "ESG & Sustainable Mobility",
+    "difficulty": 4,
+    "question": "According to IEA data cited in Navan's European Business Travel report, rail travel is estimated to be approximately how many times more energy-efficient than air travel?",
+    "options": {
+      "A": "4 times",
+      "B": "8 times",
+      "C": "12 times"
+    },
+    "correctAnswer": "C",
+    "explanation": "The Navan report cites IEA data estimating rail travel to be around 12 times more energy-efficient than air travel.",
+    "source": "Uploaded file: Navan-European-Travel-Trends-2024.pdf",
+    "status": "Evergreen - source estimate",
+    "lastVerified": "2026-09-03"
+  },
+  {
+    "id": "ESG09",
+    "category": "ESG & Sustainable Mobility",
+    "difficulty": 5,
+    "question": "Why can reducing air freight have a disproportionate carbon benefit in relocation?",
+    "options": {
+      "A": "Air freight is always cheaper",
+      "B": "Sea freight produces no emissions",
+      "C": "Air freight is generally more emissions-intensive per tonne-kilometre than sea freight"
+    },
+    "correctAnswer": "C",
+    "explanation": "Air freight generally has substantially higher emissions intensity than ocean freight.",
+    "source": "https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2026",
+    "status": "Dynamic - annual factors",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "ESG10",
+    "category": "ESG & Sustainable Mobility",
+    "difficulty": 5,
+    "question": "Which is the strongest ESG metric for comparing two relocation delivery models?",
+    "options": {
+      "A": "Total CO2e per move alongside service outcomes",
+      "B": "Number of emails per move",
+      "C": "Number of suppliers used"
+    },
+    "correctAnswer": "A",
+    "explanation": "CO2e per move, considered with service outcomes, provides a meaningful measure of environmental performance rather than activity volume.",
+    "source": "https://ghgprotocol.org/",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "EXP01",
+    "category": "Employee Experience & Family Support",
+    "difficulty": 1,
+    "question": "Which service helps an employee understand neighbourhoods, housing and local practicalities before settling in?",
+    "options": {
+      "A": "Shadow payroll",
+      "B": "Destination services",
+      "C": "Tax equalisation"
+    },
+    "correctAnswer": "B",
+    "explanation": "Destination services commonly support home search, orientation and settling-in needs.",
+    "source": "https://www.eca-international.com/insights/blog/september-2025/flexibility-sustainability-and-family",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "EXP02",
+    "category": "Employee Experience & Family Support",
+    "difficulty": 1,
+    "question": "Which family consideration can materially affect whether an international assignment is accepted?",
+    "options": {
+      "A": "Corporate VAT rate",
+      "B": "Supplier invoice format",
+      "C": "Schooling"
+    },
+    "correctAnswer": "C",
+    "explanation": "Schooling and wider family needs can materially influence assignment acceptance and success.",
+    "source": "https://products.eca.global/man-mob-survey-download",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "EXP03",
+    "category": "Employee Experience & Family Support",
+    "difficulty": 2,
+    "question": "What is the main purpose of a pre-assignment or 'look-see' visit?",
+    "options": {
+      "A": "Help the employee assess the destination before the move",
+      "B": "Determine transfer pricing",
+      "C": "Replace immigration permission"
+    },
+    "correctAnswer": "A",
+    "explanation": "A pre-assignment visit helps an employee/family understand practical living conditions and make informed decisions.",
+    "source": "https://www.eca-international.com/insights/blog/september-2025/flexibility-sustainability-and-family",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "EXP04",
+    "category": "Employee Experience & Family Support",
+    "difficulty": 2,
+    "question": "Which support is most specifically designed to address a common source of accompanying-partner dissatisfaction on assignment?",
+    "options": {
+      "A": "Additional home-leave provision",
+      "B": "Partner career and integration support",
+      "C": "Enhanced settling-in support"
+    },
+    "correctAnswer": "B",
+    "explanation": "Partner career and integration support directly addresses the accompanying partner's own adjustment, employability and integration needs.",
+    "source": "https://products.eca.global/man-mob-survey-download",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-03"
+  },
+  {
+    "id": "EXP05",
+    "category": "Employee Experience & Family Support",
+    "difficulty": 3,
+    "question": "A mobility team wants to identify where employees experience the most friction during a relocation. Which measure is most useful?",
+    "options": {
+      "A": "Overall assignment satisfaction measured only at completion",
+      "B": "Feedback captured at key relocation milestones",
+      "C": "Annual mobility programme NPS"
+    },
+    "correctAnswer": "B",
+    "explanation": "Milestone feedback pinpoints where friction occurs during the journey, rather than only providing an end-state or programme-level score.",
+    "source": "https://events.eca.global/mobility-hub-26-agenda",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-03"
+  },
+  {
+    "id": "EXP06",
+    "category": "Employee Experience & Family Support",
+    "difficulty": 3,
+    "question": "What is the strongest employee-experience argument for introducing flexibility into a mobility policy?",
+    "options": {
+      "A": "Employees can select support that is more relevant to their circumstances",
+      "B": "Employees automatically receive a greater total benefit value",
+      "C": "Employees can opt out of standard policy governance"
+    },
+    "correctAnswer": "A",
+    "explanation": "Well-governed flexibility can better match support to differing employee and family circumstances without removing programme controls.",
+    "source": "https://events.eca.global/mobility-hub-26-agenda",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-03"
+  },
+  {
+    "id": "EXP07",
+    "category": "Employee Experience & Family Support",
+    "difficulty": 4,
+    "question": "Which measure gives the strongest indication of the employee's experience rather than simply operational performance?",
+    "options": {
+      "A": "Percentage of services delivered within SLA",
+      "B": "Employee confidence and satisfaction throughout the relocation",
+      "C": "Average case-resolution time"
+    },
+    "correctAnswer": "B",
+    "explanation": "SLA and resolution-time measures indicate operational performance; confidence and satisfaction measure the employee's lived experience.",
+    "source": "https://events.eca.global/mobility-hub-26-agenda",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-03"
+  },
+  {
+    "id": "EXP08",
+    "category": "Employee Experience & Family Support",
+    "difficulty": 4,
+    "question": "According to Aon's 2026 Human Capital Trends Study, approximately what proportion of organisations have an EVP that is both clearly defined and well understood?",
+    "options": {
+      "A": "19%",
+      "B": "39%",
+      "C": "59%"
+    },
+    "correctAnswer": "A",
+    "explanation": "Aon's 2026 study reports that only 19% of organisations have an employee value proposition that is both clearly defined and well understood.",
+    "source": "Uploaded file: AON-Human Capital Trends Study.pdf",
+    "status": "Dynamic - survey finding",
+    "lastVerified": "2026-09-03"
+  },
+  {
+    "id": "EXP09",
+    "category": "Employee Experience & Family Support",
+    "difficulty": 5,
+    "question": "A newly relocated employee attends every required host-team meeting but says they still do not feel included. Which intervention most directly targets inclusion?",
+    "options": {
+      "A": "Increase recognition of the assignee's individual contributions",
+      "B": "Create structured opportunities for voice and participation in shared team goals",
+      "C": "Provide additional settling-in support outside the host team"
+    },
+    "correctAnswer": "B",
+    "explanation": "O.C. Tanner's 2026 inclusion model highlights Voice and Goals & Purpose among the behaviours that build team inclusion; this intervention addresses participation inside the host team.",
+    "source": "Uploaded file: OC Tanner - Global Culture repor.pdf",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-03"
+  },
+  {
+    "id": "EXP10",
+    "category": "Employee Experience & Family Support",
+    "difficulty": 5,
+    "question": "In O.C. Tanner's 2026 Inclusion Index, which combination contains only behaviours identified as supporting team inclusion?",
+    "options": {
+      "A": "Voice, Learning and Respect",
+      "B": "Voice, Recognition and Respect",
+      "C": "Learning, Autonomy and Goals & Purpose"
+    },
+    "correctAnswer": "A",
+    "explanation": "The five behaviours in the report's Inclusion Index are Emotional Intelligence, Respect, Goals & Purpose, Learning and Voice.",
+    "source": "Uploaded file: OC Tanner - Global Culture repor.pdf",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-03"
+  },
+  {
+    "id": "TEC01",
+    "category": "Technology, Data & Operating Model",
+    "difficulty": 1,
+    "question": "What is a single source of truth intended to provide in a mobility programme?",
+    "options": {
+      "A": "Multiple conflicting spreadsheets",
+      "B": "A second payroll",
+      "C": "One consistent set of trusted programme data"
+    },
+    "correctAnswer": "C",
+    "explanation": "A single source of truth reduces fragmentation by giving stakeholders a consistent data set.",
+    "source": "https://events.eca.global/mobility-hub-26-agenda",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "TEC02",
+    "category": "Technology, Data & Operating Model",
+    "difficulty": 1,
+    "question": "Which task is generally the strongest candidate for workflow automation?",
+    "options": {
+      "A": "Repeatable rules-based administration",
+      "B": "Sensitive employee counselling",
+      "C": "Executive judgement on strategic talent"
+    },
+    "correctAnswer": "A",
+    "explanation": "Repeatable, rules-based processes are typically more suitable for automation than nuanced human judgement.",
+    "source": "https://events.eca.global/mobility-hub-26-agenda",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "TEC03",
+    "category": "Technology, Data & Operating Model",
+    "difficulty": 2,
+    "question": "What does an API principally allow two mobility systems to do?",
+    "options": {
+      "A": "Issue passports",
+      "B": "Exchange data programmatically",
+      "C": "Set tax rates"
+    },
+    "correctAnswer": "B",
+    "explanation": "An application programming interface enables software systems to communicate and exchange data.",
+    "source": "https://www.ibm.com/think/topics/api",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "TEC04",
+    "category": "Technology, Data & Operating Model",
+    "difficulty": 2,
+    "question": "Which control most directly reduces the risk of users seeing mobility data they do not need?",
+    "options": {
+      "A": "A larger dashboard",
+      "B": "More email notifications",
+      "C": "Role-based access"
+    },
+    "correctAnswer": "C",
+    "explanation": "Role-based access limits data and functions according to a user's authorised role.",
+    "source": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/security/",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "TEC05",
+    "category": "Technology, Data & Operating Model",
+    "difficulty": 3,
+    "question": "Which is the better use of AI in a controlled mobility process?",
+    "options": {
+      "A": "Drafting or analysing with human review",
+      "B": "Allowing unverified output to make every compliance decision",
+      "C": "Removing audit trails"
+    },
+    "correctAnswer": "A",
+    "explanation": "Human oversight is important where AI supports decisions affecting employees, compliance or material outcomes.",
+    "source": "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai",
+    "status": "Dynamic - regulation",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "TEC06",
+    "category": "Technology, Data & Operating Model",
+    "difficulty": 3,
+    "question": "Aon's 2026 Human Capital Trends Study found 73% of organisations had deployed or were piloting AI. What proportion had seen the majority of their workforce participate in AI reskilling or upskilling in the previous 12 months?",
+    "options": {
+      "A": "18%",
+      "B": "38%",
+      "C": "58%"
+    },
+    "correctAnswer": "A",
+    "explanation": "Aon's study reports a significant readiness gap: 73% had deployed or were piloting AI, while only 18% had seen the majority of their workforce participate in AI reskilling or upskilling.",
+    "source": "Uploaded file: AON-Human Capital Trends Study.pdf",
+    "status": "Dynamic - survey finding",
+    "lastVerified": "2026-09-03"
+  },
+  {
+    "id": "TEC07",
+    "category": "Technology, Data & Operating Model",
+    "difficulty": 4,
+    "question": "Why is a unique employee or assignment identifier valuable across mobility systems?",
+    "options": {
+      "A": "It changes visa eligibility",
+      "B": "It fixes exchange rates",
+      "C": "It helps match records accurately across processes and suppliers"
+    },
+    "correctAnswer": "C",
+    "explanation": "A consistent identifier supports reconciliation and reduces ambiguity when data moves between systems.",
+    "source": "https://events.eca.global/navigating-mobility-webinars",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "TEC08",
+    "category": "Technology, Data & Operating Model",
+    "difficulty": 4,
+    "question": "Which dashboard measure is most strategically useful to a Head of Global Mobility?",
+    "options": {
+      "A": "Assignment cost and outcome against business objective",
+      "B": "Number of dashboard logins",
+      "C": "Number of spreadsheet tabs"
+    },
+    "correctAnswer": "A",
+    "explanation": "Strategic reporting connects mobility activity and spend to business outcomes.",
+    "source": "https://events.eca.global/from-transactional-webinar",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "TEC09",
+    "category": "Technology, Data & Operating Model",
+    "difficulty": 5,
+    "question": "What is the main risk of automating a poor mobility process without redesigning it first?",
+    "options": {
+      "A": "The process automatically becomes compliant",
+      "B": "The inefficiency can simply happen faster and at scale",
+      "C": "Employee data disappears"
+    },
+    "correctAnswer": "B",
+    "explanation": "Automation does not by itself correct weak process design, controls or data quality.",
+    "source": "https://events.eca.global/from-transactional-webinar",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "TEC10",
+    "category": "Technology, Data & Operating Model",
+    "difficulty": 5,
+    "question": "Which combination best supports trustworthy mobility analytics?",
+    "options": {
+      "A": "More charts regardless of data quality",
+      "B": "Manual re-keying across every supplier",
+      "C": "Consistent definitions, complete data and clear ownership"
+    },
+    "correctAnswer": "C",
+    "explanation": "Reliable analytics depend on data quality, common definitions and governance.",
+    "source": "https://events.eca.global/navigating-mobility-webinars",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "LOC01",
+    "category": "Location, Hardship & Mobility Resilience",
+    "difficulty": 1,
+    "question": "What is a location or hardship allowance intended to recognise?",
+    "options": {
+      "A": "Challenging living conditions in the host location",
+      "B": "The employee's job title",
+      "C": "Home-country payroll frequency"
+    },
+    "correctAnswer": "A",
+    "explanation": "Location allowances compensate for differences in living conditions or hardship at the assignment location.",
+    "source": "https://events.eca.global/eca-webinar-beyond-the-scores-how-location-ratings-inform-allowances",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "LOC02",
+    "category": "Location, Hardship & Mobility Resilience",
+    "difficulty": 1,
+    "question": "Which information is most relevant when assessing destination risk for a mobile employee?",
+    "options": {
+      "A": "The supplier's logo",
+      "B": "Current security and health conditions",
+      "C": "The employee's laptop model"
+    },
+    "correctAnswer": "B",
+    "explanation": "Destination risk assessment focuses on conditions that may affect employee safety, health and continuity.",
+    "source": "https://events.eca.global/mobility-hub-26-agenda",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "LOC03",
+    "category": "Location, Hardship & Mobility Resilience",
+    "difficulty": 2,
+    "question": "If a host currency weakens significantly against the employee's reference currency, which mobility issue may require review?",
+    "options": {
+      "A": "Passport validity rules automatically change",
+      "B": "The employee's job grade",
+      "C": "Exchange-rate protection or compensation delivery"
+    },
+    "correctAnswer": "C",
+    "explanation": "Material FX movements can affect assignment pay delivery and purchasing power.",
+    "source": "https://events.eca.global/eca-expert-exchange-amsterdam",
+    "status": "Dynamic - market conditions",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "LOC04",
+    "category": "Location, Hardship & Mobility Resilience",
+    "difficulty": 2,
+    "question": "Which factor would normally be relevant to a location-rating assessment?",
+    "options": {
+      "A": "Access to healthcare",
+      "B": "Employee email volume",
+      "C": "Number of HR meetings"
+    },
+    "correctAnswer": "A",
+    "explanation": "Location assessments commonly consider practical living conditions such as healthcare and other environmental factors.",
+    "source": "https://events.eca.global/eca-webinar-beyond-the-scores-how-location-ratings-inform-allowances",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "LOC05",
+    "category": "Location, Hardship & Mobility Resilience",
+    "difficulty": 3,
+    "question": "Why should location allowances be reviewed periodically?",
+    "options": {
+      "A": "The employee's passport number changes every month",
+      "B": "Conditions at a location can improve or deteriorate",
+      "C": "Tax treaties expire every quarter"
+    },
+    "correctAnswer": "B",
+    "explanation": "Political, security, infrastructure and other local conditions can change, affecting the rationale for an allowance.",
+    "source": "https://events.eca.global/eca-webinar-beyond-the-scores-how-location-ratings-inform-allowances",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "LOC06",
+    "category": "Location, Hardship & Mobility Resilience",
+    "difficulty": 3,
+    "question": "A sudden airspace closure affects an assignment route. What is the most immediate mobility concern?",
+    "options": {
+      "A": "Recalculating hypothetical tax first",
+      "B": "Changing the employee's job title",
+      "C": "Traveller safety and viable alternative routing"
+    },
+    "correctAnswer": "C",
+    "explanation": "Travel disruption and geopolitical events require immediate attention to employee safety and continuity.",
+    "source": "https://events.eca.global/mobility-hub-26-agenda",
+    "status": "Dynamic - scenario",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "LOC07",
+    "category": "Location, Hardship & Mobility Resilience",
+    "difficulty": 4,
+    "question": "Which document is most useful before a crisis occurs in a high-risk assignment location?",
+    "options": {
+      "A": "A tested crisis and evacuation plan",
+      "B": "An old expense report",
+      "C": "A generic marketing brochure"
+    },
+    "correctAnswer": "A",
+    "explanation": "Prepared and tested crisis plans support faster, coordinated action when conditions deteriorate.",
+    "source": "https://events.eca.global/mobility-hub-26-agenda",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "LOC08",
+    "category": "Location, Hardship & Mobility Resilience",
+    "difficulty": 4,
+    "question": "Why can cost-of-living and hardship allowances move in different directions for the same city?",
+    "options": {
+      "A": "They are legally required to be identical",
+      "B": "They measure different things",
+      "C": "Hardship is based only on exchange rates"
+    },
+    "correctAnswer": "B",
+    "explanation": "Cost of living concerns prices and purchasing power, while hardship/location ratings concern living conditions.",
+    "source": "https://events.eca.global/eca-webinar-beyond-the-scores-how-location-ratings-inform-allowances",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "LOC09",
+    "category": "Location, Hardship & Mobility Resilience",
+    "difficulty": 5,
+    "question": "A location becomes more expensive but safer and easier to live in. Which statement can be correct?",
+    "options": {
+      "A": "Both allowances must rise",
+      "B": "Both allowances must fall",
+      "C": "COLA may rise while hardship allowance falls"
+    },
+    "correctAnswer": "C",
+    "explanation": "Cost-of-living and hardship assessments are distinct, so they can legitimately move in opposite directions.",
+    "source": "https://events.eca.global/eca-webinar-beyond-the-scores-how-location-ratings-inform-allowances",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
+  },
+  {
+    "id": "LOC10",
+    "category": "Location, Hardship & Mobility Resilience",
+    "difficulty": 5,
+    "question": "Which approach best strengthens mobility resilience during geopolitical disruption?",
+    "options": {
+      "A": "Accurate location data, clear escalation routes and tested response plans",
+      "B": "Waiting until an employee asks for help",
+      "C": "Using one fixed route regardless of conditions"
+    },
+    "correctAnswer": "A",
+    "explanation": "Resilience depends on timely information, defined decision-making and rehearsed contingency plans.",
+    "source": "https://events.eca.global/mobility-hub-26-agenda",
+    "status": "Evergreen",
+    "lastVerified": "2026-09-02"
   }
 ]

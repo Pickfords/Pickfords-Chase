@@ -23,6 +23,6 @@ for (let i = 0; i < N; i++) {
   recordUsage(usage, game);
 }
 
-assert.strictEqual(usage.size, 60, 'every question should get used at least once over ' + N + ' games');
+assert.strictEqual(usage.size, questions.length, 'every question should get used at least once over ' + N + ' games');
 
 console.log(`questionEngine.test.js: PASS (${N} simulated games, 0 failures)`);
