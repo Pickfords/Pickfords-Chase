@@ -1,7 +1,9 @@
 // questionEngine.js
 //
-// Selects 10 questions for one "chase" from the 60-question bank, honouring:
-//   1. The difficulty ladder: two questions per difficulty tier, 1 through 5
+// Selects 10 questions for one "chase" from the question bank, honouring:
+//   1. The difficulty ladder (see DIFFICULTY_LADDER below): a core 1-6
+//      progression that climbs from difficulty 1 to 5, then 4 recovery
+//      slots at the harder tiers
 //   2. No more than 2 questions from the same category in one chase
 //   3. Fair rotation across the event day - questions used less often today
 //      are preferred, so no contestant gets an easy repeat of what the
@@ -16,16 +18,24 @@
 // greedy picker can still fail on bad luck.
 
 // 10-question ladder (client's confirmed "ultimate rule": max 10 questions,
-// 100s budget at 10s/question) - two slots per difficulty tier 1-5. Verified
-// feasible against the current 60-question bank (6 categories x 5
-// difficulties x 2 questions each) with MAX_PER_CATEGORY=2 below.
+// 100s budget at 10s/question). Slots 1-6 are the "core" progression from
+// the client's Game Rules sheet - Level 1 -> 2 -> 2/3 -> 3 -> 4 -> 5 (the
+// ambiguous 3rd slot is pinned to the harder option, 3, so difficulty is
+// strictly non-decreasing) - so a contestant who answers straight through
+// and escapes at 6 correct has actually faced difficulty up to 5, not
+// capped out at 3 like the old flat "two slots per tier" ladder did.
+// Slots 7-10 are recovery questions (only reached after a wrong answer on
+// one of the core six, per the engine's distance/escape logic in
+// gameEngine.js) - the rules sheet doesn't specify a difficulty for these,
+// so they stay at the hardest tiers (4/4/5/5), matching the original
+// ladder's tail.
 const DIFFICULTY_LADDER = [
   { slot: 1, difficulties: [1] },
-  { slot: 2, difficulties: [1] },
-  { slot: 3, difficulties: [2] },
-  { slot: 4, difficulties: [2] },
-  { slot: 5, difficulties: [3] },
-  { slot: 6, difficulties: [3] },
+  { slot: 2, difficulties: [2] },
+  { slot: 3, difficulties: [3] },
+  { slot: 4, difficulties: [3] },
+  { slot: 5, difficulties: [4] },
+  { slot: 6, difficulties: [5] },
   { slot: 7, difficulties: [4] },
   { slot: 8, difficulties: [4] },
   { slot: 9, difficulties: [5] },

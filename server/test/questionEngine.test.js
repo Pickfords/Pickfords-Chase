@@ -10,8 +10,8 @@ for (let i = 0; i < N; i++) {
   const game = selectGameQuestions(questions, usage);
 
   const diffs = game.map((q) => q.difficulty);
-  const expectedDiffs = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5];
-  assert.deepStrictEqual(diffs, expectedDiffs, 'difficulty ladder must be two slots per tier, 1 through 5');
+  const expectedDiffs = [1, 2, 3, 3, 4, 5, 4, 4, 5, 5];
+  assert.deepStrictEqual(diffs, expectedDiffs, 'difficulty ladder must match the core 1-6 progression plus 4 recovery slots');
 
   const catCount = {};
   for (const q of game) catCount[q.category] = (catCount[q.category] || 0) + 1;
