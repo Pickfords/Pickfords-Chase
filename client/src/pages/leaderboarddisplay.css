@@ -33,15 +33,19 @@
   flex: 1;
   min-height: 0;
   overflow: auto;
-  padding: 1.5cqh 3cqw;
+  /* Top-anchored with a fixed cqh (percent-of-container-height) offset,
+     not vertically centered - centering put the content near the true
+     middle of the screen in the tall portrait orientation (since cqw caps
+     the logo/table width there, the content block itself ends up shorter
+     than in landscape, leaving much more empty space above it once
+     centered). cqh is a real percentage of the container's own height
+     regardless of DisplayFrame's rotation/swap, so this offset reads the
+     same in both orientations instead of drifting with aspect ratio. */
+  padding: 6cqh 3cqw 1.5cqh;
   width: 92%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  /* The table card below sizes to its own content now (not flex:1), so
-     center it in whatever space is left instead of leaving it pinned to
-     the top with empty space under it. */
-  justify-content: center;
 }
 
 .pf-ld-celebration {
