@@ -5,6 +5,7 @@ import DisplayFrame from '../components/DisplayFrame';
 import LeaderboardTable from '../components/LeaderboardTable';
 import IdleVehicles from '../components/IdleVehicles';
 import { useIdleVehicles } from '../hooks/useIdleVehicles';
+import relocationChaseLogo from '../assets/relocation-chase-logo.png';
 import './leaderboarddisplay.css';
 
 // Public, no-controls screen for a 55" portrait-mounted lobby/foyer screen -
@@ -68,6 +69,7 @@ export default function LeaderboardDisplay() {
               {celebration.contestantName} {celebration.outcome === 'escaped' ? 'ESCAPED THE CHASER' : 'was caught'} — {celebration.score.toFixed(0)} pts
             </div>
           )}
+          <img src={relocationChaseLogo} alt="The Relocation Chase" className="pf-ld-logo" />
           <div className="pf-ld-title">LEADERBOARD</div>
           <div className="pf-card pf-ld-table-wrap">
             <LeaderboardTable leaderboard={leaderboard} />

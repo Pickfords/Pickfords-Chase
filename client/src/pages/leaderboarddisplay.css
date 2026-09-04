@@ -58,6 +58,15 @@
   border-color: rgba(211, 16, 39, 0.4);
 }
 
+.pf-ld-logo {
+  flex: 0 0 auto;
+  display: block;
+  margin: 0 auto 1cqh;
+  width: clamp(160px, 34cqh, 480px);
+  max-width: 70cqw;
+  height: auto;
+}
+
 .pf-ld-title {
   flex: 0 0 auto;
   font-family: var(--font-display);
