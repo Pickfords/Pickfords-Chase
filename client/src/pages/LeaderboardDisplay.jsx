@@ -56,12 +56,6 @@ export default function LeaderboardDisplay() {
     <DisplayFrame storageKey="pf_leaderboard_display_rotation">
       <div className="pf-shell">
         <IdleVehicles vehicle={vehicle} />
-        <div className="pf-ld-topbar">
-          <div className="pf-ld-wordmark">
-            PICKFORDS <span className="pf-word-relo">RELO</span> <span className="pf-word-chaser">CHASER</span>{' '}
-            <span className="pf-ld-wordmark-sub">· LEADERBOARD</span>
-          </div>
-        </div>
         <div className="pf-ld-body">
           {celebration && (
             <div className={`pf-card pf-ld-celebration ${celebration.outcome === 'escaped' ? 'escaped' : 'caught'}`}>

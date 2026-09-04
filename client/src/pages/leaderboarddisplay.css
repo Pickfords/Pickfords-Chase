@@ -6,29 +6,6 @@
    ranges here were too large and ran the page past the bottom of the
    screen. */
 
-.pf-ld-topbar {
-  display: flex;
-  align-items: center;
-  padding: 1.5cqh 3cqw;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  flex: 0 0 auto;
-}
-
-.pf-ld-wordmark {
-  font-family: var(--font-display);
-  letter-spacing: 0.04em;
-  font-size: clamp(14px, 2.2cqh, 32px);
-  display: flex;
-  align-items: baseline;
-  gap: 0.3em;
-}
-/* RELO/CHASER colouring comes from the global .pf-word-relo/.pf-word-chaser
-   classes (styles.css), not a bare "span" rule here. */
-.pf-ld-wordmark-sub {
-  color: rgba(255, 255, 255, 0.5) !important;
-  font-size: 0.4em;
-}
-
 .pf-ld-body {
   flex: 1;
   min-height: 0;
@@ -63,6 +40,9 @@
 }
 
 .pf-ld-logo {
+  /* Now doubles as the page heading (the old text wordmark line was
+     removed) - image itself is pre-cropped tight/centred on the logo, no
+     stray backdrop around it. */
   flex: 0 0 auto;
   display: block;
   margin: 0 auto 1cqh;
@@ -89,4 +69,25 @@
      multiplier at the original (small, admin-card) value and scaling THIS
      font-size is enough - no separate row-padding override needed. */
   font-size: clamp(12px, 1.9cqh, 22px);
+}
+
+/* Portrait-mounted screen (tall/narrow container, e.g. the 55" TV rotated
+   sideways) - the cqh-driven sizes above are still governed by a max-width
+   in cqw, so on a narrow container everything ends up smaller than it
+   could be, leaving a lot of empty space below the table. Go bigger here:
+   logo fills a real percentage of the width (not cqh-capped), and the
+   table gets more breathing room. Matches the "vertical" case in the
+   request - landscape stays on the base rules above, unaffected. */
+@container (max-aspect-ratio: 4/5) {
+  .pf-ld-logo {
+    width: 78cqw;
+    max-width: 78cqw;
+  }
+  .pf-ld-title {
+    font-size: clamp(24px, 4.2cqh, 60px);
+  }
+  .pf-ld-table-wrap {
+    font-size: clamp(16px, 2.6cqh, 32px);
+    padding: 2cqh 2.5cqw;
+  }
 }
