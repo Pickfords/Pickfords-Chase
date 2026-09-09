@@ -1,0 +1,56 @@
+/* Small, deliberately unobtrusive - present on every screen state but not
+   meant to draw attention away from the actual game. */
+.pf-hold-home {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  z-index: 200;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pf-hold-home-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.pf-hold-home-ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 2;
+}
+.pf-hold-home-ring-fill {
+  fill: none;
+  stroke: var(--pf-red-600);
+  stroke-width: 2;
+  stroke-linecap: round;
+  /* Circumference of r=15.5: 2 * pi * 15.5 ~= 97.4 */
+  stroke-dasharray: 97.4;
+  stroke-dashoffset: 97.4;
+  transition: stroke-dashoffset 120ms linear;
+}
+.pf-hold-home-ring-fill.filling {
+  /* Matches HOLD_MS in HoldToHomeButton.jsx - keep these in sync. */
+  transition: stroke-dashoffset 3000ms linear;
+  stroke-dashoffset: 0;
+}
+
+.pf-hold-home-icon {
+  position: relative;
+  font-size: 18px;
+  line-height: 1;
+}

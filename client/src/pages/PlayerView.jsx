@@ -5,6 +5,7 @@ import Timer from '../components/Timer';
 import Ladder from '../components/Ladder';
 import QuestionCard from '../components/QuestionCard';
 import BadgeCard from '../components/BadgeCard';
+import HoldToHomeButton from '../components/HoldToHomeButton';
 import { RedFlashOverlay, ConfettiOverlay, END_EFFECT_DURATION_MS } from '../components/EndEffects';
 
 const ROLE_COPY = {
@@ -279,6 +280,7 @@ function RevealSummary({ role, reveal }) {
 function TopBar() {
   return (
     <div className="pf-topbar">
+      <HoldToHomeButton />
       <div className="pf-wordmark">
         PICKFORDS <span className="pf-word-relo">RELO</span> <span className="pf-word-chaser">CHASER</span>
       </div>
