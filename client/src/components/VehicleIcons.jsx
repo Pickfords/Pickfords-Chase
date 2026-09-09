@@ -1,33 +1,23 @@
 import truckLtrImg from '../assets/truck-pickfords-ltr.png';
 import truckRtlImg from '../assets/truck-pickfords-rtl.png';
+import planeLtrImg from '../assets/plane-pickfords-ltr.png';
+import planeRtlImg from '../assets/plane-pickfords-rtl.png';
 
 // Flat-icon vehicles for the idle-screen animation (see IdleVehicles.jsx).
-// The plane and ship are drawn nose/front-first pointing RIGHT (positive x)
-// by default - IdleVehicles flips them with scaleX(-1) for right-to-left
-// travel, so the front always leads the direction of motion instead of an
-// ambiguous emoji glyph that can end up looking like it's flying sideways.
+// The ship is a plain drawn icon pointing RIGHT (positive x) by default -
+// IdleVehicles flips it with scaleX(-1) for right-to-left travel, so the
+// front always leads the direction of motion instead of an ambiguous emoji
+// glyph that can end up looking like it's flying/sailing sideways.
 //
-// The truck is the real branded Pickfords photo, which has "Pickfords"
-// text painted on it - mirroring it in CSS would flip that text backward
-// and make it unreadable, so instead there are two separate source images,
-// one already drawn facing each way, and TruckIcon picks between them by
-// direction rather than ever applying a scaleX flip.
+// The truck and plane are real branded Pickfords artwork with "Pickfords"
+// text painted on them - mirroring either in CSS would flip that text
+// backward and make it unreadable, so both instead have two separate
+// source images, one already drawn facing each way, and their Icon
+// components pick between them by direction rather than ever applying a
+// scaleX flip.
 
-export function PlaneIcon({ className }) {
-  return (
-    <svg viewBox="0 0 100 60" className={className} xmlns="http://www.w3.org/2000/svg">
-      <path d="M33 41 L70 31 L73 37 L38 47 Z" fill="#4a8bdb" />
-      <path d="M14 22 L31 26 L29 32 L13 30 Z" fill="#4a8bdb" />
-      <path
-        d="M10 32 Q10 25 21 25 L74 28 Q96 29 96 32 Q96 35 74 36 L21 39 Q10 39 10 32 Z"
-        fill="#7fc1e8"
-      />
-      <circle cx="34" cy="32" r="2.2" fill="#e8f3ff" />
-      <circle cx="45" cy="32" r="2.2" fill="#e8f3ff" />
-      <circle cx="56" cy="32" r="2.2" fill="#e8f3ff" />
-      <circle cx="67" cy="32" r="2.2" fill="#e8f3ff" />
-    </svg>
-  );
+export function PlaneIcon({ className, direction }) {
+  return <img src={direction === 'ltr' ? planeLtrImg : planeRtlImg} className={className} alt="" />;
 }
 
 export function TruckIcon({ className, direction }) {

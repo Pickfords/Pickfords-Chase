@@ -22,6 +22,14 @@
 .pf-idle-plane {
   top: 8cqh;
 }
+/* The real branded plane artwork is a much wider/flatter silhouette
+   (~4.3:1) than the old flat icon it replaced (100x60, ~1.7:1), so the
+   shared width clamp above would render it noticeably thinner than the
+   truck at the same width - widen its ceiling to keep it visually
+   comparable in scale. */
+.pf-idle-plane .pf-idle-icon {
+  width: clamp(90px, 16cqh, 320px);
+}
 .pf-idle-ship {
   bottom: 4cqh;
 }
@@ -42,22 +50,25 @@
 .pf-idle-truck.pf-idle-rtl { animation: pf-idle-truck-rtl 18s linear forwards; }
 
 /* Plane: turbulence - horizontal progress is linear (only set at 0%/100%),
-   with a vertical wobble layered on top via the intermediate keyframes. */
+   with a vertical wobble layered on top via the intermediate keyframes.
+   Real branded artwork with "Pickfords" text painted on it - no scaleX
+   flip here (would mirror the text unreadable), a separate source image
+   per direction instead (see VehicleIcons.jsx). */
 @keyframes pf-idle-plane-ltr {
-  0%   { left: -15cqw; transform: scaleX(1) translateY(0); }
-  20%  { transform: scaleX(1) translateY(-1.6cqh); }
-  40%  { transform: scaleX(1) translateY(1.1cqh); }
-  60%  { transform: scaleX(1) translateY(-1.3cqh); }
-  80%  { transform: scaleX(1) translateY(0.9cqh); }
-  100% { left: 115cqw; transform: scaleX(1) translateY(0); }
+  0%   { left: -15cqw; transform: translateY(0); }
+  20%  { transform: translateY(-1.6cqh); }
+  40%  { transform: translateY(1.1cqh); }
+  60%  { transform: translateY(-1.3cqh); }
+  80%  { transform: translateY(0.9cqh); }
+  100% { left: 115cqw; transform: translateY(0); }
 }
 @keyframes pf-idle-plane-rtl {
-  0%   { left: 115cqw; transform: scaleX(-1) translateY(0); }
-  20%  { transform: scaleX(-1) translateY(1.5cqh); }
-  40%  { transform: scaleX(-1) translateY(-1.2cqh); }
-  60%  { transform: scaleX(-1) translateY(1.4cqh); }
-  80%  { transform: scaleX(-1) translateY(-0.8cqh); }
-  100% { left: -15cqw; transform: scaleX(-1) translateY(0); }
+  0%   { left: 115cqw; transform: translateY(0); }
+  20%  { transform: translateY(1.5cqh); }
+  40%  { transform: translateY(-1.2cqh); }
+  60%  { transform: translateY(1.4cqh); }
+  80%  { transform: translateY(-0.8cqh); }
+  100% { left: -15cqw; transform: translateY(0); }
 }
 .pf-idle-plane.pf-idle-ltr { animation: pf-idle-plane-ltr 9s ease-in-out forwards; }
 .pf-idle-plane.pf-idle-rtl { animation: pf-idle-plane-rtl 9s ease-in-out forwards; }
