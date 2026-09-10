@@ -33,6 +33,12 @@
 .pf-idle-ship {
   bottom: 4cqh;
 }
+/* Real branded ship artwork is similarly wide/flatter (~3.9:1) than the
+   old flat icon it replaced (100x60, ~1.7:1) - widen its ceiling too, same
+   reasoning as the plane above. */
+.pf-idle-ship .pf-idle-icon {
+  width: clamp(90px, 16cqh, 320px);
+}
 
 /* Truck: slow and heavy, straight across, no bounce. Real branded photo
    with "Pickfords" text painted on it - never scaleX-flipped (would mirror
@@ -74,28 +80,31 @@
 .pf-idle-plane.pf-idle-rtl { animation: pf-idle-plane-rtl 9s ease-in-out forwards; }
 
 /* Ship: rides waves - a gentle rock (rotate) + bob (translateY) layered
-   over the horizontal crossing, like it's riding ocean swells. */
+   over the horizontal crossing, like it's riding ocean swells. Real
+   branded artwork with "Pickfords" text painted on it - no scaleX flip
+   here (would mirror the text unreadable), a separate source image per
+   direction instead (see VehicleIcons.jsx). */
 @keyframes pf-idle-ship-ltr {
-  0%   { left: -15cqw; transform: scaleX(1) translateY(0) rotate(0deg); }
-  12%  { transform: scaleX(1) translateY(-0.7cqh) rotate(-3deg); }
-  25%  { transform: scaleX(1) translateY(0.5cqh) rotate(2deg); }
-  37%  { transform: scaleX(1) translateY(-0.4cqh) rotate(-2deg); }
-  50%  { transform: scaleX(1) translateY(0.7cqh) rotate(3deg); }
-  62%  { transform: scaleX(1) translateY(-0.5cqh) rotate(-2deg); }
-  75%  { transform: scaleX(1) translateY(0.4cqh) rotate(2deg); }
-  87%  { transform: scaleX(1) translateY(-0.6cqh) rotate(-3deg); }
-  100% { left: 115cqw; transform: scaleX(1) translateY(0) rotate(0deg); }
+  0%   { left: -15cqw; transform: translateY(0) rotate(0deg); }
+  12%  { transform: translateY(-0.7cqh) rotate(-3deg); }
+  25%  { transform: translateY(0.5cqh) rotate(2deg); }
+  37%  { transform: translateY(-0.4cqh) rotate(-2deg); }
+  50%  { transform: translateY(0.7cqh) rotate(3deg); }
+  62%  { transform: translateY(-0.5cqh) rotate(-2deg); }
+  75%  { transform: translateY(0.4cqh) rotate(2deg); }
+  87%  { transform: translateY(-0.6cqh) rotate(-3deg); }
+  100% { left: 115cqw; transform: translateY(0) rotate(0deg); }
 }
 @keyframes pf-idle-ship-rtl {
-  0%   { left: 115cqw; transform: scaleX(-1) translateY(0) rotate(0deg); }
-  12%  { transform: scaleX(-1) translateY(0.7cqh) rotate(3deg); }
-  25%  { transform: scaleX(-1) translateY(-0.5cqh) rotate(-2deg); }
-  37%  { transform: scaleX(-1) translateY(0.4cqh) rotate(2deg); }
-  50%  { transform: scaleX(-1) translateY(-0.7cqh) rotate(-3deg); }
-  62%  { transform: scaleX(-1) translateY(0.5cqh) rotate(2deg); }
-  75%  { transform: scaleX(-1) translateY(-0.4cqh) rotate(-2deg); }
-  87%  { transform: scaleX(-1) translateY(0.6cqh) rotate(3deg); }
-  100% { left: -15cqw; transform: scaleX(-1) translateY(0) rotate(0deg); }
+  0%   { left: 115cqw; transform: translateY(0) rotate(0deg); }
+  12%  { transform: translateY(0.7cqh) rotate(3deg); }
+  25%  { transform: translateY(-0.5cqh) rotate(-2deg); }
+  37%  { transform: translateY(0.4cqh) rotate(2deg); }
+  50%  { transform: translateY(-0.7cqh) rotate(-3deg); }
+  62%  { transform: translateY(0.5cqh) rotate(2deg); }
+  75%  { transform: translateY(-0.4cqh) rotate(-2deg); }
+  87%  { transform: translateY(0.6cqh) rotate(3deg); }
+  100% { left: -15cqw; transform: translateY(0) rotate(0deg); }
 }
 .pf-idle-ship.pf-idle-ltr { animation: pf-idle-ship-ltr 12s ease-in-out forwards; }
 .pf-idle-ship.pf-idle-rtl { animation: pf-idle-ship-rtl 12s ease-in-out forwards; }

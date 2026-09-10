@@ -5,11 +5,10 @@ const ICONS = { truck: TruckIcon, plane: PlaneIcon, ship: ShipIcon };
 
 // Renders whichever vehicle useIdleVehicles() currently has in flight (or
 // nothing). A fresh `key` per vehicle (its id) forces the CSS animation to
-// restart cleanly for each crossing. The ship is drawn nose-first pointing
-// right (see VehicleIcons.jsx) - .pf-idle-rtl mirrors it via CSS so the
-// front always leads the direction of travel. The truck and plane instead
-// have a separate source image per direction (mirroring would flip their
-// painted text), so `direction` is passed through to pick between them.
+// restart cleanly for each crossing. All three vehicles are real branded
+// artwork with a separate source image per direction (see VehicleIcons.jsx)
+// rather than a CSS scaleX mirror, which would flip their painted text
+// backward - `direction` is passed through to each Icon to pick between them.
 export default function IdleVehicles({ vehicle }) {
   if (!vehicle) return null;
   const Icon = ICONS[vehicle.type];
