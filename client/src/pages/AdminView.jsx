@@ -153,11 +153,7 @@ export default function AdminView() {
 
   return (
     <div className="pf-shell">
-      <div className="pf-topbar">
-        <div className="pf-wordmark">
-          PICKFORDS <span className="pf-word-relo">RELO</span> <span className="pf-word-chaser">CHASER</span>{' '}
-          <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>· ADMIN</span>
-        </div>
+      <div className="pf-topbar" style={{ justifyContent: 'flex-end' }}>
         <BackendStatusBadge status={backendStatus} />
       </div>
 

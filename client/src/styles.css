@@ -98,27 +98,6 @@ a:focus-visible,
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.pf-wordmark {
-  font-family: var(--font-display);
-  letter-spacing: 0.04em;
-  font-size: 22px;
-  color: var(--pf-white);
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-/* Wordmark colour language, used everywhere "PICKFORDS RELO CHASER" is
-   shown: PICKFORDS stays the ambient white/text colour, RELO is blue,
-   CHASER is red - these two classes are global (not scoped to any one
-   .pf-wordmark variant) so every screen's wordmark stays in sync. */
-.pf-word-relo {
-  color: var(--pf-blue-400);
-}
-.pf-word-chaser {
-  color: var(--pf-red-600);
-}
-
 .pf-btn {
   font-family: var(--font-body);
   font-weight: 700;

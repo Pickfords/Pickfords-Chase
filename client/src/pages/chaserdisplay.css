@@ -10,25 +10,6 @@
   flex-direction: column;
 }
 
-.pf-cd-topbar {
-  display: flex;
-  align-items: center;
-  padding: 1.2cqh 3cqw;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  flex: 0 0 auto;
-}
-
-.pf-cd-wordmark {
-  font-family: var(--font-display);
-  letter-spacing: 0.04em;
-  font-size: clamp(14px, 2.2cqh, 32px);
-  display: flex;
-  align-items: baseline;
-  gap: 0.3em;
-}
-/* RELO/CHASER colouring comes from the global .pf-word-relo/.pf-word-chaser
-   classes (styles.css), not a bare "span" rule here. */
-
 .pf-cd-stage {
   flex: 1;
   min-height: 0;

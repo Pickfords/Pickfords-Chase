@@ -153,11 +153,6 @@ export default function ChaserDisplay() {
         {endEffect === 'flash' && <RedFlashOverlay />}
         {endEffect === 'confetti' && <ConfettiOverlay />}
         <IdleVehicles vehicle={vehicle} />
-        <div className="pf-cd-topbar">
-          <div className="pf-cd-wordmark">
-            PICKFORDS <span className="pf-word-relo">RELO</span> <span className="pf-word-chaser">CHASER</span>
-          </div>
-        </div>
 
         {gameOver ? (
           <div className="pf-cd-stage">

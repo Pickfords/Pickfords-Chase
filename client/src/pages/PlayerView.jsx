@@ -278,12 +278,5 @@ function RevealSummary({ role, reveal }) {
 }
 
 function TopBar() {
-  return (
-    <div className="pf-topbar">
-      <HoldToHomeButton />
-      <div className="pf-wordmark">
-        PICKFORDS <span className="pf-word-relo">RELO</span> <span className="pf-word-chaser">CHASER</span>
-      </div>
-    </div>
-  );
+  return <HoldToHomeButton />;
 }

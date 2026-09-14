@@ -4,11 +4,6 @@ import mascotImg from '../assets/mascot.png';
 export default function Home() {
   return (
     <div className="pf-shell">
-      <div className="pf-topbar">
-        <div className="pf-wordmark">
-          PICKFORDS <span className="pf-word-relo">RELO</span> <span className="pf-word-chaser">CHASER</span>
-        </div>
-      </div>
       <div className="pf-center-stage">
         <div className="pf-eyebrow">EXPAT ACADEMY EVENT</div>
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 40, margin: 0, letterSpacing: '0.02em' }}>
