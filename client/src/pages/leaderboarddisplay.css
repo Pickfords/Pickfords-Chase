@@ -91,3 +91,51 @@
     padding: 2cqh 2.5cqw;
   }
 }
+
+/* Small, out-of-the-way trigger for the looping filler video - opposite
+   corner from DisplayFrame's rotate button (bottom-right) so the two never
+   overlap. */
+.pf-ld-video-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 100;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--pf-white);
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.pf-ld-video-btn:hover {
+  background: rgba(0, 0, 0, 0.55);
+  border-color: var(--pf-white);
+}
+
+/* Hidden (not unmounted - see LeaderboardDisplay.jsx for why) until
+   playing, then a full-bleed cover over literally everything else on the
+   screen, including the rotate/play buttons - any click/scroll/key
+   anywhere dismisses it straight back to the leaderboard underneath. */
+.pf-ld-video-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+  visibility: hidden;
+  pointer-events: none;
+}
+.pf-ld-video-overlay.visible {
+  visibility: visible;
+  pointer-events: auto;
+}
