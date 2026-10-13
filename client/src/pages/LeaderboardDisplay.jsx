@@ -8,10 +8,14 @@ import { useIdleVehicles } from '../hooks/useIdleVehicles';
 import relocationChaseLogo from '../assets/relocation-chase-logo.png';
 import './leaderboarddisplay.css';
 
-// Served as a static file from client/public/media (not a JS import) - a
-// ~17MB video has no business going through Vite's asset/JS bundling
-// pipeline, it just needs a stable URL Vercel serves verbatim.
-const FILLER_VIDEO_SRC = '/media/leaderboard-filler.mp4';
+// Served as static files from client/public/media (not JS imports) - these
+// clips (17MB/86MB) have no business going through Vite's asset/JS
+// bundling pipeline, they just need a stable URL Vercel serves verbatim.
+// Keyed 1/2 to match the on-screen selector button.
+const FILLER_VIDEOS = {
+  1: '/media/leaderboard-filler-1.mp4',
+  2: '/media/leaderboard-filler-2.mp4',
+};
 
 // Any of these counts as "someone's back at the screen" - deliberately
 // broad (pointerdown covers mouse/touch/pen clicks and taps in one event,
@@ -37,6 +41,26 @@ export default function LeaderboardDisplay() {
 
   const videoRef = useRef(null);
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(1);
+
+  function toggleSelectedVideo() {
+    setSelectedVideo((n) => (n === 1 ? 2 : 1));
+  }
+
+  // Switching the selector mid-playback should actually switch what's on
+  // screen, not just queue it up for next time - reload the (new) src and,
+  // if it was already playing, keep playing. Also fires once harmlessly on
+  // mount (videoPlaying is false then, so the .play() branch is skipped).
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.load();
+    if (videoPlaying) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedVideo]);
 
   function playVideo() {
     setVideoPlaying(true);
@@ -117,13 +141,24 @@ export default function LeaderboardDisplay() {
         </div>
 
         {!videoPlaying && (
-          <button type="button" className="pf-ld-video-btn" onClick={playVideo} title="Play video" aria-label="Play filler video on loop">
-            ▶
-          </button>
+          <div className="pf-ld-video-controls">
+            <button type="button" className="pf-ld-video-btn" onClick={playVideo} title="Play video" aria-label="Play filler video on loop">
+              ▶
+            </button>
+            <button
+              type="button"
+              className="pf-ld-video-select-btn"
+              onClick={toggleSelectedVideo}
+              title="Switch which video plays"
+              aria-label={`Video ${selectedVideo} selected - tap to switch`}
+            >
+              {selectedVideo}
+            </button>
+          </div>
         )}
         <video
           ref={videoRef}
-          src={FILLER_VIDEO_SRC}
+          src={FILLER_VIDEOS[selectedVideo]}
           className={`pf-ld-video-overlay ${videoPlaying ? 'visible' : ''}`}
           loop
           playsInline

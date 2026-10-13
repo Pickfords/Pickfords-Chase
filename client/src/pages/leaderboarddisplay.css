@@ -92,14 +92,20 @@
   }
 }
 
-/* Small, out-of-the-way trigger for the looping filler video - opposite
-   corner from DisplayFrame's rotate button (bottom-right) so the two never
+/* Out-of-the-way trigger for the looping filler video - opposite corner
+   from DisplayFrame's rotate button (bottom-right) so the two never
    overlap. */
-.pf-ld-video-btn {
+.pf-ld-video-controls {
   position: fixed;
   bottom: 24px;
   left: 24px;
   z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.pf-ld-video-btn,
+.pf-ld-video-select-btn {
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -115,22 +121,34 @@
   backdrop-filter: blur(4px);
   transition: background 120ms ease, border-color 120ms ease;
 }
-.pf-ld-video-btn:hover {
+.pf-ld-video-btn:hover,
+.pf-ld-video-select-btn:hover {
   background: rgba(0, 0, 0, 0.55);
   border-color: var(--pf-white);
 }
+/* Smaller than the play button and numeral-styled - a secondary control,
+   not an equal twin. */
+.pf-ld-video-select-btn {
+  width: 40px;
+  height: 40px;
+  font-family: var(--font-display);
+  font-size: 18px;
+}
 
 /* Hidden (not unmounted - see LeaderboardDisplay.jsx for why) until
-   playing, then a full-bleed cover over literally everything else on the
-   screen, including the rotate/play buttons - any click/scroll/key
-   anywhere dismisses it straight back to the leaderboard underneath. */
+   playing, then sits over literally everything else on the screen,
+   including the rotate/play buttons - any click/scroll/key anywhere
+   dismisses it straight back to the leaderboard underneath. object-fit:
+   contain (not cover) - a horizontal video on this portrait screen (or
+   vice versa) should letterbox to whatever width/height actually fits,
+   not crop/zoom to fill the box. */
 .pf-ld-video-overlay {
   position: fixed;
   inset: 0;
   z-index: 500;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   background: #000;
   visibility: hidden;
   pointer-events: none;
